@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 
 export const CategorySchema = z.object({
@@ -20,9 +21,11 @@ export const ProductSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters long'),
   description: z.string().min(10, 'Description must be at least 10 characters long'),
   price: z.number().positive('Price must be a positive number'),
+  salePrice: z.number().positive('Sale price must be a positive number').optional(),
   categoryId: z.string(),
   images: z.array(z.string().url()),
   inventory: z.number().int().min(0, 'Inventory cannot be negative'),
+  tags: z.array(z.string()).optional(),
   // variants: z.array(ProductVariantSchema),
 });
 export type Product = z.infer<typeof ProductSchema>;

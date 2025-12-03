@@ -1,3 +1,6 @@
+
+'use client';
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,18 +8,35 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { Metadata } from "next";
+import { products } from "@/lib/placeholder-data";
+import { formatPrice } from "@/lib/utils";
 
-export const metadata: Metadata = {
-    title: "Checkout",
-    robots: {
-        index: false,
-        follow: false,
-    }
-}
+// This would typically be dynamic metadata, but for this example, it's static.
+// export const metadata: Metadata = {
+//     title: "Checkout",
+//     robots: {
+//         index: false,
+//         follow: false,
+//     }
+// }
 
 export default function CheckoutPage() {
+    // In a real app, this data would come from a cart state management
+    const cartItems = [
+        { product: products[0], quantity: 1 },
+        { product: products[2], quantity: 2 },
+    ];
+
+    const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+    const shipping = 50.00; // Shipping in INR
+    const total = subtotal + shipping;
+
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
+             <head>
+                <title>Checkout</title>
+                <meta name="robots" content="noindex, nofollow" />
+            </head>
             <h1 className="text-3xl font-bold font-headline mb-8 text-center">Checkout</h1>
             <div className="grid md:grid-cols-2 gap-12">
                 <div className="space-y-6">
@@ -75,16 +95,16 @@ export default function CheckoutPage() {
                          <CardContent className="space-y-4">
                             <div className="flex justify-between">
                                 <span>Subtotal</span>
-                                <span>$289.97</span>
+                                <span>{formatPrice(subtotal)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Shipping</span>
-                                <span>$5.00</span>
+                                <span>{formatPrice(shipping)}</span>
                             </div>
                             <Separator />
                             <div className="flex justify-between font-bold text-lg">
                                 <span>Total</span>
-                                <span>$294.97</span>
+                                <span>{formatPrice(total)}</span>
                             </div>
                         </CardContent>
                     </Card>

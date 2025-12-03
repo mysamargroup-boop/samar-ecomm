@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm, useFormState } from 'react-hook-form';
@@ -26,10 +27,11 @@ import { Product, Category, ProductSchema } from '@/lib/types';
 import { createProduct, updateProduct } from '@/app/actions/productActions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Loader2 } from 'lucide-react';
+import { Sparkles, Loader2, X } from 'lucide-react';
 import { useState } from 'react';
 import { generateDescriptionAction } from '@/app/actions/aiActions';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Badge } from '../ui/badge';
 
 const formSchema = ProductSchema.omit({ id: true, images: true });
 
@@ -42,6 +44,9 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
+  const [tags, setTags] = useState<string[]>(product?.tags || []);
+  const [tagInput, setTagInput] = useState('');
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,17 +54,44 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       name: product?.name || '',
       description: product?.description || '',
       price: product?.price || 0,
+      salePrice: product?.salePrice || undefined,
       categoryId: product?.categoryId || '',
       inventory: product?.inventory || 0,
+      tags: product?.tags || [],
     },
   });
-
+  
   const { isSubmitting } = useFormState({ control: form.control });
+
+  const handleTagKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && tagInput) {
+      event.preventDefault();
+      if (!tags.includes(tagInput)) {
+        const newTags = [...tags, tagInput];
+        setTags(newTags);
+        form.setValue('tags', newTags);
+      }
+      setTagInput('');
+    }
+  };
+
+  const removeTag = (tagToRemove: string) => {
+    const newTags = tags.filter(tag => tag !== tagToRemove);
+    setTags(newTags);
+    form.setValue('tags', newTags);
+  };
+
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
+    // A bit of a hack to get array data through server actions
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, String(value));
+      if (key === 'tags' && Array.isArray(value)) {
+        formData.append(key, JSON.stringify(value));
+      }
+      else if (value !== undefined && value !== null) {
+        formData.append(key, String(value));
+      }
     });
 
     const result = product
@@ -73,7 +105,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       });
       router.push('/admin/products');
     } else {
-      toast({
+       toast({
         title: 'Error',
         description: 'Something went wrong.',
         variant: 'destructive',
@@ -83,7 +115,6 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
   async function handleGenerateDescription() {
     const productName = form.getValues('name');
-    const keywords = form.getValues('name'); // Using name as keywords for simplicity
     if (!productName) {
       toast({
         title: 'Product Name Required',
@@ -95,7 +126,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
     setIsGenerating(true);
     try {
-      const result = await generateDescriptionAction({ productName, keywords });
+      const result = await generateDescriptionAction({ productName, keywords: productName });
       if (result.success && result.description) {
         form.setValue('description', result.description);
         toast({
@@ -164,10 +195,45 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                       <FormControl>
                         <Textarea
                           placeholder="Tell us about your product..."
-                          className="min-h-[150px]"
+                          className="min-h-[200px]"
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Pricing</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 grid grid-cols-2 gap-4">
+                 <FormField
+                  control={form.control}
+                  name="price"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Price</FormLabel>
+                      <FormControl>
+                        <Input type="number" step="0.01" placeholder="e.g. 999.00" {...field} onChange={e => field.onChange(parseFloat(e.target.value))}/>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="salePrice"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sale Price</FormLabel>
+                       <FormControl>
+                        <Input type="number" step="0.01" placeholder="e.g. 799.00" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || undefined)}/>
+                      </FormControl>
+                      <FormDescription>Leave blank if not on sale.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -178,36 +244,10 @@ export function ProductForm({ product, categories }: ProductFormProps) {
           <div className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>Details</CardTitle>
+                <CardTitle>Organization</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price</FormLabel>
-                      <FormControl>
-                        <Input type="number" step="0.01" placeholder="99.99" {...field} onChange={e => field.onChange(parseFloat(e.target.value))}/>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="inventory"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Inventory</FormLabel>
-                      <FormControl>
-                        <Input type="number" placeholder="100" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10))}/>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
+                 <FormField
                   control={form.control}
                   name="categoryId"
                   render={({ field }) => (
@@ -231,8 +271,61 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                     </FormItem>
                   )}
                 />
+                 <FormField
+                  control={form.control}
+                  name="tags"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tags</FormLabel>
+                      <FormControl>
+                        <div>
+                          <Input 
+                            placeholder="e.g. audio, tech" 
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyDown={handleTagKeyDown}
+                          />
+                           <div className="flex flex-wrap gap-2 mt-2">
+                            {tags.map(tag => (
+                              <Badge key={tag} variant="secondary">
+                                {tag}
+                                <button type="button" className="ml-2" onClick={() => removeTag(tag)}>
+                                  <X className="h-3 w-3"/>
+                                </button>
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormDescription>Press Enter to add a tag.</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Inventory</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="inventory"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Stock Quantity</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="100" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10))}/>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
           </div>
         </div>
 

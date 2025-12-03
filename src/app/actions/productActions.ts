@@ -1,3 +1,4 @@
+
 'use server';
 
 import { revalidatePath } from 'next/cache';
@@ -8,15 +9,21 @@ import { ProductSchema } from '@/lib/types';
 
 export async function createProduct(formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
+  
+  const parsedTags = rawFormData.tags ? JSON.parse(rawFormData.tags as string) : [];
+
   const validatedFields = ProductSchema.omit({ id: true, images: true }).safeParse({
     name: rawFormData.name,
     description: rawFormData.description,
     price: Number(rawFormData.price),
+    salePrice: rawFormData.salePrice ? Number(rawFormData.salePrice) : undefined,
     categoryId: rawFormData.categoryId,
     inventory: Number(rawFormData.inventory),
+    tags: parsedTags,
   });
 
   if (!validatedFields.success) {
+    console.log(validatedFields.error.flatten().fieldErrors);
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Failed to create product.',
@@ -32,12 +39,16 @@ export async function createProduct(formData: FormData) {
 
 export async function updateProduct(id: string, formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
+  const parsedTags = rawFormData.tags ? JSON.parse(rawFormData.tags as string) : [];
+
    const validatedFields = ProductSchema.omit({ id: true, images: true }).safeParse({
     name: rawFormData.name,
     description: rawFormData.description,
     price: Number(rawFormData.price),
+    salePrice: rawFormData.salePrice ? Number(rawFormData.salePrice) : undefined,
     categoryId: rawFormData.categoryId,
     inventory: Number(rawFormData.inventory),
+    tags: parsedTags,
   });
 
   if (!validatedFields.success) {

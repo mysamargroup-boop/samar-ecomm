@@ -1,3 +1,4 @@
+
 import { products, categories } from '@/lib/placeholder-data';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -41,6 +42,7 @@ export default function ProductPage({ params }: Props) {
   }
 
   const category = categories.find((c) => c.id === product.categoryId);
+  const onSale = product.salePrice && product.salePrice < product.price;
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -64,6 +66,9 @@ export default function ProductPage({ params }: Props) {
             </CarouselContent>
             <CarouselPrevious className="left-2" />
             <CarouselNext className="right-2" />
+             {onSale && (
+              <Badge className="absolute top-4 right-4" variant="destructive">Sale</Badge>
+            )}
           </Carousel>
         </div>
         
@@ -74,11 +79,29 @@ export default function ProductPage({ params }: Props) {
             </Link>
           )}
           <h1 className="text-3xl md:text-4xl font-extrabold font-headline mb-2">{product.name}</h1>
-          <p className="text-3xl font-bold text-primary mb-6">{formatPrice(product.price)}</p>
+
+          <div className="flex items-baseline gap-2 mb-6">
+            {onSale ? (
+                <>
+                    <p className="text-3xl font-bold text-primary">{formatPrice(product.salePrice!)}</p>
+                    <p className="text-xl text-muted-foreground line-through">{formatPrice(product.price)}</p>
+                </>
+            ) : (
+                <p className="text-3xl font-bold text-primary">{formatPrice(product.price)}</p>
+            )}
+           </div>
           
           <div className="prose dark:prose-invert max-w-none text-muted-foreground mb-8">
             <p>{product.description}</p>
           </div>
+
+          {product.tags && product.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {product.tags.map(tag => (
+                <Badge key={tag} variant="outline">{tag}</Badge>
+              ))}
+            </div>
+          )}
           
           <div className="mt-auto pt-6">
             <div className="flex items-center gap-4">
