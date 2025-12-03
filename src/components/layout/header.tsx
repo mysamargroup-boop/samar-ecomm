@@ -51,7 +51,7 @@ export function AppHeader() {
           href={link.href}
           onClick={() => setIsSheetOpen(false)}
           className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
+            'text-sm font-medium transition-colors hover:text-primary hover:underline hover:decoration-maroon underline-offset-4 decoration-2',
             pathname === link.href ? 'text-primary' : 'text-muted-foreground'
           )}
         >
@@ -129,7 +129,7 @@ export function AppHeader() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6">
+        <nav className="hidden md:flex items-center gap-4">
             {mainNav}
         </nav>
 
