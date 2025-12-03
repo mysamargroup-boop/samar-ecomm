@@ -1,43 +1,54 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ListOrdered, User } from "lucide-react";
+import { ListOrdered, User, Heart, LogOut, LayoutDashboard } from "lucide-react";
 
 export default function AccountPage() {
-    // In a real app, you'd get the user's name from their session
     const userName = "Alice";
+
+    const navItems = [
+      { href: '/account/orders', label: 'My Orders', icon: ListOrdered },
+      { href: '/account/profile', label: 'My Profile', icon: User },
+      { href: '/wishlist', label: 'Wishlist', icon: Heart },
+    ];
 
     return (
         <div className="space-y-10">
-            <div>
-                <h1 className="text-3xl font-bold font-headline">My Account</h1>
+            <div className="text-center">
+                <h1 className="text-4xl font-bold font-headline">Welcome, {userName}!</h1>
                 <p className="text-xl text-muted-foreground mt-2">
-                    Welcome back, {userName}!
+                    Manage your orders, profile, and more.
                 </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
-                <Card>
-                    <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                        <ListOrdered className="h-8 w-8 text-primary" />
-                        <CardTitle>My Orders</CardTitle>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {navItems.map((item) => (
+                    <Card key={item.href} className="text-center flex flex-col items-center justify-center p-6 hover:shadow-lg transition-shadow">
+                        <CardHeader className="p-0 mb-4">
+                            <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit">
+                                <item.icon className="h-8 w-8" />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            <Link href={item.href}>
+                                <Button variant="link" className="text-lg font-semibold">
+                                    {item.label}
+                                </Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                ))}
+                 <Card className="text-center flex flex-col items-center justify-center p-6 hover:shadow-lg transition-shadow">
+                    <CardHeader className="p-0 mb-4">
+                        <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit">
+                            <LogOut className="h-8 w-8" />
+                        </div>
                     </CardHeader>
-                    <CardContent>
-                        <CardDescription className="mb-4">View your order history and track shipments.</CardDescription>
-                        <Link href="/account/orders">
-                            <Button>View Orders</Button>
-                        </Link>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
-                        <User className="h-8 w-8 text-primary" />
-                        <CardTitle>My Profile</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <CardDescription className="mb-4">Manage your personal details and shipping address.</CardDescription>
-                       <Link href="/account/profile">
-                            <Button variant="outline">Edit Profile</Button>
+                    <CardContent className="p-0">
+                        <Link href="/">
+                            <Button variant="link" className="text-lg font-semibold">
+                                Logout
+                            </Button>
                         </Link>
                     </CardContent>
                 </Card>
