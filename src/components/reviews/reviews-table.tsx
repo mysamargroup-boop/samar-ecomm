@@ -62,7 +62,7 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
           <TableHead>Author</TableHead>
           <TableHead>Product</TableHead>
           <TableHead>Rating</TableHead>
-          <TableHead className="hidden md:table-cell">Comment</TableHead>
+          <TableHead className="hidden lg:table-cell">Comment</TableHead>
           <TableHead>Status</TableHead>
            <TableHead>
             <span className="sr-only">Actions</span>
@@ -80,7 +80,7 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
                     {[...Array(5 - review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-muted-foreground"/>)}
                 </div>
             </TableCell>
-            <TableCell className="hidden md:table-cell max-w-sm truncate">{review.comment}</TableCell>
+            <TableCell className="hidden lg:table-cell max-w-sm truncate">{review.comment}</TableCell>
             <TableCell>
                 <Badge variant={statusVariant(review.status)} className={cn(review.status === 'Approved' && "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800")}>{review.status}</Badge>
             </TableCell>
