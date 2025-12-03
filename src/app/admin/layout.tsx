@@ -15,29 +15,26 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // This check runs only on the client-side
+    // This check runs only on the client-side, after initial render.
     const adminSession = sessionStorage.getItem(ADMIN_AUTH_KEY);
-    if (adminSession === 'true') {
-      setIsAuthenticated(true);
-    }
-    setIsLoading(false);
-  }, []);
-  
+    setIsAuthenticated(adminSession === 'true');
+  }, [pathname]); // Re-check on path change if needed, though login flow should handle it.
+
+  // Bypass layout for the admin login pages themselves
   if (pathname.startsWith('/samar') || pathname.startsWith('/login')) {
-    return <>{children}</>
+    return <>{children}</>;
   }
 
-  if (isLoading) {
-    // You can show a loading spinner here
+  // Initial loading state, rendered on both server and initial client render.
+  if (isAuthenticated === null) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
-  
+
+  // Once authentication state is determined on the client, render conditionally.
   if (!isAuthenticated) {
-    // If not authenticated, show a 404 page to obscure the admin area
     return <NotFound />;
   }
 
