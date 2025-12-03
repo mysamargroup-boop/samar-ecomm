@@ -14,6 +14,7 @@ export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const wishlistCount = 3; // Placeholder value
+  const cartCount = 2; // Placeholder value
 
   // Hide header on admin routes
   if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
@@ -85,11 +86,14 @@ export function AppHeader() {
                 <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{wishlistCount}</Badge>
             )}
           </Link>
-          <Link href="/cart" aria-label="Shopping Cart">
+          <Link href="/cart" aria-label="Shopping Cart" className="relative">
             <Button variant="ghost" size="icon">
                 <ShoppingCart className="h-5 w-5" />
                 <span className="sr-only">Shopping Cart</span>
             </Button>
+            {cartCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartCount}</Badge>
+            )}
           </Link>
           <Link href="/account" aria-label="My Account">
             <Button variant="ghost" size="icon">
