@@ -21,7 +21,7 @@ export function AppHeader() {
   const cartCount = 2; // Placeholder value
 
   // Hide header on samar routes
-  if (pathname.startsWith('/samar') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
+  if (pathname.startsWith('/samar') || pathname.startsWith('/login')) {
     return null;
   }
 

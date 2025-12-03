@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { categories } from '@/lib/placeholder-data';
 import { WishlistButton } from './wishlist-button';
+import { ShoppingCart } from 'lucide-react';
 
 type ProductCardProps = {
   product: Product;
@@ -56,9 +57,15 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 mt-auto">
-        <Link href={`/product/${product.id}`} className="w-full">
-          <Button className="w-full">View Details</Button>
-        </Link>
+        <div className="flex w-full gap-2">
+            <Button variant="outline" className="flex-1">
+                <ShoppingCart className="mr-2 h-4 w-4" />
+                Add to Cart
+            </Button>
+            <Link href="/checkout" className="flex-1">
+                <Button className="w-full">Buy Now</Button>
+            </Link>
+        </div>
       </CardFooter>
     </Card>
   );

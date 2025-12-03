@@ -5,17 +5,7 @@ import { ProductCard } from '@/components/products/product-card';
 import { products } from '@/lib/placeholder-data';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import type { Metadata } from 'next';
 import { WishlistContext } from '@/contexts/wishlist-context';
-
-// export const metadata: Metadata = {
-//     title: 'My Wishlist | Samar Store',
-//     description: 'Your saved items and wishlist.',
-//     robots: {
-//         index: false,
-//         follow: false,
-//     }
-// }
 
 export default function WishlistPage() {
   const { wishlistItems } = useContext(WishlistContext);
