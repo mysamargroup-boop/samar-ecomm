@@ -1,0 +1,133 @@
+/**
+ * Core Philosophy: This ruleset implements a dual security model tailored for an e-commerce application.
+ * It provides public, read-only access to catalog data (products, categories) while enforcing
+ * strict, role-based administrative control over writes to that data. For user-specific information
+ * (customer profiles, orders), it employs a strict ownership model, ensuring users can only
+ * access their own data.
+ *
+ * Data Structure:
+ * - /products/{productId}: Publicly readable product catalog.
+ * - /categories/{categoryId}: Publicly readable product categories.
+ * - /customers/{customerId}: Private user data, where {customerId} is the user's UID.
+ * - /customers/{customerId}/orders/{orderId}: A user's private order history, nested for ownership.
+ * - /roles_admin/{uid}: A lookup collection to grant admin privileges. A user is an admin if a
+ *   document exists with their UID as the ID.
+ *
+ * Key Security Decisions:
+ * - Admin Role Management: The /roles_admin collection is used for authorization checks. To prevent
+ *   privilege escalation, all client-side writes to this collection are disabled. Admin roles must
+ *   be managed through a trusted backend server or the Firebase Console.
+ * - User Data Privacy: Listing all customers is explicitly forbidden to protect user privacy. Users
+ *   can only fetch their own /customers/{customerId} document.
+ * - Catalog Management: Anyone can view products and categories, but only users designated as
+ *   admins in the /roles_admin collection can create, modify, or delete them.
+ * - Default Posture: The default security posture is to deny access. Rules explicitly grant
+ *   permissions based on the defined roles and ownership structures.
+ *
+ * Denormalization for Authorization:
+ * This ruleset uses an existence-based check against the `/roles_admin/{uid}` collection to determine
+ * if a user has administrative privileges. This avoids embedding roles in custom tokens and allows
+ * for dynamic role management without re-authenticating the user. It is a highly performant
+ * and secure pattern for role-based access control.
+ *
+ * Structural Segregation:
+ * The ruleset leverages separate top-level collections for public data (/products, /categories)
+ * and private, user-owned data (/customers). This segregation simplifies the rules, enhances
+ * query performance, and provides a strong security boundary between public and private information.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions for reusable logic
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Checks if the requesting user is the owner of a document.
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Checks if the requesting user has an admin role document.
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    // Checks for ownership on an existing document. Used for update/delete.
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Publicly readable product catalog. Writes are restricted to admins.
+     * @path /products/{productId}
+     * @allow (get) Any user, signed in or not, can view a specific product.
+     * @deny (create) A non-admin user attempts to create a new product.
+     * @principle Implements a public-read, admin-write access pattern for catalog data.
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Publicly readable product categories. Writes are restricted to admins.
+     * @path /categories/{categoryId}
+     * @allow (list) Any user, signed in or not, can list all categories.
+     * @deny (update) A non-admin user attempts to change a category name.
+     * @principle Implements a public-read, admin-write access pattern for catalog data.
+     */
+    match /categories/{categoryId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update, delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Stores customer profile data. Only the customer themselves can access it.
+     * @path /customers/{customerId}
+     * @allow (create) A new user (auth.uid: 'user123') creates their own profile at /customers/user123.
+     * @deny (get) A user ('userABC') attempts to read the profile at /customers/userXYZ.
+     * @principle Restricts access to a user's own data tree and enforces relational integrity.
+     */
+    match /customers/{customerId} {
+      allow get: if isOwner(customerId);
+      allow list: if false;
+      allow create: if isOwner(customerId) && request.resource.data.id == customerId;
+      allow update: if isExistingOwner(customerId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(customerId);
+
+      /**
+       * @description A user's orders. Only the owner can view or manage their own orders.
+       * @path /customers/{customerId}/orders/{orderId}
+       * @allow (list) A user (auth.uid: 'user123') lists all their orders under /customers/user123/orders.
+       * @deny (update) A user ('userABC') attempts to update an order at /customers/userXYZ/orders/order999.
+       * @principle Enforces document ownership for all operations within a user's private subcollection.
+       */
+      match /orders/{orderId} {
+        allow get, list: if isOwner(customerId);
+        allow create: if isOwner(customerId) && request.resource.data.customerId == customerId;
+        allow update: if isExistingOwner(customerId) && request.resource.data.customerId == resource.data.customerId;
+        allow delete: if isExistingOwner(customerId);
+      }
+    }
+
+    /**
+     * @description Admin role lookup collection. Client-side writes are disabled for security.
+     * @path /roles_admin/{uid}
+     * @allow (get) An admin checks if another user ('userXYZ') is an admin via /roles_admin/userXYZ.
+     * @deny (list) A non-admin user attempts to list all administrators.
+     * @deny (create) Any user attempts to make themselves an admin from the client.
+     * @principle Secures the authorization mechanism by making it read-only for admins and denying all writes.
+     */
+    match /roles_admin/{uid} {
+      allow get: if isAdmin();
+      allow list: if isAdmin();
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
