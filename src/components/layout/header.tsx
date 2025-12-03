@@ -49,11 +49,7 @@ export function AppHeader() {
         <Link
           key={link.href}
           href={link.href}
-          onClick={() => setIsSheetOpen(false)}
-          className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
-            pathname === link.href ? 'text-primary' : 'text-muted-foreground'
-          )}
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
         >
           {link.label}
         </Link>
@@ -62,38 +58,49 @@ export function AppHeader() {
   );
 
   const mobileNav = (
-    <div className="flex flex-col h-full">
-      <div className="flex-grow overflow-y-auto">
-        <Link href="/" className="mr-6 flex items-center space-x-2 mb-6" onClick={() => setIsSheetOpen(false)}>
-          <ShoppingBag className="h-6 w-6 text-primary" />
-          <span className="font-bold font-headline">Samar Store</span>
-        </Link>
-        <nav className="flex flex-col space-y-2">
-          <p className="font-semibold text-sm text-muted-foreground px-2">Shop by Category</p>
-          {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-2 py-2 text-lg">
-              {link.label}
-            </Link>
-          ))}
-          <Separator className="my-4" />
-          <p className="font-semibold text-sm text-muted-foreground px-2">More</p>
-          {moreLinks.map((link) => (
-             <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-2 py-2 text-base">
-              {link.label}
-            </Link>
-          ))}
+    <div className="flex flex-col h-full p-6">
+       <Link href="/" className="mr-6 flex items-center space-x-2 mb-8" onClick={() => setIsSheetOpen(false)}>
+        <ShoppingBag className="h-6 w-6 text-primary" />
+        <span className="font-bold text-lg font-headline">Samar Store</span>
+      </Link>
+
+      <div className="flex-grow overflow-y-auto -mx-6 px-6">
+        <nav className="flex flex-col gap-4">
+          <div>
+            <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">Shop by Category</p>
+            <div className="flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-4 py-2 text-base rounded-md hover:bg-muted">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          
+          <Separator />
+          
+          <div>
+             <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">More</p>
+             <div className="flex flex-col gap-1">
+              {moreLinks.map((link) => (
+                 <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-4 py-2 text-base rounded-md hover:bg-muted">
+                  {link.label}
+                </Link>
+              ))}
+             </div>
+          </div>
         </nav>
       </div>
 
-      <SheetFooter className="mt-auto border-t -mx-6 px-6 pt-6 flex-col">
-        <nav className="text-center mb-6">
+      <SheetFooter className="mt-auto border-t -mx-6 px-6 pt-6 flex-col items-center">
+        <nav className="text-center mb-4">
             <span className="text-sm text-muted-foreground">
                 <Link href="/returns" className="hover:text-primary transition-colors" onClick={() => setIsSheetOpen(false)}>Return Policy</Link>
                 <span className="mx-2">|</span>
                 <Link href="/terms" className="hover:text-primary transition-colors" onClick={() => setIsSheetOpen(false)}>Terms & Conditions</Link>
             </span>
         </nav>
-        <div className="flex justify-center space-x-4">
+        <div className="flex justify-center space-x-2">
           {socialLinks.map((social) => (
             <a key={social.name} href={social.href} aria-label={social.name}>
               <Button variant="ghost" size="icon">
@@ -129,7 +136,7 @@ export function AppHeader() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-4">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             {mainNav}
         </nav>
 
