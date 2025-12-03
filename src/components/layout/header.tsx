@@ -142,7 +142,7 @@ export function AppHeader() {
             {mainNav}
         </nav>
 
-        <div className="md:hidden flex-1 justify-center">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:hidden">
             <Link href="/" className="flex items-center space-x-2 justify-center">
                 <ShoppingBag className="h-6 w-6 text-primary" />
                 <span className="font-bold font-headline">Samar</span>

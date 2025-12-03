@@ -22,7 +22,7 @@ export function FeaturedProductsSlider({ products }: { products: Product[] }) {
     >
       <CarouselContent>
         {products.map((product) => (
-          <CarouselItem key={product.id} className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
+          <CarouselItem key={product.id} className="basis-1/2 sm:basis-1/2 md:basis-1/3 lg:basis-1/4">
             <div className="p-1">
               <ProductCard product={product} />
             </div>
