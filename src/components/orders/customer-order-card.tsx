@@ -28,7 +28,7 @@ export function CustomerOrderCard({ order }: { order: Order }) {
         <CardHeader className="flex-row justify-between items-center">
             <div className="space-y-1">
                 <CardTitle className="text-lg">Order #{order.id.split('_')[1]}</CardTitle>
-                <CardDescription>Placed on {order.createdAt.toLocaleDateString()}</CardDescription>
+                <CardDescription>Placed on {order.createdAt.toLocaleDateString('en-US')}</CardDescription>
             </div>
             <div className="text-right">
                 <Badge variant="outline" className={cn("text-sm", getStatusVariant(order.status))}>{order.status}</Badge>
