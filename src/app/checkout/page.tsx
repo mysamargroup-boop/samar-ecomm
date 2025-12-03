@@ -82,10 +82,6 @@ export default function CheckoutPage() {
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
-             <head>
-                <title>Checkout</title>
-                <meta name="robots" content="noindex, nofollow" />
-            </head>
             <h1 className="text-3xl font-bold font-headline mb-8 text-center">Checkout</h1>
             <div className="grid md:grid-cols-2 gap-12">
                 <div className="space-y-6">
@@ -152,4 +148,3 @@ export default function CheckoutPage() {
         </div>
     );
 }
-

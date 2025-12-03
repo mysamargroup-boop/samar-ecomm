@@ -6,6 +6,15 @@ import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Shopping Cart",
+    robots: {
+        index: false,
+        follow: false,
+    },
+};
 
 export default function CartPage() {
     const cartItems = [
@@ -22,10 +31,6 @@ export default function CartPage() {
 
     return (
         <div className="container mx-auto px-4 py-12">
-            <head>
-                <title>Shopping Cart</title>
-                <meta name="robots" content="noindex, nofollow" />
-            </head>
             <h1 className="text-3xl font-bold font-headline mb-8">Your Shopping Cart</h1>
             <div className="grid md:grid-cols-3 gap-8">
                 <div className="md:col-span-2">
