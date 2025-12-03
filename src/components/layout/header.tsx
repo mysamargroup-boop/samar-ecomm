@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ShoppingBag, User, Heart } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
+import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 import { Badge } from '../ui/badge';
+import { Separator } from '../ui/separator';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -26,6 +27,27 @@ export function AppHeader() {
     href: `/${category.slug}`,
     label: category.name,
   }));
+  
+  const moreLinks = [
+    { href: '/blog', label: 'Blog' },
+    { href: '/about', label: 'About Us' },
+    { href: '/contact', label: 'Contact Us' },
+  ];
+
+  const legalLinks = [
+     { href: '/terms', label: 'Terms & Conditions' },
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/shipping', label: 'Shipping Information' },
+     { href: '/returns', label: 'Return Policy' },
+  ];
+
+  const socialLinks = [
+    { name: 'Facebook', icon: Facebook, href: '#' },
+    { name: 'Twitter', icon: Twitter, href: '#' },
+    { name: 'Instagram', icon: Instagram, href: '#' },
+    { name: 'LinkedIn', icon: Linkedin, href: '#' },
+  ];
+
 
   const mainNav = (
     <>
@@ -45,6 +67,51 @@ export function AppHeader() {
     </>
   );
 
+  const mobileNav = (
+    <div className="flex flex-col h-full">
+      <div className="flex-grow overflow-y-auto">
+        <Link href="/" className="mr-6 flex items-center space-x-2 mb-6" onClick={() => setIsSheetOpen(false)}>
+          <ShoppingBag className="h-6 w-6 text-primary" />
+          <span className="font-bold font-headline">Samar Store</span>
+        </Link>
+        <nav className="flex flex-col space-y-4">
+          <p className="font-semibold text-sm text-muted-foreground px-2">Shop by Category</p>
+          {navLinks.map((link) => (
+            <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-2 py-1 text-lg">
+              {link.label}
+            </Link>
+          ))}
+          <Separator className="my-4" />
+          <p className="font-semibold text-sm text-muted-foreground px-2">More</p>
+          {moreLinks.map((link) => (
+             <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-2 py-1 text-lg">
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+
+      <div className="mt-auto border-t -mx-6 px-6 pt-6">
+        <nav className="flex flex-col space-y-3 mb-6">
+           {legalLinks.map((link) => (
+             <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="text-sm text-muted-foreground hover:text-primary">
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="flex justify-center space-x-4">
+          {socialLinks.map((social) => (
+            <a key={social.name} href={social.href} aria-label={social.name}>
+              <Button variant="ghost" size="icon">
+                <social.icon className="h-5 w-5" />
+              </Button>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -56,14 +123,10 @@ export function AppHeader() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm">
+            <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm flex flex-col">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
                 <SheetDescription className="sr-only">Main navigation menu.</SheetDescription>
-              <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
-                <ShoppingBag className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">Samar Store</span>
-              </Link>
-              <nav className="flex flex-col space-y-4">{mainNav}</nav>
+                {mobileNav}
             </SheetContent>
           </Sheet>
           <Link href="/" className="hidden md:flex items-center space-x-2">
