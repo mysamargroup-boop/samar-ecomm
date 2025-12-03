@@ -33,7 +33,7 @@ export async function createProduct(formData: FormData) {
   console.log('Creating product:', validatedFields.data);
   // In a real app, you would save this to your database.
 
-  revalidatePath('/admin/products');
+  revalidatePath('/samar/products');
   return { message: 'Product created successfully.' };
 }
 
@@ -61,7 +61,7 @@ export async function updateProduct(id: string, formData: FormData) {
   console.log(`Updating product ${id}:`, validatedFields.data);
   // In a real app, you would update this in your database.
 
-  revalidatePath('/admin/products');
+  revalidatePath('/samar/products');
   revalidatePath(`/product/${id}`);
   return { message: 'Product updated successfully.' };
 }
@@ -70,6 +70,6 @@ export async function deleteProduct(id: string) {
   console.log(`Deleting product ${id}`);
   // In a real app, you would delete this from your database.
 
-  revalidatePath('/admin/products');
+  revalidatePath('/samar/products');
   return { message: 'Product deleted successfully.' };
 }

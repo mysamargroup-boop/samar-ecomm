@@ -55,7 +55,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
 
 
   const handleRowClick = (orderId: string) => {
-    router.push(`/admin/orders/${orderId}`);
+    router.push(`/samar/orders/${orderId}`);
   };
 
 

@@ -18,8 +18,8 @@ export function AppHeader() {
   const wishlistCount = 3; // Placeholder value
   const cartCount = 2; // Placeholder value
 
-  // Hide header on admin routes
-  if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
+  // Hide header on samar routes
+  if (pathname.startsWith('/samar') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
     return null;
   }
 

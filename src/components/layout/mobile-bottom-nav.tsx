@@ -32,7 +32,7 @@ export function MobileBottomNav() {
     { href: '/account', label: 'Account', icon: User },
   ];
 
-  if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
+  if (pathname.startsWith('/samar') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
     return null;
   }
 

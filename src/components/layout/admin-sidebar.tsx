@@ -26,26 +26,26 @@ import { useState } from 'react';
 const ADMIN_AUTH_KEY = 'samar-admin-auth';
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/categories', label: 'Categories', icon: Boxes },
-  { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
-  { href: '/admin/customers', label: 'Customers', icon: Users },
-  { href: '/admin/reviews', label: 'Reviews', icon: MessageSquare },
-  { href: '/admin/blog', label: 'Blog', icon: Newspaper },
-  { href: '/admin/appearance', label: 'Appearance', icon: Palette },
-  { href: '/admin/tags', label: 'Tags', icon: Tags },
+  { href: '/samar', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/samar/products', label: 'Products', icon: Package },
+  { href: '/samar/categories', label: 'Categories', icon: Boxes },
+  { href: '/samar/orders', label: 'Orders', icon: ShoppingCart },
+  { href: '/samar/customers', label: 'Customers', icon: Users },
+  { href: '/samar/reviews', label: 'Reviews', icon: MessageSquare },
+  { href: '/samar/blog', label: 'Blog', icon: Newspaper },
+  { href: '/samar/appearance', label: 'Appearance', icon: Palette },
+  { href: '/samar/tags', label: 'Tags', icon: Tags },
 ];
 
 const secondaryNavItems = [
-    { href: '/admin/settings', label: 'Settings', icon: Settings },
+    { href: '/samar/settings', label: 'Settings', icon: Settings },
 ]
 
 function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
 
   const renderLink = (item: typeof navItems[0]) => {
-    const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+    const isActive = pathname === item.href || (item.href !== '/samar' && pathname.startsWith(item.href));
     return (
       <Link
         key={item.href}
@@ -87,7 +87,7 @@ export function AdminSidebar() {
   return (
     <aside className="w-64 flex-shrink-0 bg-sidebar border-r hidden md:flex flex-col">
       <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
-        <Link href="/admin" className="flex items-center gap-2 font-bold font-headline text-sidebar-foreground">
+        <Link href="/samar" className="flex items-center gap-2 font-bold font-headline text-sidebar-foreground">
           <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
           <span>Samar Store</span>
         </Link>
@@ -132,7 +132,7 @@ export function AdminMobileHeader() {
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col w-full max-w-xs sm:max-w-sm p-0 bg-sidebar text-sidebar-foreground">
            <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
-            <Link href="/admin" className="flex items-center gap-2 font-bold font-headline" onClick={() => setIsSheetOpen(false)}>
+            <Link href="/samar" className="flex items-center gap-2 font-bold font-headline" onClick={() => setIsSheetOpen(false)}>
               <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
               <span>Samar Store</span>
             </Link>
@@ -153,8 +153,8 @@ export function AdminMobileHeader() {
         </SheetContent>
       </Sheet>
        <div className="flex-1 text-center">
-         <Link href="/admin" className="flex items-center gap-2 font-bold font-headline text-lg justify-center">
-            <span>Admin</span>
+         <Link href="/samar" className="flex items-center gap-2 font-bold font-headline text-lg justify-center">
+            <span>Samar</span>
           </Link>
        </div>
        <div className="w-8"></div>

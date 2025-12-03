@@ -73,7 +73,7 @@ export function CategoriesTable({ categories }: { categories: Category[] }) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href={`/admin/categories/${category.id}/edit`}>
+                      <Link href={`/samar/categories/${category.id}/edit`}>
                         <Pen className="mr-2 h-4 w-4" /> Edit
                       </Link>
                     </DropdownMenuItem>

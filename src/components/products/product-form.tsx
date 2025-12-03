@@ -128,7 +128,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
             title: product ? 'Product Updated' : 'Product Created',
             description: result.message,
           });
-          router.push('/admin/products');
+          router.push('/samar/products');
         } else {
            toast({
             title: 'Error',

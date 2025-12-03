@@ -9,8 +9,8 @@ import { usePathname } from 'next/navigation';
 export function Footer() {
   const pathname = usePathname();
 
-  // Hide footer on admin routes
-  if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
+  // Hide footer on samar routes
+  if (pathname.startsWith('/samar') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
     return null;
   }
 

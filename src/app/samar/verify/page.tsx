@@ -26,17 +26,17 @@ function VerifyOTPComponent() {
 
   const handleComplete = (value: string) => {
     // In a real app, you would verify the OTP here.
-    // For this demo, we'll accept a specific OTP for admin access.
-    console.log('Verifying Admin OTP:', value);
+    // For this demo, we'll accept a specific OTP for samar access.
+    console.log('Verifying Samar OTP:', value);
     if (value === '123456') {
-        // Set a session flag to indicate admin is logged in
+        // Set a session flag to indicate samar is logged in
         sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
 
         toast({
-            title: 'Admin Login Successful',
+            title: 'Samar Login Successful',
             description: 'Redirecting to dashboard...',
         });
-        router.push('/admin');
+        router.push('/samar');
     } else {
         toast({
             title: 'Invalid OTP',
@@ -60,7 +60,7 @@ function VerifyOTPComponent() {
           <div className="mx-auto mb-4 bg-primary text-primary-foreground p-3 rounded-full w-fit">
             <ShoppingBag className="h-8 w-8" />
           </div>
-          <CardTitle className="text-2xl font-headline">Verify Admin Access</CardTitle>
+          <CardTitle className="text-2xl font-headline">Verify Samar Access</CardTitle>
           <CardDescription>
             An OTP has been sent to {phone}. Please enter it below. (Hint: use 123456)
           </CardDescription>

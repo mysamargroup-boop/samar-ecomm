@@ -10,22 +10,22 @@
  * - /categories/{categoryId}: Publicly readable product categories.
  * - /customers/{customerId}: Private user data, where {customerId} is the user's UID.
  * - /customers/{customerId}/orders/{orderId}: A user's private order history, nested for ownership.
- * - /roles_admin/{uid}: A lookup collection to grant admin privileges. A user is an admin if a
+ * - /roles_samar/{uid}: A lookup collection to grant samar privileges. A user is an samar if a
  *   document exists with their UID as the ID.
  *
  * Key Security Decisions:
- * - Admin Role Management: The /roles_admin collection is used for authorization checks. To prevent
- *   privilege escalation, all client-side writes to this collection are disabled. Admin roles must
+ * - Samar Role Management: The /roles_samar collection is used for authorization checks. To prevent
+ *   privilege escalation, all client-side writes to this collection are disabled. Samar roles must
  *   be managed through a trusted backend server or the Firebase Console.
  * - User Data Privacy: Listing all customers is explicitly forbidden to protect user privacy. Users
  *   can only fetch their own /customers/{customerId} document.
  * - Catalog Management: Anyone can view products and categories, but only users designated as
- *   admins in the /roles_admin collection can create, modify, or delete them.
+ *   samars in the /roles_samar collection can create, modify, or delete them.
  * - Default Posture: The default security posture is to deny access. Rules explicitly grant
  *   permissions based on the defined roles and ownership structures.
  *
  * Denormalization for Authorization:
- * This ruleset uses an existence-based check against the `/roles_admin/{uid}` collection to determine
+ * This ruleset uses an existence-based check against the `/roles_samar/{uid}` collection to determine
  * if a user has administrative privileges. This avoids embedding roles in custom tokens and allows
  * for dynamic role management without re-authenticating the user. It is a highly performant
  * and secure pattern for role-based access control.
@@ -49,9 +49,9 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Checks if the requesting user has an admin role document.
-    function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    // Checks if the requesting user has an samar role document.
+    function isSamar() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_samar/$(request.auth.uid));
     }
 
     // Checks for ownership on an existing document. Used for update/delete.
@@ -60,29 +60,29 @@ service cloud.firestore {
     }
 
     /**
-     * @description Publicly readable product catalog. Writes are restricted to admins.
+     * @description Publicly readable product catalog. Writes are restricted to samars.
      * @path /products/{productId}
      * @allow (get) Any user, signed in or not, can view a specific product.
-     * @deny (create) A non-admin user attempts to create a new product.
-     * @principle Implements a public-read, admin-write access pattern for catalog data.
+     * @deny (create) A non-samar user attempts to create a new product.
+     * @principle Implements a public-read, samar-write access pattern for catalog data.
      */
     match /products/{productId} {
       allow get, list: if true;
-      allow create: if isAdmin();
-      allow update, delete: if isAdmin() && resource != null;
+      allow create: if isSamar();
+      allow update, delete: if isSamar() && resource != null;
     }
 
     /**
-     * @description Publicly readable product categories. Writes are restricted to admins.
+     * @description Publicly readable product categories. Writes are restricted to samars.
      * @path /categories/{categoryId}
      * @allow (list) Any user, signed in or not, can list all categories.
-     * @deny (update) A non-admin user attempts to change a category name.
-     * @principle Implements a public-read, admin-write access pattern for catalog data.
+     * @deny (update) A non-samar user attempts to change a category name.
+     * @principle Implements a public-read, samar-write access pattern for catalog data.
      */
     match /categories/{categoryId} {
       allow get, list: if true;
-      allow create: if isAdmin();
-      allow update, delete: if isAdmin() && resource != null;
+      allow create: if isSamar();
+      allow update, delete: if isSamar() && resource != null;
     }
 
     /**
@@ -115,16 +115,16 @@ service cloud.firestore {
     }
 
     /**
-     * @description Admin role lookup collection. Client-side writes are disabled for security.
-     * @path /roles_admin/{uid}
-     * @allow (get) An admin checks if another user ('userXYZ') is an admin via /roles_admin/userXYZ.
-     * @deny (list) A non-admin user attempts to list all administrators.
-     * @deny (create) Any user attempts to make themselves an admin from the client.
-     * @principle Secures the authorization mechanism by making it read-only for admins and denying all writes.
+     * @description Samar role lookup collection. Client-side writes are disabled for security.
+     * @path /roles_samar/{uid}
+     * @allow (get) An samar checks if another user ('userXYZ') is an samar via /roles_samar/userXYZ.
+     * @deny (list) A non-samar user attempts to list all samars.
+     * @deny (create) Any user attempts to make themselves an samar from the client.
+     * @principle Secures the authorization mechanism by making it read-only for samars and denying all writes.
      */
-    match /roles_admin/{uid} {
-      allow get: if isAdmin();
-      allow list: if isAdmin();
+    match /roles_samar/{uid} {
+      allow get: if isSamar();
+      allow list: if isSamar();
       allow create: if false;
       allow update: if false;
       allow delete: if false;

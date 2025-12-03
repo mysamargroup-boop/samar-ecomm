@@ -65,7 +65,7 @@ export function CustomerOrderCard({ order }: { order: Order }) {
        <CardFooter className="flex justify-between items-center bg-muted/50 p-6">
         <div>
             <Button asChild variant="outline">
-                <Link href={`/admin/orders/${order.id}`}>View Details</Link>
+                <Link href={`/samar/orders/${order.id}`}>View Details</Link>
             </Button>
         </div>
         <div className="text-right">

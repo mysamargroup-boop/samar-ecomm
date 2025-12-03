@@ -75,7 +75,7 @@ export function BlogPostsTable({ posts }: { posts: BlogPost[] }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>
-                    <Link href={`/admin/blog/${post.slug}/edit`}>
+                    <Link href={`/samar/blog/${post.slug}/edit`}>
                       <Pen className="mr-2 h-4 w-4" /> Edit
                     </Link>
                   </DropdownMenuItem>

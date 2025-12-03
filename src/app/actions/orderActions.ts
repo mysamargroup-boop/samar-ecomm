@@ -14,6 +14,6 @@ export async function updateOrderStatus(orderId: string, status: z.infer<typeof 
   console.log(`Updating order ${orderId} to status: ${validatedStatus.data}`);
   // In a real app, you would update the order in your database.
 
-  revalidatePath('/admin/orders');
+  revalidatePath('/samar/orders');
   return { message: `Order ${orderId} status updated to ${validatedStatus.data}.` };
 }

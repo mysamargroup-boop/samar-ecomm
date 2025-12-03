@@ -67,7 +67,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
         title: category ? 'Category Updated' : 'Category Created',
         description: result.message,
       });
-      router.push('/admin/categories');
+      router.push('/samar/categories');
     } else {
       toast({
         title: 'Error',

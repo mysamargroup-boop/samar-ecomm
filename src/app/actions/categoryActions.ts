@@ -15,7 +15,7 @@ export async function createCategory(formData: FormData) {
   }
 
   console.log('Creating category:', validatedFields.data);
-  revalidatePath('/admin/categories');
+  revalidatePath('/samar/categories');
   return { message: 'Category created successfully.' };
 }
 
@@ -31,12 +31,12 @@ export async function updateCategory(id: string, formData: FormData) {
   }
   
   console.log(`Updating category ${id}:`, validatedFields.data);
-  revalidatePath('/admin/categories');
+  revalidatePath('/samar/categories');
   return { message: 'Category updated successfully.' };
 }
 
 export async function deleteCategory(id: string) {
   console.log(`Deleting category ${id}`);
-  revalidatePath('/admin/categories');
+  revalidatePath('/samar/categories');
   return { message: 'Category deleted successfully.' };
 }
