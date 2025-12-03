@@ -74,24 +74,24 @@ export function AppHeader() {
         </nav>
 
         <div className="flex items-center justify-end gap-2 md:flex-1">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/wishlist">
-              <Heart className="h-5 w-5" />
-              <span className="sr-only">Wishlist</span>
-            </Link>
-          </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/cart">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="sr-only">Shopping Cart</span>
-            </Link>
-          </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/login">
-              <User className="h-5 w-5" />
-              <span className="sr-only">Customer Login</span>
-            </Link>
-          </Button>
+          <Link href="/wishlist" aria-label="Wishlist">
+            <Button variant="ghost" size="icon">
+                <Heart className="h-5 w-5" />
+                <span className="sr-only">Wishlist</span>
+            </Button>
+          </Link>
+          <Link href="/cart" aria-label="Shopping Cart">
+            <Button variant="ghost" size="icon">
+                <ShoppingCart className="h-5 w-5" />
+                <span className="sr-only">Shopping Cart</span>
+            </Button>
+          </Link>
+          <Link href="/login" aria-label="Customer Login">
+            <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
+                <span className="sr-only">Customer Login</span>
+            </Button>
+          </Link>
         </div>
       </div>
     </header>

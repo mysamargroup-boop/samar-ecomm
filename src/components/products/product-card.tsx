@@ -22,13 +22,13 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl group">
       <CardHeader className="p-0 relative">
         <Link href={`/product/${product.id}`} className="block aspect-square relative overflow-hidden">
-            <Image
-              src={product.images[0]}
-              alt={product.name}
-              fill
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
-              data-ai-hint="product image"
-            />
+          <Image
+            src={product.images[0]}
+            alt={product.name}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            data-ai-hint="product image"
+          />
         </Link>
         <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
             {onSale && (
