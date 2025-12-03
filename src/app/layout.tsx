@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Manrope } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
-import { Header } from '@/components/layout/header';
+import { AppHeader } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { cn } from '@/lib/utils';
 
@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
-        <Header />
+        <AppHeader />
         <main className="flex-grow">{children}</main>
         <Footer />
         <Toaster />

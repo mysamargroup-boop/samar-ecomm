@@ -9,9 +9,15 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
-export function Header() {
+export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  // Hide header on admin routes
+  if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
+    return null;
+  }
+
 
   const navLinks = categories.map((category) => ({
     href: `/${category.slug}`,

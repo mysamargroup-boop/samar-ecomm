@@ -1,9 +1,19 @@
+'use client';
+
 import { ShoppingBag, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { categories } from '@/lib/placeholder-data';
+import { usePathname } from 'next/navigation';
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Hide footer on admin routes
+  if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
+    return null;
+  }
+
   const supportLinks = [
     { name: 'About Us', href: '/about' },
     { name: 'FAQ', href: '/faq' },
