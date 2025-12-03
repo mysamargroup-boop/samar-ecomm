@@ -31,21 +31,29 @@ export function AdminSidebar() {
         </Link>
       </div>
       <nav className="flex-1 px-4 py-4 space-y-1">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted',
-              (pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href)))
-                ? 'bg-muted text-primary'
-                : ''
-            )}
-          >
-            <item.icon className="h-4 w-4" />
-            {item.label}
-          </Link>
-        ))}
+        {navItems.map((item) => {
+          const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                'group flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary relative',
+                isActive ? 'text-primary' : ''
+              )}
+            >
+              <div className={cn(
+                'absolute left-[-1rem] h-6 w-1 rounded-r-lg bg-accent opacity-0 transition-opacity',
+                'group-hover:opacity-100',
+                 isActive && 'opacity-100'
+              )}></div>
+              <div className="absolute left-[-0.65rem] top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-accent opacity-0 transition-opacity group-hover:opacity-100"></div>
+              {isActive && <div className="absolute left-[-0.65rem] top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-accent"></div>}
+              <item.icon className="h-4 w-4" />
+              {item.label}
+            </Link>
+          )
+        })}
       </nav>
       <div className="mt-auto p-4 border-t">
          <Link
