@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ShoppingCart, Star } from 'lucide-react';
+import { ShoppingCart, Star, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { ShareButton } from '@/components/products/share-button';
 import { WishlistButton } from '@/components/products/wishlist-button';
@@ -19,8 +19,9 @@ import {
 } from "@/components/ui/carousel"
 import { Separator } from '@/components/ui/separator';
 import { ProductReviewForm } from '@/components/reviews/product-review-form';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ProductCard } from '@/components/products/product-card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 type Props = {
   params: { productId: string };
@@ -100,19 +101,9 @@ export default function ProductPage({ params }: Props) {
             )}
            </div>
           
-          <div className="prose dark:prose-invert max-w-none text-muted-foreground mb-8">
-            <p>{product.description}</p>
-          </div>
-
-          {product.tags && product.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {product.tags.map(tag => (
-                <Badge key={tag} variant="outline">{tag}</Badge>
-              ))}
-            </div>
-          )}
+          <p className="text-muted-foreground mb-6">{product.description}</p>
           
-          <div className="pt-6">
+          <div className="pt-6 space-y-6">
             <div className="flex items-center gap-4">
               <Link href="/cart" className="flex-1">
                 <Button size="lg" className="w-full">
@@ -120,16 +111,53 @@ export default function ProductPage({ params }: Props) {
                   Add to Cart
                 </Button>
               </Link>
+               <Link href="/checkout" className="flex-1">
+                 <Button size="lg" variant="secondary" className="w-full">
+                    <Zap className="mr-2 h-5 w-5"/>
+                    Buy Now
+                 </Button>
+              </Link>
               <WishlistButton productId={product.id} size="lg" />
               <ShareButton productName={product.name} />
             </div>
-             <p className="text-sm text-muted-foreground mt-4">
+             <p className="text-sm text-muted-foreground">
               {product.inventory > 0
                 ? `${product.inventory} items in stock.`
                 : 'Out of stock.'}
               {product.sku && <span className="ml-4">SKU: {product.sku}</span>}
             </p>
           </div>
+
+           <Accordion type="single" collapsible className="w-full mt-8">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Product Details</AccordionTrigger>
+              <AccordionContent>
+                <div className="prose dark:prose-invert max-w-none text-muted-foreground">
+                  <p>{product.longDescription || product.description}</p>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Specifications</AccordionTrigger>
+              <AccordionContent>
+                <ul className="space-y-2 text-muted-foreground">
+                    {product.weight && <li className="flex justify-between"><span>Weight</span><span>{product.weight}g</span></li>}
+                    {product.dimensions && <li className="flex justify-between"><span>Dimensions</span><span>{product.dimensions}</span></li>}
+                     {product.tags && product.tags.length > 0 && (
+                       <li className="flex justify-between items-start">
+                         <span>Tags</span>
+                         <div className="flex flex-wrap gap-1 justify-end max-w-[70%]">
+                            {product.tags.map(tag => (
+                              <Badge key={tag} variant="outline">{tag}</Badge>
+                            ))}
+                          </div>
+                       </li>
+                    )}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
         </div>
       </div>
 
