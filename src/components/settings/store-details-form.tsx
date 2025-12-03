@@ -16,7 +16,7 @@ type StoreDetailsFormProps = {
 
 export function StoreDetailsForm({ details }: StoreDetailsFormProps) {
   return (
-    <form className="space-y-8 max-w-lg">
+    <form className="space-y-8">
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="store-name">Store Name</Label>

@@ -16,7 +16,7 @@ type AnalyticsFormProps = {
 
 export function AnalyticsForm({ config }: AnalyticsFormProps) {
   return (
-    <form className="space-y-8 max-w-2xl">
+    <form className="space-y-8">
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="ga-id">Google Analytics ID</Label>

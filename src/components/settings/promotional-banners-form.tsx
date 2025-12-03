@@ -7,7 +7,7 @@ import { Switch } from "@/components/ui/switch";
 
 export function PromotionalBannersForm() {
   return (
-    <form className="space-y-8 max-w-lg">
+    <form className="space-y-8">
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Top Announcement Banner</h3>
         <div className="flex items-center space-x-2">

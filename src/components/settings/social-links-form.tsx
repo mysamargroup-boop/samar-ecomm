@@ -16,7 +16,7 @@ type SocialLinksFormProps = {
 
 export function SocialLinksForm({ links }: SocialLinksFormProps) {
   return (
-    <form className="space-y-8 max-w-lg">
+    <form className="space-y-8">
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="twitter">Twitter</Label>
