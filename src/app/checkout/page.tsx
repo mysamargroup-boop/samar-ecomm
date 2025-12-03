@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import type { Metadata } from 'next';
 
 // This is a client-side only component to handle the payment button
-function PaymentButton({ amount }: { amount: number }) {
+function PaymentButton({ amount, disabled }: { amount: number, disabled: boolean }) {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -57,7 +57,7 @@ function PaymentButton({ amount }: { amount: number }) {
     }
   }
   return (
-    <Button className="w-full" size="lg" onClick={handlePayment}>
+    <Button className="w-full" size="lg" onClick={handlePayment} disabled={disabled}>
       Pay & Place Order
     </Button>
   )
@@ -144,7 +144,7 @@ export default function CheckoutPage() {
                             </div>
                         </CardContent>
                     </Card>
-                    {isClient && <PaymentButton amount={total} />}
+                    {isClient && <PaymentButton amount={total} disabled={cartItems.length === 0} />}
                 </div>
             </div>
         </div>
