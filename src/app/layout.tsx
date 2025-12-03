@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)} suppressHydrationWarning>
+      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
         <AppHeader />
         <main className="flex-grow">{children}</main>
         <Footer />
