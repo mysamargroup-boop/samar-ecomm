@@ -46,7 +46,7 @@ export default function ProductPage({ params }: Props) {
   }
 
   const category = categories.find((c) => c.id === product.categoryId);
-  const onSale = product.salePrice && product.salePrice < product.price;
+  const onSale = product.salePrice != null && product.salePrice < product.price;
   const productReviews = allReviews.filter(r => r.productId === product.id && r.status === 'Approved');
 
   return (
