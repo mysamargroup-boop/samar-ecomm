@@ -123,6 +123,7 @@ export default function ProductPage({ params }: Props) {
               {product.inventory > 0
                 ? `${product.inventory} items in stock.`
                 : 'Out of stock.'}
+              {product.sku && <span className="ml-4">SKU: {product.sku}</span>}
             </p>
           </div>
         </div>

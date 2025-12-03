@@ -27,6 +27,7 @@ export const ProductSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with dashes'),
   images: z.array(z.string().url('Must be a valid URL')),
   inventory: z.number().int().min(0, 'Inventory cannot be negative'),
+  sku: z.string().optional(),
   tags: z.array(z.string()).optional(),
   // variants: z.array(ProductVariantSchema),
 });

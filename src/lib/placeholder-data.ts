@@ -24,6 +24,7 @@ export const products: Product[] = [
     categoryId: '1',
     images: [findImage('headphone1'), findImage('headphone2')],
     inventory: 150,
+    sku: 'SAM-HDP-BLK-01',
     tags: ['audio', 'tech', 'headphones'],
   },
   {
@@ -35,6 +36,7 @@ export const products: Product[] = [
     categoryId: '1',
     images: [findImage('smartwatch1'), findImage('smartwatch2')],
     inventory: 200,
+    sku: 'SAM-SWT-S8-GRY-01',
     tags: ['smartwatch', 'fitness', 'tech'],
   },
   {
@@ -46,6 +48,7 @@ export const products: Product[] = [
     categoryId: 'cat_men',
     images: [findImage('tshirt1'), findImage('tshirt2')],
     inventory: 500,
+    sku: 'SAM-TSH-MEN-WHT-M',
     tags: ['apparel', 't-shirt', 'basics'],
   },
   {
@@ -57,6 +60,7 @@ export const products: Product[] = [
     categoryId: '2',
     images: [findImage('backpack1'), findImage('backpack2')],
     inventory: 80,
+    sku: 'SAM-BAG-LTHR-BRN-01',
     tags: ['bags', 'leather', 'fashion'],
   },
   {
@@ -68,6 +72,7 @@ export const products: Product[] = [
     categoryId: '3',
     images: [findImage('espresso1'), findImage('espresso2')],
     inventory: 50,
+    sku: 'SAM-KITCH-ESP-01',
     tags: ['kitchen', 'coffee', 'home'],
   },
   {
@@ -79,6 +84,7 @@ export const products: Product[] = [
     categoryId: '3',
     images: [findImage('blanket1'), findImage('blanket2')],
     inventory: 120,
+    sku: 'SAM-HOME-BLK-GRY-01',
     tags: ['home decor', 'textiles', 'cozy'],
   },
   {
@@ -90,6 +96,7 @@ export const products: Product[] = [
     categoryId: '4',
     images: [findImage('book1'), findImage('book2')],
     inventory: 300,
+    sku: 'SAM-BOOK-PROG-HC-01',
     tags: ['books', 'education', 'programming'],
   },
   {
@@ -101,6 +108,7 @@ export const products: Product[] = [
     categoryId: '4',
     images: [findImage('book3'), findImage('book4')],
     inventory: 450,
+    sku: 'SAM-BOOK-SCIFI-PB-01',
     tags: ['books', 'sci-fi', 'fiction'],
   },
 ];

@@ -11,6 +11,7 @@ import { StoreDetailsForm } from '@/components/settings/store-details-form';
 import { SocialLinksForm } from '@/components/settings/social-links-form';
 import { PromotionalBannersForm } from '@/components/settings/promotional-banners-form';
 import { MaintenanceModeForm } from '@/components/settings/maintenance-mode-form';
+import { AnalyticsForm } from '@/components/settings/analytics-form';
 
 
 export default function SettingsPage() {
@@ -29,14 +30,22 @@ export default function SettingsPage() {
     linkedin: 'https://linkedin.com/company/samarstore',
   }
 
+  const analyticsConfig = {
+    googleAnalyticsId: 'G-XXXXXXXXXX',
+    metaPixelId: '123456789012345',
+    customHeadScript: '<meta name="custom-tag" content="example" />'
+  };
+
+
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold font-headline">Settings</h1>
-      <Tabs defaultValue="store-details">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+      <Tabs defaultValue="store-details" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
           <TabsTrigger value="store-details">Store Details</TabsTrigger>
           <TabsTrigger value="social">Social Links</TabsTrigger>
           <TabsTrigger value="promotions">Promotions</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
           <TabsTrigger value="advanced">Advanced</TabsTrigger>
         </TabsList>
 
@@ -78,6 +87,20 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent>
               <PromotionalBannersForm />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <Card>
+            <CardHeader>
+              <CardTitle>Analytics & SEO</CardTitle>
+              <CardDescription>
+                Configure tracking codes and custom meta tags for your store.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AnalyticsForm config={analyticsConfig}/>
             </CardContent>
           </Card>
         </TabsContent>

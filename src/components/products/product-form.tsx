@@ -56,6 +56,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       salePrice: product?.salePrice || undefined,
       categoryId: product?.categoryId || '',
       inventory: product?.inventory || 0,
+      sku: product?.sku || '',
       tags: product?.tags || [],
       images: product?.images || [],
     },
@@ -388,7 +389,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
               <CardHeader>
                 <CardTitle>Inventory</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="space-y-4">
                 <FormField
                   control={form.control}
                   name="inventory"
@@ -397,6 +398,19 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                       <FormLabel>Stock Quantity</FormLabel>
                       <FormControl>
                         <Input type="number" placeholder="100" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10))}/>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="sku"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>SKU (Stock Keeping Unit)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. HDPHN-WRLS-BLK" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
