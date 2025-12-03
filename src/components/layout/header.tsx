@@ -117,61 +117,64 @@ export function AppHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2 md:flex-1">
+      <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center md:hidden">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm flex flex-col p-0">
-                <SheetTitle className="sr-only">Menu</SheetTitle>
-                <SheetDescription className="sr-only">Main navigation menu.</SheetDescription>
-                {mobileNav}
+              <SheetTitle className="sr-only">Menu</SheetTitle>
+              <SheetDescription className="sr-only">Main navigation menu.</SheetDescription>
+              {mobileNav}
             </SheetContent>
           </Sheet>
-          <Link href="/" className="hidden md:flex items-center space-x-2">
+        </div>
+
+        <div className="hidden md:flex flex-1 items-center justify-start">
+          <Link href="/" className="flex items-center space-x-2">
             <ShoppingBag className="h-6 w-6 text-primary" />
             <span className="font-bold sm:inline-block font-headline">Samar Store</span>
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            {mainNav}
+        <nav className="hidden md:flex flex-1 items-center justify-center gap-6 lg:gap-8">
+          {mainNav}
         </nav>
 
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:hidden">
-            <Link href="/" className="flex items-center space-x-2 justify-center">
-                <ShoppingBag className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">Samar</span>
-            </Link>
+        <div className="flex flex-1 items-center justify-center md:hidden">
+          <Link href="/" className="flex items-center space-x-2">
+            <ShoppingBag className="h-6 w-6 text-primary" />
+            <span className="font-bold font-headline">Samar</span>
+          </Link>
         </div>
 
-        <div className="flex items-center justify-end gap-2 md:flex-1">
+        <div className="flex flex-1 items-center justify-end gap-2">
           <Link href="/wishlist" aria-label="Wishlist" className="relative">
             <Button variant="ghost" size="icon">
-                <Heart className="h-5 w-5" />
-                <span className="sr-only">Wishlist</span>
+              <Heart className="h-5 w-5" />
+              <span className="sr-only">Wishlist</span>
             </Button>
-             {wishlistCount > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{wishlistCount}</Badge>
+            {wishlistCount > 0 && (
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{wishlistCount}</Badge>
             )}
           </Link>
           <Link href="/cart" aria-label="Shopping Cart" className="relative">
             <Button variant="ghost" size="icon">
-                <ShoppingCart className="h-5 w-5" />
-                <span className="sr-only">Shopping Cart</span>
+              <ShoppingCart className="h-5 w-5" />
+              <span className="sr-only">Shopping Cart</span>
             </Button>
             {cartCount > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartCount}</Badge>
+              <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartCount}</Badge>
             )}
           </Link>
           <Link href="/account" aria-label="My Account">
             <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-                <span className="sr-only">My Account</span>
+              <User className="h-5 w-5" />
+              <span className="sr-only">My Account</span>
             </Button>
           </Link>
         </div>
