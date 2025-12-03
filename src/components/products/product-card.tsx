@@ -48,7 +48,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="flex items-baseline gap-2 mt-auto">
             {onSale ? (
                 <>
-                    <p className="text-xl font-bold font-headline text-primary">{formatPrice(product.salePrice!)}</p>
+                    <p className="text-xl font-bold font-headline text-maroon">{formatPrice(product.salePrice!)}</p>
                     <p className="text-sm font-medium text-muted-foreground line-through">{formatPrice(product.price)}</p>
                 </>
             ) : (
