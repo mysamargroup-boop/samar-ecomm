@@ -1,24 +1,54 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ShoppingBag } from 'lucide-react';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { useToast } from '@/hooks/use-toast';
+
 
 function VerifyOTPComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const phone = searchParams.get('phone');
+  const { toast } = useToast();
+  const [otp, setOtp] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    // In a real app, you would verify the OTP here.
-    // We'll just redirect to the admin dashboard on any submission.
-    router.push('/admin');
+  const handleComplete = (value: string) => {
+    // In a real app, you would verify the OTP here against a backend service.
+    // For this demo, we'll accept a specific OTP.
+    console.log('Verifying OTP:', value);
+    if (value === '123456') {
+        toast({
+            title: 'Login Successful',
+            description: 'Welcome back!',
+        });
+        // On successful customer login, redirect to the homepage.
+        router.push('/');
+    } else {
+        toast({
+            title: 'Invalid OTP',
+            description: 'The code you entered is incorrect. Please try again.',
+            variant: 'destructive',
+        });
+        setOtp(''); // Reset the OTP input
+    }
   };
+
+  useEffect(() => {
+    if (otp.length === 6) {
+        handleComplete(otp);
+    }
+  }, [otp]);
+
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
@@ -36,26 +66,25 @@ function VerifyOTPComponent() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="otp">One-Time Password</Label>
-              <Input
-                id="otp"
-                name="otp"
-                type="text"
-                inputMode="numeric"
-                placeholder="123456"
-                required
-                pattern="\d{6}"
-              />
+            <div className="flex flex-col items-center space-y-6">
+                <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)} onComplete={handleComplete}>
+                    <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                </InputOTP>
+                
+                <Button variant="link" size="sm" className="w-full" onClick={() => router.back()}>
+                    Use a different number
+                </Button>
             </div>
-            <Button type="submit" className="w-full">
-              Verify & Login
-            </Button>
-            <Button variant="link" size="sm" className="w-full" onClick={() => router.back()}>
-                Use a different number
-            </Button>
-          </form>
         </CardContent>
       </Card>
     </div>

@@ -1,9 +1,11 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, Package, ShoppingCart, Users } from "lucide-react";
+import { formatPrice } from "@/lib/utils";
+import { Package, ShoppingCart, Users, IndianRupee } from "lucide-react";
 
 export default function AdminDashboard() {
   const stats = [
-    { title: 'Total Revenue', value: '$45,231.89', icon: DollarSign, change: '+20.1% from last month' },
+    { title: 'Total Revenue', value: formatPrice(4523189), icon: IndianRupee, change: '+20.1% from last month' },
     { title: 'Total Sales', value: '+12,234', icon: ShoppingCart, change: '+19% from last month' },
     { title: 'Active Products', value: '235', icon: Package, change: 'Total products in store' },
     { title: 'New Customers', value: '+573', icon: Users, change: '+201 since last hour' },

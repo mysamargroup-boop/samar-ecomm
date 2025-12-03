@@ -1,24 +1,51 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ShoppingBag } from 'lucide-react';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from "@/components/ui/input-otp"
+import { useToast } from '@/hooks/use-toast';
 
 function VerifyOTPComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const phone = searchParams.get('phone');
+  const { toast } = useToast();
+  const [otp, setOtp] = useState('');
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleComplete = (value: string) => {
     // In a real app, you would verify the OTP here.
-    // We'll just redirect to the admin dashboard on any submission.
-    router.push('/admin');
+    // For this demo, we'll accept a specific OTP for admin access.
+    console.log('Verifying Admin OTP:', value);
+    if (value === '123456') {
+        toast({
+            title: 'Admin Login Successful',
+            description: 'Redirecting to dashboard...',
+        });
+        router.push('/admin');
+    } else {
+        toast({
+            title: 'Invalid OTP',
+            description: 'The code you entered is incorrect.',
+            variant: 'destructive',
+        });
+        setOtp(''); // Reset the OTP input on failure
+    }
   };
+  
+  useEffect(() => {
+    if (otp.length === 6) {
+        handleComplete(otp);
+    }
+  }, [otp]);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
@@ -30,32 +57,31 @@ function VerifyOTPComponent() {
           <div className="mx-auto mb-4 bg-primary text-primary-foreground p-3 rounded-full w-fit">
             <ShoppingBag className="h-8 w-8" />
           </div>
-          <CardTitle className="text-2xl font-headline">Verify Your Identity</CardTitle>
+          <CardTitle className="text-2xl font-headline">Verify Admin Access</CardTitle>
           <CardDescription>
             An OTP has been sent to {phone}. Please enter it below. (Hint: use 123456)
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="otp">One-Time Password</Label>
-              <Input
-                id="otp"
-                name="otp"
-                type="text"
-                inputMode="numeric"
-                placeholder="123456"
-                required
-                pattern="\d{6}"
-              />
+            <div className="flex flex-col items-center space-y-6">
+                <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)} onComplete={handleComplete}>
+                    <InputOTPGroup>
+                        <InputOTPSlot index={0} />
+                        <InputOTPSlot index={1} />
+                        <InputOTPSlot index={2} />
+                    </InputOTPGroup>
+                    <InputOTPSeparator />
+                    <InputOTPGroup>
+                        <InputOTPSlot index={3} />
+                        <InputOTPSlot index={4} />
+                        <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                </InputOTP>
+                
+                <Button variant="link" size="sm" className="w-full" onClick={() => router.back()}>
+                    Use a different number
+                </Button>
             </div>
-            <Button type="submit" className="w-full">
-              Verify & Login
-            </Button>
-            <Button variant="link" size="sm" className="w-full" onClick={() => router.back()}>
-                Use a different number
-            </Button>
-          </form>
         </CardContent>
       </Card>
     </div>
