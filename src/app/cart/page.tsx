@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
+import type { Metadata } from 'next';
 
 export default function CartPage() {
     const cartItems = [
@@ -69,9 +70,11 @@ export default function CartPage() {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Button className="w-full" size="lg" disabled={cartItems.length === 0} asChild>
-                                <Link href="/checkout">Proceed to Checkout</Link>
-                            </Button>
+                            <Link href="/checkout" className="w-full">
+                                <Button className="w-full" size="lg" disabled={cartItems.length === 0}>
+                                    Proceed to Checkout
+                                </Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                 </div>
