@@ -26,7 +26,7 @@ import { useState } from 'react';
 const ADMIN_AUTH_KEY = 'samar-admin-auth';
 
 const navItems = [
-  { href: '/samar', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/samar/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/samar/products', label: 'Products', icon: Package },
   { href: '/samar/categories', label: 'Categories', icon: Boxes },
   { href: '/samar/orders', label: 'Orders', icon: ShoppingCart },
