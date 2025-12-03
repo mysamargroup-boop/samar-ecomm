@@ -1,15 +1,19 @@
 import { HeroSlider } from '@/components/home/hero-slider';
-import { ProductCard } from '@/components/products/product-card';
 import { products } from '@/lib/placeholder-data';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { CategorySlider } from '@/components/home/category-slider';
+import { PromoBanners } from '@/components/home/promo-banners';
+import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 
 export default function Home() {
-  const featuredProducts = products.slice(0, 4);
+  const featuredProducts = products.slice(0, 8);
 
   return (
     <div className="flex flex-col">
       <HeroSlider />
+      <CategorySlider />
+      <PromoBanners />
       <section className="py-12 md:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
@@ -18,11 +22,7 @@ export default function Home() {
               Check out our hand-picked selection of the best products.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <FeaturedProductsSlider products={featuredProducts} />
           <div className="text-center mt-12">
             <Link href="/products">
                 <Button size="lg">Shop All Products</Button>
