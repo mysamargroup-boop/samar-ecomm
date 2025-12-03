@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/input-otp"
 import { useToast } from '@/hooks/use-toast';
 
+const ADMIN_AUTH_KEY = 'samar-admin-auth';
+
 function VerifyOTPComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -27,6 +29,9 @@ function VerifyOTPComponent() {
     // For this demo, we'll accept a specific OTP for admin access.
     console.log('Verifying Admin OTP:', value);
     if (value === '123456') {
+        // Set a session flag to indicate admin is logged in
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+
         toast({
             title: 'Admin Login Successful',
             description: 'Redirecting to dashboard...',
