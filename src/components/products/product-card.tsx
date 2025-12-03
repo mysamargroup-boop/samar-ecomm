@@ -36,16 +36,16 @@ export function ProductCard({ product }: ProductCardProps) {
             <WishlistButton productId={product.id} />
         </div>
       </CardHeader>
-      <CardContent className="p-4 flex-grow">
+      <CardContent className="p-4 flex-grow flex flex-col items-center text-center">
         {category && (
           <Badge variant="secondary" className="mb-2">{category.name}</Badge>
         )}
-        <CardTitle className="text-lg leading-tight mb-2">
+        <CardTitle className="text-lg leading-tight mb-2 flex-grow">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors">
             {product.name}
           </Link>
         </CardTitle>
-        <div className="flex items-baseline gap-2">
+        <div className="flex items-baseline gap-2 mt-auto">
             {onSale ? (
                 <>
                     <p className="text-xl font-bold font-headline text-primary">{formatPrice(product.salePrice!)}</p>
@@ -56,13 +56,13 @@ export function ProductCard({ product }: ProductCardProps) {
             )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0 mt-auto">
-        <div className="flex w-full gap-2">
-            <Button variant="outline" className="flex-1">
+      <CardFooter className="p-4 pt-0">
+        <div className="flex flex-col w-full gap-2">
+            <Button variant="outline">
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart
             </Button>
-            <Link href="/checkout" className="flex-1">
+            <Link href="/checkout">
                 <Button className="w-full">Buy Now</Button>
             </Link>
         </div>
