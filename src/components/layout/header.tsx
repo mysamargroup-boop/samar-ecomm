@@ -8,14 +8,16 @@ import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instag
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
+import { WishlistContext } from '@/contexts/wishlist-context';
 
 export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const wishlistCount = 3; // Placeholder value
+  const { wishlistItems } = useContext(WishlistContext);
+  const wishlistCount = wishlistItems.length;
   const cartCount = 2; // Placeholder value
 
   // Hide header on samar routes
