@@ -1,59 +1,69 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { formatPrice } from "@/lib/utils";
-import { Package, ShoppingCart, Users, IndianRupee } from "lucide-react";
-import { SalesAnalyticsChart } from "@/components/admin/dashboard/sales-analytics-chart";
-import { RecentSales } from "@/components/admin/dashboard/recent-sales";
-import { orders, products } from "@/lib/placeholder-data";
+'use client';
 
-export default function DashboardPage() {
-  const stats = [
-    { title: 'Total Revenue', value: formatPrice(4523189), icon: IndianRupee, change: '+20.1% from last month' },
-    { title: 'Total Sales', value: '+12,234', icon: ShoppingCart, change: '+19% from last month' },
-    { title: 'Active Products', value: '235', icon: Package, change: 'Total products in store' },
-    { title: 'New Customers', value: '+573', icon: Users, change: '+201 since last hour' },
-  ];
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ShoppingBag } from 'lucide-react';
 
-  const recentSales = orders.slice(0, 5);
-  const topProducts = products.slice(0, 5).map(p => ({name: p.name, sales: Math.floor(Math.random() * 100)}));
+// This flag will be true if the WhatsApp environment variables are NOT set.
+const isDemoMode = !process.env.NEXT_PUBLIC_WHATSAPP_ACCESS_TOKEN || !process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID;
+
+export default function SamarLoginPage() {
+  const router = useRouter();
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const phone = formData.get('phone');
+
+    if (isDemoMode) {
+      console.log("Running in Demo Mode. Redirecting to verification page.");
+      // In demo mode, we just redirect to the verification page for samar.
+      router.push(`/samar/verify?phone=${phone}`);
+    } else {
+      // In a real scenario, you would trigger an API call to send the WhatsApp OTP here.
+      console.log("Running in Live Mode. (API call to be implemented)");
+      // For now, we'll still redirect, but this is where the real logic would go.
+       router.push(`/samar/verify?phone=${phone}`);
+    }
+  };
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Dashboard</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">{stat.change}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2">
-            <CardHeader>
-                <CardTitle>Sales Analytics</CardTitle>
-                 <CardDescription>An overview of your store's sales performance.</CardDescription>
-            </CardHeader>
-            <CardContent className="pl-2">
-                <SalesAnalyticsChart />
-            </CardContent>
-        </Card>
-        <Card>
-            <CardHeader>
-                <CardTitle>Recent Sales</CardTitle>
-                 <CardDescription>Your 5 most recent sales.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <RecentSales sales={recentSales}/>
-            </CardContent>
-        </Card>
-      </div>
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 bg-primary text-primary-foreground p-3 rounded-full w-fit">
+            <ShoppingBag className="h-8 w-8" />
+          </div>
+          <CardTitle className="text-2xl font-headline">Samar Access</CardTitle>
+          <CardDescription>
+            {isDemoMode 
+              ? "Enter your phone number to continue. (Demo Mode)"
+              : "Enter your phone number to receive a one-time password via WhatsApp."
+            }
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="+91 12345 67890"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Send Code
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
