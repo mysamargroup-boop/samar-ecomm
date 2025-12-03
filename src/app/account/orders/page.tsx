@@ -10,7 +10,7 @@ import {
 
 export default function AccountOrdersPage() {
   // In a real app, these would be filtered for the current user
-  const customerOrders = orders.slice(0, 3);
+  const customerOrders = orders.filter(o => o.customerEmail === 'alice@example.com');
 
   return (
     <div>
