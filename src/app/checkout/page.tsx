@@ -1,0 +1,89 @@
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+
+export default function CheckoutPage() {
+    return (
+        <div className="container mx-auto px-4 py-12 max-w-4xl">
+            <h1 className="text-3xl font-bold font-headline mb-8 text-center">Checkout</h1>
+            <div className="grid md:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Shipping Information</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="email">Email</Label>
+                                <Input id="email" type="email" placeholder="you@example.com" />
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="firstName">First Name</Label>
+                                    <Input id="firstName" placeholder="John" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="lastName">Last Name</Label>
+                                    <Input id="lastName" placeholder="Doe" />
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="address">Address</Label>
+                                <Input id="address" placeholder="123 Main St" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Payment Details</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="card-number">Card Number</Label>
+                                <Input id="card-number" placeholder="**** **** **** 1234" />
+                            </div>
+                             <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="expiry">Expiry</Label>
+                                    <Input id="expiry" placeholder="MM/YY" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="cvc">CVC</Label>
+                                    <Input id="cvc" placeholder="123" />
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+                <div className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Order Summary</CardTitle>
+                        </CardHeader>
+                         <CardContent className="space-y-4">
+                            <div className="flex justify-between">
+                                <span>Subtotal</span>
+                                <span>$289.97</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Shipping</span>
+                                <span>$5.00</span>
+                            </div>
+                            <Separator />
+                            <div className="flex justify-between font-bold text-lg">
+                                <span>Total</span>
+                                <span>$294.97</span>
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Button className="w-full" size="lg" asChild>
+                        <Link href="/order-confirmation">Pay & Place Order</Link>
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+}

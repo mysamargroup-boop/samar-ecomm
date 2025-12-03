@@ -1,3 +1,118 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "slider1",
+      "description": "A featured collection of modern tech gadgets.",
+      "imageUrl": "https://images.unsplash.com/photo-1678852524356-08188528aed9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0ZWNoJTIwZ2FkZ2V0c3xlbnwwfHx8fDE3NjQ2ODc0NzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tech gadgets"
+    },
+    {
+      "id": "slider2",
+      "description": "Sale on stylish winter apparel.",
+      "imageUrl": "https://images.unsplash.com/photo-1521402966881-852a3b2551fc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHx3aW50ZXIlMjBmYXNoaW9ufGVufDB8fHx8MTc2NDc1NzI4OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "winter fashion"
+    },
+    {
+      "id": "slider3",
+      "description": "Upgrade your living space with our new home decor.",
+      "imageUrl": "https://images.unsplash.com/photo-1648536474504-7bbf8a1ee3ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtb2Rlcm4lMjBpbnRlcmlvcnxlbnwwfHx8fDE3NjQ3NTg1NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern interior"
+    },
+    {
+      "id": "headphone1",
+      "description": "Front view of wireless headphones.",
+      "imageUrl": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFkcGhvbmVzfGVufDB8fHx8MTc2NDY5NzU4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "headphones"
+    },
+    {
+      "id": "headphone2",
+      "description": "Side view of wireless headphones on a stand.",
+      "imageUrl": "https://images.unsplash.com/photo-1646771032150-6243ff3aea4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoZWFkcGhvbmVzJTIwc3RhbmR8ZW58MHx8fHwxNzY0Nzg2ODk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "headphones stand"
+    },
+    {
+      "id": "smartwatch1",
+      "description": "Close-up of a smartwatch face.",
+      "imageUrl": "https://images.unsplash.com/photo-1760520338230-3074dded8778?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxzbWFydHdhdGNoJTIwZmFjZXxlbnwwfHx8fDE3NjQ3ODU5Njd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smartwatch face"
+    },
+    {
+      "id": "smartwatch2",
+      "description": "Person wearing a smartwatch while jogging.",
+      "imageUrl": "https://images.unsplash.com/photo-1691439378545-dd6b35ff2f7b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxydW5uaW5nJTIwc21hcnR3YXRjaHxlbnwwfHx8fDE3NjQ3ODY4OTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "running smartwatch"
+    },
+    {
+      "id": "tshirt1",
+      "description": "Folded stack of cotton t-shirts.",
+      "imageUrl": "https://images.unsplash.com/photo-1716951735110-09cdbeb17051?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmb2xkZWQlMjB0c2hpcnRzfGVufDB8fHx8MTc2NDc4Njg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "folded tshirts"
+    },
+    {
+      "id": "tshirt2",
+      "description": "Model wearing a plain cotton t-shirt.",
+      "imageUrl": "https://images.unsplash.com/photo-1622445272461-c6580cab8755?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx0c2hpcnQlMjBtb2RlbHxlbnwwfHx8fDE3NjQ2Njg2MjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tshirt model"
+    },
+    {
+      "id": "backpack1",
+      "description": "Leather backpack standing against a wall.",
+      "imageUrl": "https://images.unsplash.com/photo-1673906510954-bfa816f5043b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxsZWF0aGVyJTIwYmFja3BhY2t8ZW58MHx8fHwxNzY0NzI2MzIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "leather backpack"
+    },
+    {
+      "id": "backpack2",
+      "description": "Open backpack showing its compartments.",
+      "imageUrl": "https://images.unsplash.com/photo-1758713311668-a3c98e757904?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxvcGVuJTIwYmFja3BhY2t8ZW58MHx8fHwxNzY0Nzg2ODk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "open backpack"
+    },
+    {
+      "id": "espresso1",
+      "description": "Espresso machine brewing a cup of coffee.",
+      "imageUrl": "https://images.unsplash.com/photo-1531937465322-9909ce13f8ca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlc3ByZXNzbyUyMG1hY2hpbmV8ZW58MHx8fHwxNzY0Nzg2ODk1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "espresso machine"
+    },
+    {
+      "id": "espresso2",
+      "description": "Close-up of a perfectly brewed espresso.",
+      "imageUrl": "https://images.unsplash.com/photo-1666445827548-a20acf4d5665?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlc3ByZXNzbyUyMGN1cHxlbnwwfHx8fDE3NjQ3ODY4OTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "espresso cup"
+    },
+    {
+      "id": "blanket1",
+      "description": "Cozy knit blanket draped over a chair.",
+      "imageUrl": "https://images.unsplash.com/photo-1674475762937-d8249a788b36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxrbml0JTIwYmxhbmtldHxlbnwwfHx8fDE3NjQ3ODY4NjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "knit blanket"
+    },
+    {
+      "id": "blanket2",
+      "description": "Close-up texture of a knit blanket.",
+      "imageUrl": "https://images.unsplash.com/photo-1611242319342-ed0d65b1a0f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmYWJyaWMlMjB0ZXh0dXJlfGVufDB8fHx8MTc2NDcyOTUxOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fabric texture"
+    },
+    {
+      "id": "book1",
+      "description": "Hardcover book 'The Art of Programming' on a desk.",
+      "imageUrl": "https://images.unsplash.com/photo-1673983905644-76f4c3290a87?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxib29rJTIwZGVza3xlbnwwfHx8fDE3NjQ3ODY4OTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book desk"
+    },
+    {
+      "id": "book2",
+      "description": "Open book showing code examples.",
+      "imageUrl": "https://images.unsplash.com/photo-1531874349945-b69d27efc3b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb2RlJTIwYm9va3xlbnwwfHx8fDE3NjQ3ODY4OTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "code book"
+    },
+    {
+      "id": "book3",
+      "description": "Sci-fi book with a nebula on the cover.",
+      "imageUrl": "https://images.unsplash.com/photo-1728578365503-940dfa121627?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzcGFjZSUyMG5vdmVsfGVufDB8fHx8MTc2NDc4Njg5NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "space novel"
+    },
+    {
+      "id": "book4",
+      "description": "A stack of science fiction novels.",
+      "imageUrl": "https://images.unsplash.com/photo-1595123336219-5eedd543bc4a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxib29rJTIwc3RhY2t8ZW58MHx8fHwxNzY0NzY5MzAwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "book stack"
+    }
+  ]
 }
