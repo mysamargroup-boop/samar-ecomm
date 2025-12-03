@@ -15,6 +15,7 @@ import {
   Tags,
   Users,
   Settings,
+  Palette,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
@@ -26,6 +27,7 @@ const navItems = [
   { href: '/admin/categories', label: 'Categories', icon: Boxes },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { href: '/admin/customers', label: 'Customers', icon: Users },
+  { href: '/admin/appearance', label: 'Appearance', icon: Palette },
   { href: '/admin/tags', label: 'Tags', icon: Tags },
 ];
 
