@@ -66,14 +66,14 @@ export function ProductsTable({ products }: { products: Product[] }) {
                 data-ai-hint="product image"
               />
             </TableCell>
-            <TableCell className="font-medium whitespace-nowrap">{product.name}</TableCell>
+            <TableCell className="font-medium">{product.name}</TableCell>
             <TableCell>
               <Badge variant="outline" className="whitespace-nowrap">
                 {categories.find((c) => c.id === product.categoryId)?.name || 'Uncategorized'}
               </Badge>
             </TableCell>
             <TableCell className="hidden md:table-cell">{product.inventory}</TableCell>
-            <TableCell className="hidden md:table-cell whitespace-nowrap">{formatPrice(product.price)}</TableCell>
+            <TableCell className="hidden md:table-cell">{formatPrice(product.price)}</TableCell>
             <TableCell>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
