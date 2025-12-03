@@ -7,6 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ShoppingBag } from 'lucide-react';
 
+const isDemoMode = !process.env.NEXT_PUBLIC_WHATSAPP_ACCESS_TOKEN || !process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID;
+
+
 export default function LoginPage() {
   const router = useRouter();
 
@@ -14,7 +17,14 @@ export default function LoginPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const phone = formData.get('phone');
-    router.push(`/samar/verify?phone=${phone}`);
+
+    if (isDemoMode) {
+      console.log("Running in Demo Mode. Redirecting to verification page.");
+      router.push(`/samar/verify?phone=${phone}`);
+    } else {
+      console.log("Running in Live Mode. (API call to be implemented)");
+      router.push(`/samar/verify?phone=${phone}`);
+    }
   };
 
   return (
@@ -28,7 +38,12 @@ export default function LoginPage() {
             <ShoppingBag className="h-8 w-8" />
           </div>
           <CardTitle className="text-2xl font-headline">Admin Login</CardTitle>
-          <CardDescription>Enter your phone number to receive a one-time password via WhatsApp.</CardDescription>
+           <CardDescription>
+            {isDemoMode 
+              ? "Enter your phone number to continue. (Demo Mode)"
+              : "Enter your phone number to receive a one-time password via WhatsApp."
+            }
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
