@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -11,6 +12,9 @@ import {
   LogOut,
   ShoppingBag,
   Menu,
+  Tags,
+  Users,
+  Settings,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
@@ -21,36 +25,41 @@ const navItems = [
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/categories', label: 'Categories', icon: Boxes },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
+  { href: '/admin/customers', label: 'Customers', icon: Users },
+  { href: '/admin/tags', label: 'Tags', icon: Tags },
 ];
 
-function SidebarNav({ onLinkClick }: { onLinkClick?: () => void }) {
+const secondaryNavItems = [
+    { href: '/admin/settings', label: 'Settings', icon: Settings },
+]
+
+function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
+
+  const renderLink = (item: typeof navItems[0]) => {
+    const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        onClick={onLinkClick}
+        className={cn(
+          'group flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary relative',
+          isActive ? 'text-primary bg-muted' : ''
+        )}
+      >
+        <item.icon className="h-4 w-4" />
+        {item.label}
+      </Link>
+    )
+  }
   return (
      <nav className="flex-1 px-4 py-4 space-y-1">
-        {navItems.map((item) => {
-          const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onLinkClick}
-              className={cn(
-                'group flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary relative',
-                isActive ? 'text-primary' : ''
-              )}
-            >
-              <div className={cn(
-                'absolute left-[-1rem] h-6 w-1 rounded-r-lg bg-accent opacity-0 transition-opacity',
-                'group-hover:opacity-100',
-                 isActive && 'opacity-100'
-              )}></div>
-              <div className="absolute left-[-0.65rem] top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-accent opacity-0 transition-opacity group-hover:opacity-100"></div>
-              {isActive && <div className="absolute left-[-0.65rem] top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-accent"></div>}
-              <item.icon className="h-4 w-4" />
-              {item.label}
-            </Link>
-          )
-        })}
+        {navItems.map(renderLink)}
+        <div className="py-2">
+            <div className="h-px bg-border -mx-4"></div>
+        </div>
+        {secondaryNavItems.map(renderLink)}
       </nav>
   )
 }
@@ -64,7 +73,7 @@ export function AdminSidebar() {
           <span>Samar Store</span>
         </Link>
       </div>
-      <SidebarNav />
+      <SidebarNavLinks />
       <div className="mt-auto p-4 border-t">
          <Link
             href="/"
@@ -99,7 +108,7 @@ export function AdminMobileHeader() {
               <span>Samar Store</span>
             </Link>
           </div>
-          <SidebarNav onLinkClick={() => setIsSheetOpen(false)} />
+          <SidebarNavLinks onLinkClick={() => setIsSheetOpen(false)} />
            <div className="mt-auto p-4 border-t">
              <Link
                 href="/"

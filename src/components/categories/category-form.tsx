@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm, useFormState } from 'react-hook-form';
@@ -18,6 +19,15 @@ import { createCategory, updateCategory } from '@/app/actions/categoryActions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { categories as allCategories } from '@/lib/placeholder-data';
+
 
 const formSchema = CategorySchema.omit({ id: true });
 
@@ -34,6 +44,7 @@ export function CategoryForm({ category }: CategoryFormProps) {
     defaultValues: {
       name: category?.name || '',
       slug: category?.slug || '',
+      parentId: category?.parentId || undefined,
     },
   });
 
@@ -42,7 +53,9 @@ export function CategoryForm({ category }: CategoryFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, String(value));
+      if (value) {
+        formData.append(key, String(value));
+      }
     });
 
     const result = category
@@ -63,6 +76,9 @@ export function CategoryForm({ category }: CategoryFormProps) {
       });
     }
   }
+
+  const parentCategories = allCategories.filter(c => !c.parentId && c.id !== category?.id);
+
 
   return (
     <Form {...form}>
@@ -89,6 +105,31 @@ export function CategoryForm({ category }: CategoryFormProps) {
               <FormControl>
                 <Input placeholder="e.g. electronics" {...field} />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="parentId"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Parent Category</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a parent category (optional)" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="none">No Parent</SelectItem>
+                  {parentCategories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

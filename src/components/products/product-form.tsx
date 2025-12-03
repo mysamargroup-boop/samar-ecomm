@@ -27,13 +27,13 @@ import { Product, Category, ProductSchema } from '@/lib/types';
 import { createProduct, updateProduct } from '@/app/actions/productActions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Loader2, X } from 'lucide-react';
-import { useState } from 'react';
+import { Sparkles, Loader2, X, ImagePlus, Trash2 } from 'lucide-react';
+import { useState, useTransition } from 'react';
 import { generateDescriptionAction } from '@/app/actions/aiActions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 
-const formSchema = ProductSchema.omit({ id: true, images: true });
+const formSchema = ProductSchema.omit({ id: true });
 
 type ProductFormProps = {
   product?: Product;
@@ -44,31 +44,35 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   const { toast } = useToast();
   const router = useRouter();
   const [isGenerating, setIsGenerating] = useState(false);
-  const [tags, setTags] = useState<string[]>(product?.tags || []);
-  const [tagInput, setTagInput] = useState('');
-
-
+  const [isPending, startTransition] = useTransition();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: product?.name || '',
       description: product?.description || '',
       price: product?.price || 0,
+      slug: product?.slug || '',
       salePrice: product?.salePrice || undefined,
       categoryId: product?.categoryId || '',
       inventory: product?.inventory || 0,
       tags: product?.tags || [],
+      images: product?.images || [],
     },
   });
   
   const { isSubmitting } = useFormState({ control: form.control });
+  const tags = form.watch('tags', product?.tags || []);
+  const images = form.watch('images', product?.images || []);
+
+  const [tagInput, setTagInput] = useState('');
+  const [imageInput, setImageInput] = useState('');
 
   const handleTagKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && tagInput) {
       event.preventDefault();
-      if (!tags.includes(tagInput)) {
-        const newTags = [...tags, tagInput];
-        setTags(newTags);
+      const newTags = [...tags, tagInput.trim()];
+      if (!tags.includes(tagInput.trim())) {
         form.setValue('tags', newTags);
       }
       setTagInput('');
@@ -76,17 +80,36 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   };
 
   const removeTag = (tagToRemove: string) => {
-    const newTags = tags.filter(tag => tag !== tagToRemove);
-    setTags(newTags);
-    form.setValue('tags', newTags);
+    form.setValue('tags', tags.filter(tag => tag !== tagToRemove));
+  };
+
+  const addImage = () => {
+    if (imageInput && !images.includes(imageInput)) {
+        try {
+            z.string().url().parse(imageInput);
+            form.setValue('images', [...images, imageInput]);
+            setImageInput('');
+        } catch (error) {
+            toast({
+                title: 'Invalid URL',
+                description: 'Please enter a valid image URL.',
+                variant: 'destructive',
+            });
+        }
+    }
+  };
+
+  const removeImage = (imageToRemove: string) => {
+    form.setValue('images', images.filter(img => img !== imageToRemove));
   };
 
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
-    // A bit of a hack to get array data through server actions
     Object.entries(values).forEach(([key, value]) => {
       if (key === 'tags' && Array.isArray(value)) {
+        formData.append(key, JSON.stringify(value));
+      } else if (key === 'images' && Array.isArray(value)) {
         formData.append(key, JSON.stringify(value));
       }
       else if (value !== undefined && value !== null) {
@@ -94,23 +117,25 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       }
     });
 
-    const result = product
-      ? await updateProduct(product.id, formData)
-      : await createProduct(formData);
+    startTransition(async () => {
+        const result = product
+          ? await updateProduct(product.id, formData)
+          : await createProduct(formData);
 
-    if (result.message) {
-      toast({
-        title: product ? 'Product Updated' : 'Product Created',
-        description: result.message,
-      });
-      router.push('/admin/products');
-    } else {
-       toast({
-        title: 'Error',
-        description: 'Something went wrong.',
-        variant: 'destructive',
-      });
-    }
+        if (result.message) {
+          toast({
+            title: product ? 'Product Updated' : 'Product Created',
+            description: result.message,
+          });
+          router.push('/admin/products');
+        } else {
+           toast({
+            title: 'Error',
+            description: 'Something went wrong.',
+            variant: 'destructive',
+          });
+        }
+    });
   }
 
   async function handleGenerateDescription() {
@@ -170,6 +195,19 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                     </FormItem>
                   )}
                 />
+                 <FormField
+                  control={form.control}
+                  name="slug"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Slug</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. wireless-headphones" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="description"
@@ -206,11 +244,52 @@ export function ProductForm({ product, categories }: ProductFormProps) {
               </CardContent>
             </Card>
 
+             <Card>
+                <CardHeader>
+                    <CardTitle>Images</CardTitle>
+                    <CardDescription>Add and manage product images.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center gap-2">
+                        <Input 
+                            value={imageInput} 
+                            onChange={e => setImageInput(e.target.value)} 
+                            placeholder="https://.../image.png" 
+                        />
+                        <Button type="button" onClick={addImage} variant="outline" size="icon">
+                            <ImagePlus className="h-4 w-4"/>
+                        </Button>
+                    </div>
+                     <FormField
+                        control={form.control}
+                        name="images"
+                        render={() => (
+                           <FormItem>
+                             {images.length > 0 && (
+                                <div className="space-y-2">
+                                  {images.map((image, index) => (
+                                    <div key={index} className="flex items-center gap-2 p-2 border rounded-md">
+                                        <img src={image} alt={`Product image ${index + 1}`} className="w-12 h-12 object-cover rounded-md" />
+                                        <p className="flex-1 text-sm truncate text-muted-foreground">{image}</p>
+                                        <Button type="button" variant="ghost" size="icon" onClick={() => removeImage(image)}>
+                                            <Trash2 className="h-4 w-4 text-destructive"/>
+                                        </Button>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                              <FormMessage />
+                           </FormItem>
+                        )}
+                    />
+                </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>Pricing</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4 grid grid-cols-2 gap-4">
+              <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
                  <FormField
                   control={form.control}
                   name="price"
@@ -274,7 +353,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                  <FormField
                   control={form.control}
                   name="tags"
-                  render={({ field }) => (
+                  render={() => (
                     <FormItem>
                       <FormLabel>Tags</FormLabel>
                       <FormControl>
@@ -289,7 +368,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                             {tags.map(tag => (
                               <Badge key={tag} variant="secondary">
                                 {tag}
-                                <button type="button" className="ml-2" onClick={() => removeTag(tag)}>
+                                <button type="button" className="ml-2 rounded-full hover:bg-muted-foreground/20 p-0.5" onClick={() => removeTag(tag)}>
                                   <X className="h-3 w-3"/>
                                 </button>
                               </Badge>
@@ -331,8 +410,8 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
         <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={() => router.back()}>Cancel</Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" disabled={isSubmitting || isPending}>
+              {(isSubmitting || isPending) && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {product ? 'Update Product' : 'Create Product'}
             </Button>
         </div>

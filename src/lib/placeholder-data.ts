@@ -9,12 +9,15 @@ export const categories: Category[] = [
   { id: '2', name: 'Apparel', slug: 'apparel' },
   { id: '3', name: 'Home Goods', slug: 'home-goods' },
   { id: '4', name: 'Books', slug: 'books' },
+  { id: 'cat_men', name: 'Men', slug: 'men', parentId: '2'},
+  { id: 'cat_women', name: 'Women', slug: 'women', parentId: '2'},
 ];
 
 export const products: Product[] = [
   {
     id: 'prod_1',
     name: 'Wireless Noise-Cancelling Headphones',
+    slug: 'wireless-noise-cancelling-headphones',
     description: 'Immerse yourself in music with these high-fidelity wireless headphones. Featuring active noise-cancellation and a 30-hour battery life, they are perfect for travel, work, and leisure. The plush earcups provide all-day comfort.',
     price: 18999,
     salePrice: 14999,
@@ -26,6 +29,7 @@ export const products: Product[] = [
   {
     id: 'prod_2',
     name: 'Smartwatch Series 8',
+    slug: 'smartwatch-series-8',
     description: 'Stay connected and track your fitness with the new Smartwatch Series 8. It features a brighter always-on display, advanced health sensors, and a durable design. Monitor your heart rate, blood oxygen, and daily activity effortlessly.',
     price: 29999,
     categoryId: '1',
@@ -36,9 +40,10 @@ export const products: Product[] = [
   {
     id: 'prod_3',
     name: 'Classic Cotton T-Shirt',
+    slug: 'classic-cotton-t-shirt',
     description: 'A wardrobe essential, this classic t-shirt is made from 100% premium soft cotton. Its timeless design and comfortable fit make it perfect for layering or wearing on its own. Available in a variety of colors.',
     price: 999,
-    categoryId: '2',
+    categoryId: 'cat_men',
     images: [findImage('tshirt1'), findImage('tshirt2')],
     inventory: 500,
     tags: ['apparel', 't-shirt', 'basics'],
@@ -46,6 +51,7 @@ export const products: Product[] = [
   {
     id: 'prod_4',
     name: 'Modern Leather Backpack',
+    slug: 'modern-leather-backpack',
     description: 'Carry your essentials in style with this minimalist leather backpack. It features a padded laptop compartment, multiple pockets for organization, and comfortable shoulder straps. Ideal for daily commutes and weekend trips.',
     price: 4999,
     categoryId: '2',
@@ -56,6 +62,7 @@ export const products: Product[] = [
   {
     id: 'prod_5',
     name: 'Automatic Espresso Machine',
+    slug: 'automatic-espresso-machine',
     description: 'Become your own barista with this fully automatic espresso machine. It grinds, tamps, and brews delicious espresso, cappuccinos, and lattes at the touch of a button. The integrated milk frother creates creamy foam for perfect coffee drinks.',
     price: 59999,
     categoryId: '3',
@@ -66,6 +73,7 @@ export const products: Product[] = [
   {
     id: 'prod_6',
     name: 'Cozy Knit Throw Blanket',
+    slug: 'cozy-knit-throw-blanket',
     description: 'Snuggle up with this incredibly soft and cozy knit throw blanket. Perfect for adding a touch of warmth and texture to your sofa or bed. Made from a durable and machine-washable acrylic blend.',
     price: 1499,
     categoryId: '3',
@@ -76,6 +84,7 @@ export const products: Product[] = [
   {
     id: 'prod_7',
     name: 'The Art of Programming',
+    slug: 'the-art-of-programming',
     description: 'A comprehensive guide to the fundamentals of computer programming. This book covers everything from basic syntax to advanced algorithms, making it an essential read for both beginners and experienced developers.',
     price: 1299,
     categoryId: '4',
@@ -86,6 +95,7 @@ export const products: Product[] = [
   {
     id: 'prod_8',
     name: 'Sci-Fi Bestseller: "Nebula\'s Dawn"',
+    slug: 'sci-fi-bestseller-nebulas-dawn',
     description: 'Embark on an epic journey across the galaxy in this critically acclaimed sci-fi novel. "Nebula\'s Dawn" weaves a tale of adventure, discovery, and the indomitable human spirit. A must-read for fans of the genre.',
     price: 799,
     categoryId: '4',

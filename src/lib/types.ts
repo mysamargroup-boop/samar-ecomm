@@ -5,6 +5,7 @@ export const CategorySchema = z.object({
   id: z.string(),
   name: z.string().min(2, 'Name must be at least 2 characters long'),
   slug: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with dashes'),
+  parentId: z.string().optional(),
 });
 export type Category = z.infer<typeof CategorySchema>;
 
@@ -23,7 +24,8 @@ export const ProductSchema = z.object({
   price: z.number().positive('Price must be a positive number'),
   salePrice: z.number().positive('Sale price must be a positive number').optional(),
   categoryId: z.string(),
-  images: z.array(z.string().url()),
+  slug: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with dashes'),
+  images: z.array(z.string().url('Must be a valid URL')),
   inventory: z.number().int().min(0, 'Inventory cannot be negative'),
   tags: z.array(z.string()).optional(),
   // variants: z.array(ProductVariantSchema),
