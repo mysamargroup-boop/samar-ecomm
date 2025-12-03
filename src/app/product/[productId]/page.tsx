@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
   return {
-    title: `${product.name} | CommerceWave`,
+    title: `${product.name} | Samar Store`,
     description: product.description.substring(0, 160),
   };
 }

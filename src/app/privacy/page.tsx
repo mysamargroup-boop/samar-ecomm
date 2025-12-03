@@ -2,16 +2,16 @@ export default function PrivacyPage() {
   return (
     <div className="container mx-auto px-4 py-12 max-w-4xl">
       <div className="prose dark:prose-invert max-w-none">
-        <h1>Privacy Policy for CommerceWave</h1>
+        <h1>Privacy Policy for Samar Store</h1>
         <p>
-          At CommerceWave, accessible from commercwave.com, one of our main priorities is the privacy of our
+          At Samar Store, accessible from commercwave.com, one of our main priorities is the privacy of our
           visitors. This Privacy Policy document contains types of information that is collected and recorded by
-          CommerceWave and how we use it.
+          Samar Store and how we use it.
         </p>
 
         <h2>Log Files</h2>
         <p>
-          CommerceWave follows a standard procedure of using log files. These files log visitors when they visit
+          Samar Store follows a standard procedure of using log files. These files log visitors when they visit
           websites. All hosting companies do this and a part of hosting services' analytics. The information
           collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider
           (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks.

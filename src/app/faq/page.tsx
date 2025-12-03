@@ -8,8 +8,8 @@ import {
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'FAQ | CommerceWave',
-  description: 'Find answers to frequently asked questions about shopping with CommerceWave.',
+  title: 'FAQ | Samar Store',
+  description: 'Find answers to frequently asked questions about shopping with Samar Store.',
 };
 
 export default function FaqPage() {

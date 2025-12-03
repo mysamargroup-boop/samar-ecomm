@@ -2,7 +2,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Return Policy | CommerceWave',
+  title: 'Return Policy | Samar Store',
   description: 'Information about our return and refund policy.',
 };
 
@@ -13,7 +13,7 @@ export default function ReturnPolicyPage() {
       <div className="prose dark:prose-invert max-w-none">
         <h1>Return & Refund Policy</h1>
         <p>
-          At CommerceWave, we want you to be completely satisfied with your purchase. If you're not happy for any
+          At Samar Store, we want you to be completely satisfied with your purchase. If you're not happy for any
           reason, we're here to help with our straightforward return policy.
         </p>
 

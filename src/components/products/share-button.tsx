@@ -21,7 +21,7 @@ export function ShareButton({ productName }: { productName: string }) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Check out ${productName} on CommerceWave!`,
+          title: `Check out ${productName} on Samar Store!`,
           text: `I found this amazing product: ${productName}`,
           url: window.location.href,
         });

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Waves } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 
 function VerifyOTPComponent() {
   const router = useRouter();
@@ -28,7 +28,7 @@ function VerifyOTPComponent() {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 bg-primary text-primary-foreground p-3 rounded-full w-fit">
-            <Waves className="h-8 w-8" />
+            <ShoppingBag className="h-8 w-8" />
           </div>
           <CardTitle className="text-2xl font-headline">Verify Your Identity</CardTitle>
           <CardDescription>

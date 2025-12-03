@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, Waves, User } from 'lucide-react';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
+import { Menu, ShoppingCart, ShoppingBag, User } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -48,23 +48,25 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm">
+                <SheetTitle className="sr-only">Menu</SheetTitle>
+                <SheetDescription className="sr-only">Main navigation menu.</SheetDescription>
               <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
-                <Waves className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">CommerceWave</span>
+                <ShoppingBag className="h-6 w-6 text-primary" />
+                <span className="font-bold font-headline">Samar Store</span>
               </Link>
               <nav className="flex flex-col space-y-4">{mainNav}</nav>
             </SheetContent>
           </Sheet>
           <Link href="/" className="hidden md:flex items-center space-x-2 mr-6">
-            <Waves className="h-6 w-6 text-primary" />
-            <span className="font-bold sm:inline-block font-headline">CommerceWave</span>
+            <ShoppingBag className="h-6 w-6 text-primary" />
+            <span className="font-bold sm:inline-block font-headline">Samar Store</span>
           </Link>
         </div>
 
         <div className="flex flex-1 items-center justify-center md:justify-start">
              <Link href="/" className="flex md:hidden items-center space-x-2">
-                <Waves className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">CommerceWave</span>
+                <ShoppingBag className="h-6 w-6 text-primary" />
+                <span className="font-bold font-headline">Samar Store</span>
             </Link>
             <nav className="hidden md:flex items-center space-x-6">
                 {mainNav}

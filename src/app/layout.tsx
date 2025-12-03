@@ -12,7 +12,7 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: 'CommerceWave',
+  title: 'Samar Store',
   description: 'The future of e-commerce.',
 };
 

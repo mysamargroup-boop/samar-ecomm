@@ -9,7 +9,7 @@ import {
   Boxes,
   ShoppingCart,
   LogOut,
-  Waves,
+  ShoppingBag,
 } from 'lucide-react';
 
 const navItems = [
@@ -26,8 +26,8 @@ export function AdminSidebar() {
     <aside className="w-64 flex-shrink-0 bg-card border-r hidden md:flex flex-col">
       <div className="h-16 flex items-center px-6 border-b">
         <Link href="/admin" className="flex items-center gap-2 font-bold font-headline">
-          <Waves className="h-6 w-6 text-primary" />
-          <span>CommerceWave</span>
+          <ShoppingBag className="h-6 w-6 text-primary" />
+          <span>Samar Store</span>
         </Link>
       </div>
       <nav className="flex-1 px-4 py-4 space-y-1">

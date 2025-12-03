@@ -16,8 +16,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
   return {
-    title: `${category.name} | CommerceWave`,
-    description: `Shop the best ${category.name.toLowerCase()} at CommerceWave.`,
+    title: `${category.name} | Samar Store`,
+    description: `Shop the best ${category.name.toLowerCase()} at Samar Store.`,
   };
 }
 

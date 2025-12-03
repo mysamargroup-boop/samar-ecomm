@@ -4,8 +4,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us | CommerceWave',
-  description: 'Learn more about CommerceWave, our mission, and our commitment to quality.',
+  title: 'About Us | Samar Store',
+  description: 'Learn more about Samar Store, our mission, and our commitment to quality.',
 };
 
 export default function AboutPage() {
@@ -14,7 +14,7 @@ export default function AboutPage() {
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight">
-          About CommerceWave
+          About Samar Store
         </h1>
         <p className="mt-3 max-w-2xl mx-auto text-xl text-muted-foreground">
           The future of e-commerce, delivered to your doorstep.
@@ -25,13 +25,13 @@ export default function AboutPage() {
         <div className="prose dark:prose-invert max-w-none">
           <h2>Our Mission</h2>
           <p>
-            At CommerceWave, our mission is to revolutionize the online shopping experience by providing a curated
+            At Samar Store, our mission is to revolutionize the online shopping experience by providing a curated
             selection of high-quality products, seamless user experience, and unparalleled customer service. We
             believe that shopping online should be simple, enjoyable, and trustworthy.
           </p>
           <h2>Our Story</h2>
           <p>
-            Founded in 2024, CommerceWave started as a small project with a big idea: to create an e-commerce
+            Founded in 2024, Samar Store started as a small project with a big idea: to create an e-commerce
             platform that puts customers first. We were tired of cluttered websites, confusing navigation, and
             impersonal service. We envisioned a place where customers could easily discover great products and feel
             confident in their purchases.
@@ -45,7 +45,7 @@ export default function AboutPage() {
         <div className="aspect-video relative rounded-lg overflow-hidden border">
            {aboutImage && <Image
               src={aboutImage.imageUrl}
-              alt="A snapshot of the CommerceWave office"
+              alt="A snapshot of the Samar Store office"
               fill
               className="object-cover"
               data-ai-hint={aboutImage.imageHint}

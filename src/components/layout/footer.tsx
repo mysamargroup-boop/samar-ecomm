@@ -1,4 +1,4 @@
-import { Waves, Twitter, Facebook, Instagram } from 'lucide-react';
+import { ShoppingBag, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { categories } from '@/lib/placeholder-data';
@@ -26,6 +26,7 @@ export function Footer() {
     { name: 'Facebook', icon: Facebook, href: '#' },
     { name: 'Twitter', icon: Twitter, href: '#' },
     { name: 'Instagram', icon: Instagram, href: '#' },
+    { name: 'LinkedIn', icon: Linkedin, href: '#' },
   ];
 
   return (
@@ -34,8 +35,8 @@ export function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div className="flex flex-col space-y-4 sm:col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
-              <Waves className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold font-headline">CommerceWave</span>
+              <ShoppingBag className="h-8 w-8 text-primary" />
+              <span className="text-xl font-bold font-headline">Samar Store</span>
             </Link>
             <p className="text-muted-foreground text-sm max-w-xs">
               The future of e-commerce, delivered to your doorstep.
@@ -92,7 +93,8 @@ export function Footer() {
 
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} CommerceWave. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Samar Store. All rights reserved.</p>
+          <p>Designed by Samar</p>
         </div>
       </div>
     </footer>
