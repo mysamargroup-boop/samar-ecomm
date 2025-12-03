@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { categories } from '@/lib/placeholder-data';
+import { WishlistButton } from './wishlist-button';
 
 type ProductCardProps = {
   product: Product;
@@ -30,9 +31,14 @@ export function ProductCard({ product }: ProductCardProps) {
             />
           </div>
         </Link>
-        {onSale && (
-            <Badge className="absolute top-2 right-2" variant="destructive">Sale</Badge>
-        )}
+        <div className="absolute top-2 right-2 flex flex-col gap-2">
+            {onSale && (
+                <Badge variant="destructive">Sale</Badge>
+            )}
+        </div>
+        <div className="absolute top-2 right-2">
+             <WishlistButton productId={product.id} />
+        </div>
       </CardHeader>
       <CardContent className="p-4 flex-grow">
         {category && (

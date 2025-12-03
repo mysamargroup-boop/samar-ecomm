@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 import { ShareButton } from '@/components/products/share-button';
+import { WishlistButton } from '@/components/products/wishlist-button';
 import {
   Carousel,
   CarouselContent,
@@ -111,6 +112,7 @@ export default function ProductPage({ params }: Props) {
                   Add to Cart
                 </Link>
               </Button>
+              <WishlistButton productId={product.id} size="lg" />
               <ShareButton productName={product.name} />
             </div>
              <p className="text-sm text-muted-foreground mt-4">

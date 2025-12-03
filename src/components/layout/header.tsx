@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ShoppingBag, User } from 'lucide-react';
+import { Menu, ShoppingCart, ShoppingBag, User, Heart } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -74,6 +74,12 @@ export function AppHeader() {
         </nav>
 
         <div className="flex items-center justify-end gap-2">
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/wishlist">
+              <Heart className="h-5 w-5" />
+              <span className="sr-only">Wishlist</span>
+            </Link>
+          </Button>
           <Button variant="ghost" size="icon" asChild>
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />
