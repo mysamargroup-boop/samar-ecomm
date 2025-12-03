@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/input-otp"
 import { useToast } from '@/hooks/use-toast';
 
-const ADMIN_AUTH_KEY = 'samar-admin-auth';
+const SAMAR_AUTH_KEY = 'samar-auth';
 
 function VerifyOTPComponent() {
   const router = useRouter();
@@ -29,13 +29,13 @@ function VerifyOTPComponent() {
     console.log('Verifying Samar OTP:', value);
     if (value === '123456') {
         // Set a session flag to indicate samar is logged in
-        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        sessionStorage.setItem(SAMAR_AUTH_KEY, 'true');
 
         toast({
             title: 'Samar Login Successful',
             description: 'Redirecting to dashboard...',
         });
-        router.push('/samar');
+        router.push('/samar/dashboard');
     } else {
         toast({
             title: 'Invalid OTP',

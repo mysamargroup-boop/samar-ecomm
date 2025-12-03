@@ -1,11 +1,11 @@
 
 'use client';
 
-import { AdminSidebar, AdminMobileHeader } from '@/components/layout/admin-sidebar';
+import { SamarSidebar, SamarMobileHeader } from '@/components/layout/samar-sidebar';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-const ADMIN_AUTH_KEY = 'samar-admin-auth';
+const SAMAR_AUTH_KEY = 'samar-auth';
 
 export default function SamarLayout({
   children,
@@ -19,8 +19,8 @@ export default function SamarLayout({
 
   useEffect(() => {
     // This effect runs only on the client
-    const adminSession = sessionStorage.getItem(ADMIN_AUTH_KEY);
-    const authenticated = adminSession === 'true';
+    const samarSession = sessionStorage.getItem(SAMAR_AUTH_KEY);
+    const authenticated = samarSession === 'true';
     setIsAuthenticated(authenticated);
     setIsAuthChecked(true); // Mark that we've checked authentication
   }, []);
@@ -36,7 +36,7 @@ export default function SamarLayout({
 
     // If authenticated, and on a login/verify page, redirect to dashboard
     if (isAuthenticated && (isLoginPage || isVerifyPage)) {
-      router.push('/samar/products');
+      router.push('/samar/dashboard');
     }
     
     // If not authenticated and not on a login/verify page, redirect to login
@@ -53,18 +53,18 @@ export default function SamarLayout({
   const isLoginPage = pathname === '/samar';
   const isVerifyPage = pathname.startsWith('/samar/verify');
 
-  // If on a public admin page (login/verify), just render the content.
+  // If on a public samar page (login/verify), just render the content.
   if (isLoginPage || isVerifyPage) {
     return <>{children}</>;
   }
 
-  // If authenticated, show the full admin layout.
+  // If authenticated, show the full samar layout.
   if (isAuthenticated) {
     return (
       <div className="flex min-h-screen">
-        <AdminSidebar />
+        <SamarSidebar />
         <div className="flex flex-col flex-1">
-          <AdminMobileHeader />
+          <SamarMobileHeader />
           <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-background">
             {children}
           </main>
