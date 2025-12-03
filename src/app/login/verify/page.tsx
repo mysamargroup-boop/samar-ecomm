@@ -31,8 +31,8 @@ function VerifyOTPComponent() {
             title: 'Login Successful',
             description: 'Welcome back!',
         });
-        // On successful customer login, redirect to the homepage.
-        router.push('/');
+        // On successful customer login, redirect to the account dashboard.
+        router.push('/account');
     } else {
         toast({
             title: 'Invalid OTP',

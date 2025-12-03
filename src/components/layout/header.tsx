@@ -86,10 +86,10 @@ export function AppHeader() {
                 <span className="sr-only">Shopping Cart</span>
             </Button>
           </Link>
-          <Link href="/login" aria-label="Customer Login">
+          <Link href="/account" aria-label="My Account">
             <Button variant="ghost" size="icon">
                 <User className="h-5 w-5" />
-                <span className="sr-only">Customer Login</span>
+                <span className="sr-only">My Account</span>
             </Button>
           </Link>
         </div>
