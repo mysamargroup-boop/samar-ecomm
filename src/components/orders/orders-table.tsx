@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -8,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
 import type { Order } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
 import {
@@ -21,9 +21,11 @@ import {
 import { updateOrderStatus } from '@/app/actions/orderActions';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
   const { toast } = useToast();
+  const router = useRouter();
 
   const handleStatusChange = async (orderId: string, status: Order['status']) => {
     const result = await updateOrderStatus(orderId, status);
@@ -52,6 +54,11 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
     }
   }
 
+  const handleRowClick = (orderId: string) => {
+    router.push(`/admin/orders/${orderId}`);
+  };
+
+
   return (
     <Table>
       <TableHeader>
@@ -65,7 +72,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
       </TableHeader>
       <TableBody>
         {orders.map((order) => (
-          <TableRow key={order.id}>
+          <TableRow key={order.id} onClick={() => handleRowClick(order.id)} className="cursor-pointer">
             <TableCell className="font-medium">#{order.id.split('_')[1]}</TableCell>
             <TableCell>
               <div>{order.customerName}</div>
@@ -73,7 +80,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
             </TableCell>
             <TableCell>{order.createdAt.toLocaleDateString()}</TableCell>
             <TableCell className="hidden md:table-cell">{formatPrice(order.total)}</TableCell>
-            <TableCell>
+            <TableCell onClick={(e) => e.stopPropagation()}>
               <Select defaultValue={order.status} onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}>
                 <SelectTrigger className={cn(
                     "w-32",

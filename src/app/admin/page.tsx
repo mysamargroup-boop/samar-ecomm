@@ -1,7 +1,10 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { formatPrice } from "@/lib/utils";
 import { Package, ShoppingCart, Users, IndianRupee } from "lucide-react";
+import { SalesAnalyticsChart } from "@/components/admin/dashboard/sales-analytics-chart";
+import { RecentSales } from "@/components/admin/dashboard/recent-sales";
+import { orders, products } from "@/lib/placeholder-data";
 
 export default function AdminDashboard() {
   const stats = [
@@ -10,6 +13,9 @@ export default function AdminDashboard() {
     { title: 'Active Products', value: '235', icon: Package, change: 'Total products in store' },
     { title: 'New Customers', value: '+573', icon: Users, change: '+201 since last hour' },
   ];
+
+  const recentSales = orders.slice(0, 5);
+  const topProducts = products.slice(0, 5).map(p => ({name: p.name, sales: Math.floor(Math.random() * 100)}));
 
   return (
     <div className="space-y-6">
@@ -28,21 +34,23 @@ export default function AdminDashboard() {
           </Card>
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <Card>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
             <CardHeader>
-                <CardTitle>Recent Orders</CardTitle>
+                <CardTitle>Sales Analytics</CardTitle>
+                 <CardDescription>An overview of your store's sales performance.</CardDescription>
             </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">Order management will be displayed here.</p>
+            <CardContent className="pl-2">
+                <SalesAnalyticsChart />
             </CardContent>
         </Card>
         <Card>
             <CardHeader>
-                <CardTitle>Sales Analytics</CardTitle>
+                <CardTitle>Recent Sales</CardTitle>
+                 <CardDescription>Your 5 most recent sales.</CardDescription>
             </CardHeader>
             <CardContent>
-                <p className="text-muted-foreground">Charts and graphs will be displayed here.</p>
+                <RecentSales sales={recentSales}/>
             </CardContent>
         </Card>
       </div>
