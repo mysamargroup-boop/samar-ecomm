@@ -35,50 +35,50 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
-        <div className="mr-4 hidden md:flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
+      <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
+        <div className="mr-6 hidden md:flex">
+          <Link href="/" className="flex items-center space-x-2">
             <Waves className="h-6 w-6 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline">CommerceWave</span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">{mainNav}</nav>
+        </div>
+        
+        <div className="md:hidden">
+            <Sheet>
+                <SheetTrigger asChild>
+                <Button variant="ghost" size="icon">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Toggle Menu</span>
+                </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                <Link href="/" className="mr-6 flex items-center space-x-2 mb-6">
+                    <Waves className="h-6 w-6 text-primary" />
+                    <span className="font-bold font-headline">CommerceWave</span>
+                </Link>
+                <nav className="flex flex-col space-y-4">{mainNav}</nav>
+                </SheetContent>
+            </Sheet>
         </div>
 
-        <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="pr-0">
-              <Link href="/" className="mr-6 flex items-center space-x-2">
+        <div className="flex flex-1 items-center justify-center md:justify-start">
+            <nav className="hidden md:flex items-center space-x-6">{mainNav}</nav>
+        </div>
+
+        <div className="flex items-center gap-2">
+            <Link href="/" className="flex items-center space-x-2 md:hidden">
                 <Waves className="h-6 w-6 text-primary" />
                 <span className="font-bold font-headline">CommerceWave</span>
-              </Link>
-              <div className="my-4 h-[calc(100vh-8rem)] pb-10 pl-6">
-                <div className="flex flex-col space-y-4">{mainNav}</div>
-              </div>
-            </SheetContent>
-          </Sheet>
-
-          <Link href="/" className="flex items-center space-x-2 md:hidden">
-             <Waves className="h-6 w-6 text-primary" />
-             <span className="font-bold font-headline">CommerceWave</span>
-          </Link>
-
-          <div className="flex items-center gap-2">
+            </Link>
             <Button variant="ghost" size="icon" asChild>
-              <Link href="/cart">
+            <Link href="/cart">
                 <ShoppingCart className="h-5 w-5" />
                 <span className="sr-only">Shopping Cart</span>
-              </Link>
+            </Link>
             </Button>
             <Button asChild>
-              <Link href="/login">Admin Login</Link>
+            <Link href="/login">Admin Login</Link>
             </Button>
-          </div>
         </div>
       </div>
     </header>

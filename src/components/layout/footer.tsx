@@ -18,8 +18,8 @@ export function Footer() {
 
   return (
     <footer className="bg-card border-t">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="flex flex-col space-y-4">
             <Link href="/" className="flex items-center space-x-2">
               <Waves className="h-8 w-8 text-primary" />
@@ -29,19 +29,23 @@ export function Footer() {
               The future of e-commerce, delivered to your doorstep.
             </p>
           </div>
-          <div className="md:col-span-2">
-            <h3 className="font-semibold mb-4 font-headline">Quick Links</h3>
-            <div className="grid grid-cols-2 gap-4">
-                {footerLinks.map((link) => (
-                  <Link key={link.name} href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                    {link.name}
-                  </Link>
-                ))}
+          <div className="grid grid-cols-2 gap-8">
+             <div>
+                <h3 className="font-semibold mb-4 font-headline">Quick Links</h3>
+                <ul className="space-y-2">
+                    {footerLinks.map((link) => (
+                      <li key={link.name}>
+                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                          {link.name}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
             </div>
           </div>
           <div>
             <h3 className="font-semibold mb-4 font-headline">Follow Us</h3>
-            <div className="flex space-x-4">
+            <div className="flex space-x-2">
               {socialLinks.map((social) => (
                 <Button key={social.name} variant="ghost" size="icon" asChild>
                   <a href={social.href} aria-label={social.name}>
