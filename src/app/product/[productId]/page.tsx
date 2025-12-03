@@ -20,6 +20,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { ProductReviewForm } from '@/components/reviews/product-review-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ProductCard } from '@/components/products/product-card';
 
 type Props = {
   params: { productId: string };
@@ -48,6 +49,9 @@ export default function ProductPage({ params }: Props) {
   const category = categories.find((c) => c.id === product.categoryId);
   const onSale = product.salePrice != null && product.salePrice < product.price;
   const productReviews = allReviews.filter(r => r.productId === product.id && r.status === 'Approved');
+  const relatedProducts = products
+    .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
+    .slice(0, 4);
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -131,37 +135,50 @@ export default function ProductPage({ params }: Props) {
 
        <Separator className="my-12" />
 
-      <div className="grid md:grid-cols-2 gap-12">
-        <div>
-          <h2 className="text-2xl font-bold font-headline mb-6">Customer Reviews</h2>
-          {productReviews.length > 0 ? (
-            <div className="space-y-6">
-              {productReviews.map(review => (
-                <Card key={review.id}>
-                  <CardHeader className='pb-4'>
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold">{review.authorName}</h3>
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'}`}/>
-                        ))}
-                      </div>
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold font-headline mb-6 text-center">Customer Reviews</h2>
+        {productReviews.length > 0 ? (
+          <div className="space-y-6 mb-10">
+            {productReviews.map(review => (
+              <Card key={review.id}>
+                <CardHeader className='pb-4'>
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">{review.authorName}</h3>
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`h-4 w-4 ${i < review.rating ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground'}`}/>
+                      ))}
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{review.comment}</p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{review.comment}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-muted-foreground text-center mb-10">No reviews yet. Be the first to share your thoughts!</p>
+        )}
+        <ProductReviewForm productId={product.id} />
+      </div>
+
+       {relatedProducts.length > 0 && (
+         <>
+          <Separator className="my-12" />
+          <div className="space-y-10">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold font-headline">You Might Also Like</h2>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+              {relatedProducts.map(relatedProduct => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
             </div>
-          ) : (
-            <p className="text-muted-foreground">No reviews yet. Be the first to share your thoughts!</p>
-          )}
-        </div>
-        <div>
-           <ProductReviewForm productId={product.id} />
-        </div>
-      </div>
+          </div>
+         </>
+       )}
+
     </div>
   );
 }
