@@ -93,7 +93,7 @@ export default function ProductPage({ params }: Props) {
           <div className="flex items-baseline gap-2 mb-6">
             {onSale ? (
                 <>
-                    <p className="text-3xl font-bold text-primary">{formatPrice(product.salePrice!)}</p>
+                    <p className="text-3xl font-bold text-maroon">{formatPrice(product.salePrice!)}</p>
                     <p className="text-xl text-muted-foreground line-through">{formatPrice(product.price)}</p>
                 </>
             ) : (
