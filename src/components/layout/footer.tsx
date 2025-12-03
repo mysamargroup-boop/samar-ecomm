@@ -9,10 +9,13 @@ export function Footer() {
     { name: 'FAQ', href: '/faq' },
     { name: 'Return Policy', href: '/returns' },
     { name: 'Contact Us', href: '/contact' },
-    { name: 'Terms & Conditions', href: '/terms' },
+  ];
+
+  const legalLinks = [
+     { name: 'Terms & Conditions', href: '/terms' },
     { name: 'Privacy Policy', href: '/privacy' },
     { name: 'Shipping Information', href: '/shipping' },
-  ];
+  ]
 
   const shopLinks = categories.map((category) => ({
     name: category.name,
@@ -28,8 +31,8 @@ export function Footer() {
   return (
     <footer className="bg-card border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div className="flex flex-col space-y-4 col-span-2 md:col-span-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="flex flex-col space-y-4 sm:col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center space-x-2">
               <Waves className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold font-headline">CommerceWave</span>
@@ -77,16 +80,13 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 font-headline">Legal</h3>
             <ul className="space-y-2">
-                <li>
-                    <Link href="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                        Terms & Conditions
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                        Privacy Policy
-                    </Link>
-                </li>
+                {legalLinks.map((link) => (
+                  <li key={link.name}>
+                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                          {link.name}
+                      </Link>
+                  </li>
+                ))}
             </ul>
           </div>
 
