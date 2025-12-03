@@ -108,7 +108,7 @@ export default function ProductPage({ params }: Props) {
             </div>
           )}
           
-          <div className="mt-auto pt-6">
+          <div className="pt-6">
             <div className="flex items-center gap-4">
               <Link href="/cart" className="flex-1">
                 <Button size="lg" className="w-full">
