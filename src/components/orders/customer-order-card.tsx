@@ -64,9 +64,9 @@ export function CustomerOrderCard({ order }: { order: Order }) {
       </CardContent>
        <CardFooter className="flex justify-between items-center bg-muted/50 p-6">
         <div>
-            <Link href={`/admin/orders/${order.id}`}>
-                <Button variant="outline">View Details</Button>
-            </Link>
+            <Button asChild variant="outline">
+                <Link href={`/admin/orders/${order.id}`}>View Details</Link>
+            </Button>
         </div>
         <div className="text-right">
             <p className="text-lg font-bold">Total: <span className="text-primary ml-2">{formatPrice(order.total)}</span></p>
