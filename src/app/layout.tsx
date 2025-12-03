@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { cn } from '@/lib/utils';
+import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -26,8 +27,9 @@ export default function RootLayout({
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
         <AppHeader />
-        <main className="flex-grow">{children}</main>
+        <main className="flex-grow pb-20 md:pb-0">{children}</main>
         <Footer />
+        <MobileBottomNav />
         <Toaster />
       </body>
     </html>

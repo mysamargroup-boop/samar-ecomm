@@ -1,7 +1,7 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ListOrdered, User, Heart, LogOut, LayoutDashboard } from "lucide-react";
+import { ListOrdered, User, Heart, LogOut } from "lucide-react";
 
 export default function AccountPage() {
     const userName = "Alice";
@@ -21,7 +21,7 @@ export default function AccountPage() {
                 </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {navItems.map((item) => (
                     <Card key={item.href} className="text-center flex flex-col items-center justify-center p-6 hover:shadow-lg transition-shadow">
                         <CardHeader className="p-0 mb-4">

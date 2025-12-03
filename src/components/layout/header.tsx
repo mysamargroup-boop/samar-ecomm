@@ -8,10 +8,12 @@ import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
+import { Badge } from '../ui/badge';
 
 export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const wishlistCount = 3; // Placeholder value
 
   // Hide header on admin routes
   if (pathname.startsWith('/admin') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
@@ -74,11 +76,14 @@ export function AppHeader() {
         </nav>
 
         <div className="flex items-center justify-end gap-2">
-          <Link href="/wishlist" aria-label="Wishlist">
+          <Link href="/wishlist" aria-label="Wishlist" className="relative">
             <Button variant="ghost" size="icon">
                 <Heart className="h-5 w-5" />
                 <span className="sr-only">Wishlist</span>
             </Button>
+             {wishlistCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{wishlistCount}</Badge>
+            )}
           </Link>
           <Link href="/cart" aria-label="Shopping Cart">
             <Button variant="ghost" size="icon">
