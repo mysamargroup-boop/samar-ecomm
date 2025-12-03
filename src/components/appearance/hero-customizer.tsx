@@ -12,8 +12,11 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import Image from 'next/image';
+import { useRef, useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { Upload } from 'lucide-react';
 
-const heroSlides = [
+const initialHeroSlides = [
   {
     id: 'slide1',
     image: PlaceHolderImages.find((img) => img.id === 'slider1'),
@@ -41,17 +44,50 @@ const heroSlides = [
 ];
 
 export function HeroCustomizer() {
+  const [slides, setSlides] = useState(initialHeroSlides.map(s => ({...s, imageUrl: s.image?.imageUrl || ''})));
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const { toast } = useToast();
+
+  const handleImageChange = (index: number, newImageUrl: string) => {
+    const newSlides = [...slides];
+    newSlides[index].imageUrl = newImageUrl;
+    setSlides(newSlides);
+  };
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { // 2MB limit
+          toast({
+              title: "Image too large",
+              description: "Please select an image smaller than 2MB.",
+              variant: "destructive",
+          });
+          return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleImageChange(index, reader.result as string);
+         toast({
+          title: "Image Selected",
+          description: "Image preview has been updated.",
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="space-y-6">
-      <Accordion type="single" collapsible className="w-full">
-        {heroSlides.map((slide, index) => (
+      <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+        {slides.map((slide, index) => (
           <AccordionItem key={slide.id} value={`item-${index + 1}`}>
             <AccordionTrigger>
               <div className="flex items-center gap-4">
-                {slide.image && (
+                {slide.imageUrl && (
                   <Image
-                    src={slide.image.imageUrl}
-                    alt={slide.image.description}
+                    src={slide.imageUrl}
+                    alt={slide.title}
                     width={40}
                     height={40}
                     className="rounded-md object-cover"
@@ -82,12 +118,35 @@ export function HeroCustomizer() {
                     </div>
                   </div>
                 </div>
-                 <div className="space-y-2">
-                  <Label htmlFor={`imageUrl-${slide.id}`}>Image URL</Label>
-                  <Input id={`imageUrl-${slide.id}`} defaultValue={slide.image?.imageUrl} />
-                  {slide.image && (
-                    <div className="mt-2 relative aspect-video rounded-md overflow-hidden">
-                       <Image src={slide.image.imageUrl} alt={slide.title} fill className="object-cover" />
+                 <div className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor={`imageUrl-${slide.id}`}>Image</Label>
+                      <div className="flex items-center gap-2">
+                          <Input 
+                            id={`imageUrl-${slide.id}`} 
+                            value={slide.imageUrl} 
+                            onChange={(e) => handleImageChange(index, e.target.value)}
+                            placeholder="https://... or select file"
+                          />
+                           <input
+                            type="file"
+                            ref={el => fileInputRefs.current[index] = el}
+                            onChange={(e) => handleFileChange(e, index)}
+                            className="hidden"
+                            accept="image/png, image/jpeg, image/webp"
+                          />
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => fileInputRefs.current[index]?.click()}
+                          >
+                            <Upload className="mr-2 h-4 w-4" /> Upload
+                          </Button>
+                      </div>
+                    </div>
+                  {slide.imageUrl && (
+                    <div className="mt-2 relative aspect-video rounded-md overflow-hidden border">
+                       <Image src={slide.imageUrl} alt={slide.title} fill className="object-cover" />
                     </div>
                   )}
                 </div>
