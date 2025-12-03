@@ -29,16 +29,14 @@ export function ProductCard({ product }: ProductCardProps) {
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               data-ai-hint="product image"
             />
+             <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
+              {onSale && (
+                  <Badge variant="destructive">Sale</Badge>
+              )}
+              <WishlistButton productId={product.id} />
+            </div>
           </div>
         </Link>
-        <div className="absolute top-2 right-2 flex flex-col gap-2">
-            {onSale && (
-                <Badge variant="destructive">Sale</Badge>
-            )}
-        </div>
-        <div className="absolute top-2 right-2">
-             <WishlistButton productId={product.id} />
-        </div>
       </CardHeader>
       <CardContent className="p-4 flex-grow">
         {category && (

@@ -33,6 +33,7 @@ export default function SettingsPage() {
   const analyticsConfig = {
     googleAnalyticsId: 'G-XXXXXXXXXX',
     metaPixelId: '123456789012345',
+    googleSiteVerificationId: 'YOUR_GOOGLE_VERIFICATION_CODE',
     customHeadScript: '<meta name="custom-tag" content="example" />'
   };
 

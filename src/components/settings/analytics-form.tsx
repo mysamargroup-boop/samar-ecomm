@@ -10,6 +10,7 @@ type AnalyticsFormProps = {
   config: {
     googleAnalyticsId: string;
     metaPixelId: string;
+    googleSiteVerificationId: string;
     customHeadScript: string;
   };
 };
@@ -25,6 +26,10 @@ export function AnalyticsForm({ config }: AnalyticsFormProps) {
         <div className="space-y-2">
           <Label htmlFor="meta-pixel-id">Meta Pixel ID</Label>
           <Input id="meta-pixel-id" defaultValue={config.metaPixelId} placeholder="Your Pixel ID" />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="google-verification-id">Google Site Verification ID</Label>
+          <Input id="google-verification-id" defaultValue={config.googleSiteVerificationId} placeholder="Your Google verification code" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="custom-head-script">Custom Head Scripts</Label>
