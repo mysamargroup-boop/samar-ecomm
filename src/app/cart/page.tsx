@@ -5,6 +5,15 @@ import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Shopping Cart",
+    robots: {
+        index: false,
+        follow: false,
+    }
+}
 
 export default function CartPage() {
     const cartItems = [

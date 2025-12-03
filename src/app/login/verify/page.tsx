@@ -22,6 +22,9 @@ function VerifyOTPComponent() {
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
+       <head>
+        <meta name="robots" content="noindex, nofollow" />
+      </head>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4 bg-primary text-primary-foreground p-3 rounded-full w-fit">
