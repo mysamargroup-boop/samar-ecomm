@@ -2,9 +2,8 @@
 'use client';
 
 import { AdminSidebar, AdminMobileHeader } from '@/components/layout/admin-sidebar';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, notFound } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import NotFound from '../not-found';
 
 const ADMIN_AUTH_KEY = 'samar-admin-auth';
 
@@ -35,7 +34,8 @@ export default function AdminLayout({
 
   // Once authentication state is determined on the client, render conditionally.
   if (!isAuthenticated) {
-    return <NotFound />;
+    // Trigger a 404 page render on the client side correctly.
+    notFound();
   }
 
   return (
