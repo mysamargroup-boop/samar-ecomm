@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -32,13 +33,6 @@ export function AppHeader() {
     { href: '/blog', label: 'Blog' },
     { href: '/about', label: 'About Us' },
     { href: '/contact', label: 'Contact Us' },
-  ];
-
-  const legalLinks = [
-     { href: '/terms', label: 'Terms & Conditions' },
-    { href: '/privacy', label: 'Privacy Policy' },
-    { href: '/shipping', label: 'Shipping Information' },
-     { href: '/returns', label: 'Return Policy' },
   ];
 
   const socialLinks = [
@@ -92,12 +86,12 @@ export function AppHeader() {
       </div>
 
       <div className="mt-auto border-t -mx-6 px-6 pt-6">
-        <nav className="flex flex-col space-y-3 mb-6">
-           {legalLinks.map((link) => (
-             <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="text-sm text-muted-foreground hover:text-primary">
-              {link.label}
-            </Link>
-          ))}
+        <nav className="text-center mb-6">
+            <span className="text-sm text-muted-foreground">
+                <Link href="/returns" className="hover:text-primary transition-colors" onClick={() => setIsSheetOpen(false)}>Return Policy</Link>
+                <span className="mx-2">|</span>
+                <Link href="/terms" className="hover:text-primary transition-colors" onClick={() => setIsSheetOpen(false)}>Terms & Conditions</Link>
+            </span>
         </nav>
         <div className="flex justify-center space-x-4">
           {socialLinks.map((social) => (
