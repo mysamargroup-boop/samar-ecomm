@@ -12,6 +12,7 @@ import { formatPrice } from "@/lib/utils";
 import { createPaymentOrder, verifyPaymentSignature } from "@/lib/payment";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import type { Metadata } from 'next';
 
 // This is a client-side only component to handle the payment button
 function PaymentButton({ amount, disabled }: { amount: number, disabled: boolean }) {
@@ -110,6 +111,28 @@ export default function CheckoutPage() {
                             <div className="space-y-2">
                                 <Label htmlFor="address">Address</Label>
                                 <Input id="address" placeholder="123 Main St" />
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="apartment">Apartment, suite, etc. (optional)</Label>
+                                <Input id="apartment" placeholder="Apartment, suite, etc." />
+                            </div>
+                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="city">City</Label>
+                                    <Input id="city" placeholder="Shopsville" />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label htmlFor="state">State</Label>
+                                    <Input id="state" placeholder="IN" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="zip">ZIP Code</Label>
+                                    <Input id="zip" placeholder="12345" />
+                                </div>
+                            </div>
+                             <div className="space-y-2">
+                                <Label htmlFor="phone">Phone</Label>
+                                <Input id="phone" type="tel" placeholder="+91 12345 67890" />
                             </div>
                         </CardContent>
                     </Card>

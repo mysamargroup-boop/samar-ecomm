@@ -17,12 +17,12 @@ export default function BlogAdminPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold font-headline">Blog Posts</h1>
-        <Button asChild>
-          <Link href="/admin/blog/new">
+        <Link href="/admin/blog/new">
+          <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
             Add New Post
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       <Card>

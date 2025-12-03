@@ -30,12 +30,12 @@ export default function OrderConfirmationPage() {
                         You can view your order details in your account or track the shipment once it's on its way.
                     </p>
                     <div className="flex justify-center gap-4">
-                        <Button asChild>
-                            <Link href="/">Continue Shopping</Link>
-                        </Button>
-                         <Button variant="outline" asChild>
-                            <Link href="/account/orders">View My Orders</Link>
-                        </Button>
+                        <Link href="/">
+                            <Button>Continue Shopping</Button>
+                        </Link>
+                         <Link href="/account/orders">
+                            <Button variant="outline">View My Orders</Button>
+                        </Link>
                     </div>
                 </CardContent>
             </Card>

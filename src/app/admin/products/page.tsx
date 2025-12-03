@@ -16,12 +16,12 @@ export default function ProductsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold font-headline">Products</h1>
-        <Button asChild>
-          <Link href="/admin/products/new">
+        <Link href="/admin/products/new">
+          <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
             Add Product
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
 
       <Card>
