@@ -40,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {category && (
           <Badge variant="secondary" className="mb-2">{category.name}</Badge>
         )}
-        <CardTitle className="text-lg leading-tight mb-2 flex-grow">
+        <CardTitle className="text-lg leading-tight mb-2 flex-grow flex flex-col justify-center min-h-[2.5em]">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors">
             {product.name}
           </Link>
