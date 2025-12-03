@@ -1,15 +1,7 @@
 'use client';
 
 import { AdminSidebar, AdminMobileHeader } from '@/components/layout/admin-sidebar';
-import type { Metadata } from 'next';
 import { usePathname } from 'next/navigation';
-
-// export const metadata: Metadata = {
-//   robots: {
-//     index: false,
-//     follow: false,
-//   },
-// };
 
 export default function AdminLayout({
   children,
@@ -17,7 +9,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  if (pathname.startsWith('/samar')) {
+  if (pathname.startsWith('/samar') || pathname.startsWith('/login')) {
     return <>{children}</>
   }
   return (

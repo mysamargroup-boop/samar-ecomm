@@ -16,6 +16,8 @@ import {
   Users,
   Settings,
   Palette,
+  Newspaper,
+  MessageSquare,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
@@ -27,6 +29,8 @@ const navItems = [
   { href: '/admin/categories', label: 'Categories', icon: Boxes },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingCart },
   { href: '/admin/customers', label: 'Customers', icon: Users },
+  { href: '/admin/reviews', label: 'Reviews', icon: MessageSquare },
+  { href: '/admin/blog', label: 'Blog', icon: Newspaper },
   { href: '/admin/appearance', label: 'Appearance', icon: Palette },
   { href: '/admin/tags', label: 'Tags', icon: Tags },
 ];
@@ -46,20 +50,24 @@ function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
         href={item.href}
         onClick={onLinkClick}
         className={cn(
-          'group flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary relative',
-          isActive ? 'text-primary bg-muted' : ''
+          'group flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent relative',
+          isActive ? 'text-sidebar-foreground bg-sidebar-accent font-medium' : ''
         )}
       >
+        <div className={cn(
+          "absolute left-0 top-1/2 -translate-y-1/2 h-0 w-1 bg-maroon rounded-r-full transition-all duration-200",
+          isActive ? "h-5" : "group-hover:h-3"
+        )}></div>
         <item.icon className="h-4 w-4" />
         {item.label}
       </Link>
     )
   }
   return (
-     <nav className="flex-1 px-4 py-4 space-y-1">
+     <nav className="flex-1 px-2 py-4 space-y-1">
         {navItems.map(renderLink)}
         <div className="py-2">
-            <div className="h-px bg-border -mx-4"></div>
+            <div className="h-px bg-sidebar-border -mx-2"></div>
         </div>
         {secondaryNavItems.map(renderLink)}
       </nav>
@@ -68,19 +76,19 @@ function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
 
 export function AdminSidebar() {
   return (
-    <aside className="w-64 flex-shrink-0 bg-card border-r hidden md:flex flex-col">
-      <div className="h-16 flex items-center px-6 border-b">
-        <Link href="/admin" className="flex items-center gap-2 font-bold font-headline">
-          <ShoppingBag className="h-6 w-6 text-primary" />
+    <aside className="w-64 flex-shrink-0 bg-sidebar border-r hidden md:flex flex-col">
+      <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
+        <Link href="/admin" className="flex items-center gap-2 font-bold font-headline text-sidebar-foreground">
+          <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
           <span>Samar Store</span>
         </Link>
       </div>
       <SidebarNavLinks />
-      <div className="mt-auto p-4 border-t">
+      <div className="mt-auto p-2 border-t border-sidebar-border">
          <Link
             href="/"
             className={cn(
-              'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted'
+              'flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
             )}
           >
             <LogOut className="h-4 w-4" />
@@ -103,19 +111,19 @@ export function AdminMobileHeader() {
             <span className="sr-only">Toggle navigation menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="flex flex-col w-full max-w-xs sm:max-w-sm p-0">
-           <div className="h-16 flex items-center px-6 border-b">
+        <SheetContent side="left" className="flex flex-col w-full max-w-xs sm:max-w-sm p-0 bg-sidebar text-sidebar-foreground">
+           <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
             <Link href="/admin" className="flex items-center gap-2 font-bold font-headline" onClick={() => setIsSheetOpen(false)}>
-              <ShoppingBag className="h-6 w-6 text-primary" />
+              <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
               <span>Samar Store</span>
             </Link>
           </div>
           <SidebarNavLinks onLinkClick={() => setIsSheetOpen(false)} />
-           <div className="mt-auto p-4 border-t">
+           <div className="mt-auto p-2 border-t border-sidebar-border">
              <Link
                 href="/"
                 className={cn(
-                  'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted'
+                  'flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
                 )}
               >
                 <LogOut className="h-4 w-4" />
@@ -129,6 +137,7 @@ export function AdminMobileHeader() {
             <span>Admin</span>
           </Link>
        </div>
+       <div className="w-8"></div>
     </header>
   )
 }
