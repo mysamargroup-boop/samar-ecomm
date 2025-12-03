@@ -110,12 +110,12 @@ export default function ProductPage({ params }: Props) {
           
           <div className="mt-auto pt-6">
             <div className="flex items-center gap-4">
-              <Button size="lg" className="flex-1" asChild>
-                <Link href="/cart">
+              <Link href="/cart" className="flex-1">
+                <Button size="lg" className="w-full">
                   <ShoppingCart className="mr-2 h-5 w-5" />
                   Add to Cart
-                </Link>
-              </Button>
+                </Button>
+              </Link>
               <WishlistButton productId={product.id} size="lg" />
               <ShareButton productName={product.name} />
             </div>

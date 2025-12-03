@@ -1,4 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ListOrdered, User, Heart, LogOut } from "lucide-react";
@@ -30,7 +31,7 @@ export default function AccountPage() {
                             </div>
                         </CardHeader>
                         <CardContent className="p-0">
-                            <Link href={item.href}>
+                             <Link href={item.href}>
                                 <Button variant="link" className="text-lg font-semibold">
                                     {item.label}
                                 </Button>

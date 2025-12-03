@@ -8,7 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
-import type { Metadata } from 'next';
 
 export default function CartPage() {
     const cartItems = [
@@ -82,4 +81,3 @@ export default function CartPage() {
         </div>
     );
 }
-

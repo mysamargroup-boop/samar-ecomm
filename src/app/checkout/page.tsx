@@ -12,7 +12,6 @@ import { formatPrice } from "@/lib/utils";
 import { createPaymentOrder, verifyPaymentSignature } from "@/lib/payment";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import type { Metadata } from 'next';
 
 // This is a client-side only component to handle the payment button
 function PaymentButton({ amount, disabled }: { amount: number, disabled: boolean }) {
@@ -144,10 +143,9 @@ export default function CheckoutPage() {
                             </div>
                         </CardContent>
                     </Card>
-                    {isClient && <PaymentButton amount={total} disabled={cartItems.length === 0} />}
+                    {isClient ? <PaymentButton amount={total} disabled={cartItems.length === 0} /> : <div className="h-11 w-full rounded-md bg-muted animate-pulse" />}
                 </div>
             </div>
         </div>
     );
 }
-
