@@ -22,6 +22,7 @@ import { updateOrderStatus } from '@/app/actions/orderActions';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { Badge } from '../ui/badge';
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
   const { toast } = useToast();
@@ -43,16 +44,15 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
     }
   };
 
-  const statusVariant = (status: Order['status']) => {
+  const getStatusVariant = (status: Order['status']) => {
     switch (status) {
-        case 'Pending': return 'default';
-        case 'Processing': return 'secondary';
-        case 'Shipped': return 'default';
-        case 'Delivered': return 'default';
-        case 'Cancelled': return 'destructive';
-        default: return 'outline';
+        case 'Delivered': return 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800';
+        case 'Shipped': return 'bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800';
+        case 'Cancelled': return 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800';
+        default: return 'secondary';
     }
   }
+
 
   const handleRowClick = (orderId: string) => {
     router.push(`/admin/orders/${orderId}`);
@@ -82,12 +82,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
             <TableCell className="hidden md:table-cell">{formatPrice(order.total)}</TableCell>
             <TableCell onClick={(e) => e.stopPropagation()}>
               <Select defaultValue={order.status} onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}>
-                <SelectTrigger className={cn(
-                    "w-32",
-                    order.status === 'Delivered' && 'bg-green-100 dark:bg-green-900 border-green-300 dark:border-green-700',
-                    order.status === 'Shipped' && 'bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700',
-                    order.status === 'Cancelled' && 'bg-red-100 dark:bg-red-900 border-red-300 dark:border-red-700',
-                )}>
+                <SelectTrigger className={cn("w-32", getStatusVariant(order.status))}>
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
