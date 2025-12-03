@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function OrderConfirmationPage() {
     return (
-        <div className="container mx-auto px-4 py-12 flex items-center justify-center">
+        <div className="container mx-auto px-4 py-12 flex items-center justify-center min-h-[60vh]">
             <Card className="w-full max-w-lg text-center">
                 <CardHeader>
                     <div className="mx-auto bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-400 rounded-full p-3 w-fit">
@@ -34,7 +34,7 @@ export default function OrderConfirmationPage() {
                             <Link href="/">Continue Shopping</Link>
                         </Button>
                          <Button variant="outline" asChild>
-                            <Link href="/admin/orders">View My Orders</Link>
+                            <Link href="/account/orders">View My Orders</Link>
                         </Button>
                     </div>
                 </CardContent>

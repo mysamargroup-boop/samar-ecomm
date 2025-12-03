@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,15 +8,6 @@ import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-    title: "Shopping Cart",
-    robots: {
-        index: false,
-        follow: false,
-    },
-};
 
 export default function CartPage() {
     const cartItems = [
@@ -86,3 +79,4 @@ export default function CartPage() {
         </div>
     );
 }
+

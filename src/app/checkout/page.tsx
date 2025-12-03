@@ -1,7 +1,7 @@
 
 'use client';
 
-import Link from "next/link";
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,17 +12,63 @@ import { formatPrice } from "@/lib/utils";
 import { createPaymentOrder, verifyPaymentSignature } from "@/lib/payment";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import type { Metadata } from 'next';
 
-declare global {
-    interface Window {
-        Razorpay: any; // Or a more specific type if you have one
+// This is a client-side only component to handle the payment button
+function PaymentButton({ amount }: { amount: number }) {
+  const { toast } = useToast();
+  const router = useRouter();
+
+  async function handlePayment() {
+    const response = await createPaymentOrder(amount * 100); // Amount in paise
+
+    if (!response.success) {
+      toast({
+        title: 'Error',
+        description: 'Could not create payment order.',
+        variant: 'destructive',
+      });
+      return;
     }
+
+    const { order } = response;
+    
+    console.log("Simulating payment for order:", order.id);
+
+    const paymentData = {
+      orderId: order.id,
+      paymentId: `mock_payment_${Date.now()}`,
+      signature: 'mock_signature'
+    };
+
+    const isValid = await verifyPaymentSignature(paymentData);
+    if (isValid) {
+      toast({
+        title: 'Payment Successful!',
+        description: 'Your order has been placed.',
+      });
+      router.push('/order-confirmation');
+    } else {
+      toast({
+        title: 'Payment Failed',
+        description: 'Signature verification failed. Please contact support.',
+        variant: 'destructive',
+      });
+    }
+  }
+  return (
+    <Button className="w-full" size="lg" onClick={handlePayment}>
+      Pay & Place Order
+    </Button>
+  )
 }
 
-
 export default function CheckoutPage() {
-    const { toast } = useToast();
-    const router = useRouter();
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
     // In a real app, this data would come from a cart state management
     const cartItems = [
@@ -36,48 +82,6 @@ export default function CheckoutPage() {
     }, 0);
     const shipping = 50.00;
     const total = subtotal + shipping;
-
-    async function handlePayment() {
-        const response = await createPaymentOrder(total * 100); // Amount in paise
-
-        if (!response.success) {
-            toast({
-                title: 'Error',
-                description: 'Could not create payment order.',
-                variant: 'destructive',
-            });
-            return;
-        }
-
-        const { order } = response;
-        const keyId = process.env.NEXT_PUBLIC_PAYMENT_GATEWAY_KEY_ID || 'dummy_key_id';
-        
-        // In a real scenario, you'd load the Razorpay script here
-        // and then open the checkout.
-        // For now, we'll simulate a successful payment.
-        console.log("Simulating payment for order:", order.id);
-
-        const paymentData = {
-            orderId: order.id,
-            paymentId: `mock_payment_${Date.now()}`,
-            signature: 'mock_signature'
-        };
-
-        const isValid = await verifyPaymentSignature(paymentData);
-        if (isValid) {
-            toast({
-                title: 'Payment Successful!',
-                description: 'Your order has been placed.',
-            });
-            router.push('/order-confirmation');
-        } else {
-            toast({
-                title: 'Payment Failed',
-                description: 'Signature verification failed. Please contact support.',
-                variant: 'destructive',
-            });
-        }
-    }
 
 
     return (
@@ -140,11 +144,10 @@ export default function CheckoutPage() {
                             </div>
                         </CardContent>
                     </Card>
-                    <Button className="w-full" size="lg" onClick={handlePayment}>
-                        Pay & Place Order
-                    </Button>
+                    {isClient && <PaymentButton amount={total} />}
                 </div>
             </div>
         </div>
     );
 }
+
