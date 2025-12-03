@@ -78,7 +78,7 @@ export function AppHeader() {
           <Separator className="my-4" />
           <p className="font-semibold text-sm text-muted-foreground px-2">More</p>
           {moreLinks.map((link) => (
-             <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-2 py-1 text-lg">
+             <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-2 py-1 text-base">
               {link.label}
             </Link>
           ))}
