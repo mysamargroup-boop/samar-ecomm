@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -26,7 +25,7 @@ export function AppHeader() {
   }
 
 
-  const navLinks = categories.map((category) => ({
+  const navLinks = categories.filter(c => !c.parentId).map((category) => ({
     href: `/${category.slug}`,
     label: category.name,
   }));
@@ -51,7 +50,7 @@ export function AppHeader() {
         <Link
           key={link.href}
           href={link.href}
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary whitespace-nowrap"
         >
           {link.label}
         </Link>
@@ -146,11 +145,10 @@ export function AppHeader() {
         </nav>
 
         <div className="flex flex-1 items-center justify-center md:hidden">
-          <Link href="/" className="flex items-center space-x-2">
-            <ShoppingBag className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline">Samar</span>
+         <Link href="/" className="flex items-center gap-2 font-bold font-headline text-lg justify-center">
+            <span>Samar</span>
           </Link>
-        </div>
+       </div>
 
         <div className="flex flex-1 items-center justify-end gap-2">
           <Link href="/wishlist" aria-label="Wishlist" className="relative">
