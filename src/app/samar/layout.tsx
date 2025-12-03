@@ -25,13 +25,12 @@ export default function SamarLayout({
     setIsAuthenticated(authenticated);
     setIsLoading(false);
 
-    if (!authenticated && !pathname.startsWith('/samar')) {
+    if (!authenticated && pathname !== '/samar' && !pathname.startsWith('/samar/verify')) {
       router.push('/samar');
     }
   }, [pathname, router]);
-
-  // Bypass layout for the admin login pages themselves
-  if (pathname.startsWith('/samar/verify')) {
+  
+  if (pathname === '/samar' || pathname.startsWith('/samar/verify')) {
     return <>{children}</>;
   }
 
@@ -40,10 +39,6 @@ export default function SamarLayout({
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
   
-  if (pathname === '/samar') {
-    return <>{children}</>;
-  }
-
   // After loading, if not authenticated, redirect
   if (!isAuthenticated) {
      router.push('/samar');

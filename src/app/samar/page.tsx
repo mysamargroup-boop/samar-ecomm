@@ -1,48 +1,21 @@
 
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { formatPrice } from "@/lib/utils";
+import { Package, ShoppingCart, Users, IndianRupee } from "lucide-react";
+import { SalesAnalyticsChart } from "@/components/admin/dashboard/sales-analytics-chart";
+import { RecentSales } from "@/components/admin/dashboard/recent-sales";
+import { orders, products } from "@/lib/placeholder-data";
 
-'use client';
-
-import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { ShoppingBag } from 'lucide-react';
-import { SalesAnalyticsChart } from '@/components/admin/dashboard/sales-analytics-chart';
-import { RecentSales } from '@/components/admin/dashboard/recent-sales';
-import { orders, products } from '@/lib/placeholder-data';
-import { formatPrice } from '@/lib/utils';
-import { IndianRupee, Package, ShoppingCart as ShoppingCartIcon, Users } from 'lucide-react';
-
-const isDemoMode = !process.env.NEXT_PUBLIC_WHATSAPP_ACCESS_TOKEN || !process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID;
-
-
-export default function SamarPage() {
-  const router = useRouter();
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const phone = formData.get('phone');
-
-    if (isDemoMode) {
-      console.log("Running in Demo Mode. Redirecting to verification page.");
-      router.push(`/samar/verify?phone=${phone}`);
-    } else {
-      console.log("Running in Live Mode. (API call to be implemented)");
-      router.push(`/samar/verify?phone=${phone}`);
-    }
-  };
-  
-    const stats = [
+export default function AdminDashboard() {
+  const stats = [
     { title: 'Total Revenue', value: formatPrice(4523189), icon: IndianRupee, change: '+20.1% from last month' },
-    { title: 'Total Sales', value: '+12,234', icon: ShoppingCartIcon, change: '+19% from last month' },
+    { title: 'Total Sales', value: '+12,234', icon: ShoppingCart, change: '+19% from last month' },
     { title: 'Active Products', value: '235', icon: Package, change: 'Total products in store' },
     { title: 'New Customers', value: '+573', icon: Users, change: '+201 since last hour' },
   ];
 
   const recentSales = orders.slice(0, 5);
-
+  const topProducts = products.slice(0, 5).map(p => ({name: p.name, sales: Math.floor(Math.random() * 100)}));
 
   return (
     <div className="space-y-6">
