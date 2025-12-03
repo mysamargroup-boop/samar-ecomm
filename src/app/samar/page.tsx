@@ -14,7 +14,7 @@ export default function LoginPage() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const phone = formData.get('phone');
-    router.push(`/login/verify?phone=${phone}`);
+    router.push(`/samar/verify?phone=${phone}`);
   };
 
   return (
@@ -27,7 +27,7 @@ export default function LoginPage() {
           <div className="mx-auto mb-4 bg-primary text-primary-foreground p-3 rounded-full w-fit">
             <Waves className="h-8 w-8" />
           </div>
-          <CardTitle className="text-2xl font-headline">Login or Sign Up</CardTitle>
+          <CardTitle className="text-2xl font-headline">Admin Login</CardTitle>
           <CardDescription>Enter your phone number to receive a one-time password via WhatsApp.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -38,12 +38,12 @@ export default function LoginPage() {
                 id="phone"
                 name="phone"
                 type="tel"
-                placeholder="+91 12345 67890"
+                placeholder="+1 (555) 123-4567"
                 required
               />
             </div>
             <Button type="submit" className="w-full">
-              Send Code
+              Send OTP
             </Button>
           </form>
         </CardContent>
