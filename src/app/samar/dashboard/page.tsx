@@ -1,4 +1,5 @@
 
+
 import {
   Card,
   CardContent,
@@ -6,8 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { SalesAnalyticsChart } from '@/components/admin/dashboard/sales-analytics-chart';
-import { RecentSales } from '@/components/admin/dashboard/recent-sales';
+import { SalesAnalyticsChart } from '@/components/samar/dashboard/sales-analytics-chart';
+import { RecentSales } from '@/components/samar/dashboard/recent-sales';
 import { orders } from '@/lib/placeholder-data';
 import { formatPrice } from '@/lib/utils';
 import { DollarSign, Users, CreditCard, Activity } from 'lucide-react';
