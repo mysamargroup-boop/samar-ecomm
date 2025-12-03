@@ -51,8 +51,9 @@ export function AppHeader() {
           href={link.href}
           onClick={() => setIsSheetOpen(false)}
           className={cn(
-            'text-sm font-medium transition-colors hover:text-primary hover:underline hover:decoration-maroon underline-offset-4 decoration-2',
-            pathname === link.href ? 'text-primary' : 'text-muted-foreground'
+            'relative text-sm font-medium transition-colors hover:text-primary',
+            'after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-maroon after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100',
+            pathname === link.href ? 'text-primary after:scale-x-100' : 'text-muted-foreground'
           )}
         >
           {link.label}
@@ -85,7 +86,7 @@ export function AppHeader() {
         </nav>
       </div>
 
-      <div className="mt-auto border-t -mx-6 px-6 pt-6">
+      <SheetFooter className="mt-auto border-t -mx-6 px-6 pt-6 flex-col">
         <nav className="text-center mb-6">
             <span className="text-sm text-muted-foreground">
                 <Link href="/returns" className="hover:text-primary transition-colors" onClick={() => setIsSheetOpen(false)}>Return Policy</Link>
@@ -102,7 +103,7 @@ export function AppHeader() {
             </a>
           ))}
         </div>
-      </div>
+      </SheetFooter>
     </div>
   );
 
@@ -117,7 +118,7 @@ export function AppHeader() {
                 <span className="sr-only">Toggle Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm flex flex-col">
+            <SheetContent side="left" className="w-full max-w-xs sm:max-w-sm flex flex-col p-0">
                 <SheetTitle className="sr-only">Menu</SheetTitle>
                 <SheetDescription className="sr-only">Main navigation menu.</SheetDescription>
                 {mobileNav}
