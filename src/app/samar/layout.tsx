@@ -4,7 +4,6 @@
 import { AdminSidebar, AdminMobileHeader } from '@/components/layout/admin-sidebar';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import NotFound from '../not-found';
 
 const ADMIN_AUTH_KEY = 'samar-admin-auth';
 
@@ -25,24 +24,27 @@ export default function SamarLayout({
     setIsAuthenticated(authenticated);
     setIsLoading(false);
 
-    if (!authenticated && pathname !== '/samar' && !pathname.startsWith('/samar/verify')) {
-      router.push('/samar');
+    if (!authenticated && !pathname.startsWith('/samar/verify')) {
+      // No need to check for /samar because the redirect will handle it
+      // but if we are on a deeper path, we need to redirect.
+       if(pathname !== '/samar'){
+          router.push('/samar');
+       }
     }
   }, [pathname, router]);
   
-  if (pathname === '/samar' || pathname.startsWith('/samar/verify')) {
+  if (pathname.startsWith('/samar/verify')) {
     return <>{children}</>;
   }
 
-  // Initial server render and client-side loading state
-  if (isLoading) {
+  // This handles the server render and loading state
+  if (isLoading || isAuthenticated === null) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
   
-  // After loading, if not authenticated, redirect
   if (!isAuthenticated) {
-     router.push('/samar');
-     return <div className="flex items-center justify-center min-h-screen">Redirecting...</div>;
+     // Children will be the login page at /samar
+     return <>{children}</>;
   }
 
   return (

@@ -51,7 +51,7 @@ function VerifyOTPComponent() {
     if (otp.length === 6) {
         handleComplete(otp);
     }
-  }, [otp]);
+  }, [otp, handleComplete, router, toast]);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">

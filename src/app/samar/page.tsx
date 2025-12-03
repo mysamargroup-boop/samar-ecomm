@@ -6,7 +6,7 @@ import { SalesAnalyticsChart } from "@/components/admin/dashboard/sales-analytic
 import { RecentSales } from "@/components/admin/dashboard/recent-sales";
 import { orders, products } from "@/lib/placeholder-data";
 
-export default function AdminDashboard() {
+export default function DashboardPage() {
   const stats = [
     { title: 'Total Revenue', value: formatPrice(4523189), icon: IndianRupee, change: '+20.1% from last month' },
     { title: 'Total Sales', value: '+12,234', icon: ShoppingCart, change: '+19% from last month' },
