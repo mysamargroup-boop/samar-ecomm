@@ -9,6 +9,10 @@ export const categories: Category[] = [
   { id: '2', name: 'Apparel', slug: 'apparel' },
   { id: '3', name: 'Home Goods', slug: 'home-goods' },
   { id: '4', name: 'Books', slug: 'books' },
+  { id: '5', name: 'Toys & Games', slug: 'toys-games' },
+  { id: '6', name: 'Sports', slug: 'sports' },
+  { id: '7', name: 'Beauty', slug: 'beauty' },
+  { id: '8', name: 'Automotive', slug: 'automotive' },
   { id: 'cat_men', name: 'Men', slug: 'men', parentId: '2'},
   { id: 'cat_women', name: 'Women', slug: 'women', parentId: '2'},
 ];
