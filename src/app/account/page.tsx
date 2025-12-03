@@ -8,36 +8,34 @@ export default function AccountPage() {
     const userName = "Alice";
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold font-headline mb-6">My Account</h1>
-            <p className="text-xl text-muted-foreground mb-10">
-                Welcome back, {userName}!
-            </p>
+        <div className="space-y-10">
+            <div>
+                <h1 className="text-3xl font-bold font-headline">My Account</h1>
+                <p className="text-xl text-muted-foreground mt-2">
+                    Welcome back, {userName}!
+                </p>
+            </div>
 
             <div className="grid md:grid-cols-2 gap-6">
                 <Card>
-                    <CardHeader className="flex flex-row items-center gap-4">
+                    <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                         <ListOrdered className="h-8 w-8 text-primary" />
-                        <div>
-                            <CardTitle>My Orders</CardTitle>
-                            <CardDescription>View your order history and track shipments.</CardDescription>
-                        </div>
+                        <CardTitle>My Orders</CardTitle>
                     </CardHeader>
                     <CardContent>
+                        <CardDescription className="mb-4">View your order history and track shipments.</CardDescription>
                         <Link href="/account/orders">
                             <Button>View Orders</Button>
                         </Link>
                     </CardContent>
                 </Card>
                 <Card>
-                    <CardHeader className="flex flex-row items-center gap-4">
+                    <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-2">
                         <User className="h-8 w-8 text-primary" />
-                        <div>
-                            <CardTitle>My Profile</CardTitle>
-                            <CardDescription>Manage your personal details and shipping address.</CardDescription>
-                        </div>
+                        <CardTitle>My Profile</CardTitle>
                     </CardHeader>
                     <CardContent>
+                        <CardDescription className="mb-4">Manage your personal details and shipping address.</CardDescription>
                        <Link href="/account/profile">
                             <Button variant="outline">Edit Profile</Button>
                         </Link>

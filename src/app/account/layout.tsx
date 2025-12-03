@@ -30,7 +30,7 @@ export default function AccountLayout({
 
   return (
     <div className="container mx-auto px-4 py-12">
-        <div className="grid md:grid-cols-4 gap-12">
+        <div className="grid md:grid-cols-4 gap-x-12">
             <aside className="md:col-span-1">
                 <h2 className="text-2xl font-bold font-headline mb-6">Account Menu</h2>
                 <nav className="flex flex-col space-y-2">
@@ -61,7 +61,7 @@ export default function AccountLayout({
                   </Link>
                 </nav>
             </aside>
-            <main className="md:col-span-3">
+            <main className="md:col-span-3 mt-10 md:mt-0">
                 {children}
             </main>
         </div>
