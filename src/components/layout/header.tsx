@@ -51,9 +51,8 @@ export function AppHeader() {
           href={link.href}
           onClick={() => setIsSheetOpen(false)}
           className={cn(
-            'relative text-sm font-medium transition-colors hover:text-primary',
-            'after:absolute after:bottom-[-4px] after:left-0 after:h-[2px] after:w-full after:bg-maroon after:scale-x-0 after:origin-left after:transition-transform after:duration-300 hover:after:scale-x-100',
-            pathname === link.href ? 'text-primary after:scale-x-100' : 'text-muted-foreground'
+            'text-sm font-medium transition-colors hover:text-primary',
+            pathname === link.href ? 'text-primary' : 'text-muted-foreground'
           )}
         >
           {link.label}
@@ -110,7 +109,7 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-6">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">
@@ -130,7 +129,7 @@ export function AppHeader() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center gap-4">
+        <nav className="hidden md:flex items-center gap-6">
             {mainNav}
         </nav>
 
