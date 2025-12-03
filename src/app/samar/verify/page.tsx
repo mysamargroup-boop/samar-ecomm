@@ -5,7 +5,6 @@ import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { ShoppingBag } from 'lucide-react';
 import {
   InputOTP,
@@ -47,11 +46,13 @@ function VerifyOTPComponent() {
     }
   };
   
+  // This useEffect will now only run on the client, after the component has mounted.
   useEffect(() => {
     if (otp.length === 6) {
         handleComplete(otp);
     }
-  }, [otp, handleComplete, router, toast]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otp, router, toast]);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
