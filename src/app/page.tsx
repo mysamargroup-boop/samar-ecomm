@@ -25,7 +25,7 @@ export default function Home() {
           </div>
           <div className="text-center mt-12">
             <Link href="/products">
-              <Button size="lg">Shop All Products</Button>
+                <Button size="lg">Shop All Products</Button>
             </Link>
           </div>
         </div>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -31,6 +32,7 @@ export function HeroSlider() {
       href: '/apparel',
     },
     {
+      id: 'slide3',
       image: PlaceHolderImages.find((img) => img.id === 'slider3'),
       title: 'Modern Home Essentials',
       description: 'Elevate your living space with our curated decor.',
@@ -74,9 +76,11 @@ export function HeroSlider() {
                   <p className="text-lg md:text-2xl mb-8 max-w-2xl drop-shadow-md">
                     {slide.description}
                   </p>
-                  <Button size="lg" asChild className="bg-accent text-accent-foreground hover:bg-accent/90">
-                    <Link href={slide.href}>{slide.buttonText}</Link>
-                  </Button>
+                  <Link href={slide.href}>
+                    <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
+                      {slide.buttonText}
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </CarouselItem>

@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/lib/types';
@@ -58,9 +56,9 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 mt-auto">
-        <Button asChild className="w-full">
-          <Link href={`/product/${product.id}`}>View Details</Link>
-        </Button>
+        <Link href={`/product/${product.id}`} className="w-full">
+          <Button className="w-full">View Details</Button>
+        </Link>
       </CardFooter>
     </Card>
   );
