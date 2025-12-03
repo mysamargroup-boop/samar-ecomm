@@ -38,11 +38,11 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
+      <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden mr-4">
+              <Button variant="ghost" size="icon" className="md:hidden mr-2">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle Menu</span>
               </Button>
@@ -57,24 +57,17 @@ export function Header() {
               <nav className="flex flex-col space-y-4">{mainNav}</nav>
             </SheetContent>
           </Sheet>
-          <Link href="/" className="hidden md:flex items-center space-x-2 mr-6">
+          <Link href="/" className="hidden md:flex items-center space-x-2">
             <ShoppingBag className="h-6 w-6 text-primary" />
             <span className="font-bold sm:inline-block font-headline">Samar Store</span>
           </Link>
         </div>
 
-        <div className="flex flex-1 items-center justify-center md:justify-start">
-             <Link href="/" className="flex md:hidden items-center space-x-2">
-                <ShoppingBag className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">Samar Store</span>
-            </Link>
-            <nav className="hidden md:flex items-center space-x-6">
-                {mainNav}
-            </nav>
-        </div>
+        <nav className="hidden md:flex items-center gap-6">
+            {mainNav}
+        </nav>
 
-
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-end gap-2">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/cart">
               <ShoppingCart className="h-5 w-5" />
