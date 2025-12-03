@@ -24,9 +24,9 @@ export default function AccountPage() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <Button asChild>
-                            <Link href="/account/orders">View Orders</Link>
-                        </Button>
+                        <Link href="/account/orders">
+                            <Button>View Orders</Button>
+                        </Link>
                     </CardContent>
                 </Card>
                 <Card>
@@ -38,7 +38,9 @@ export default function AccountPage() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <Button variant="outline">Edit Profile</Button>
+                       <Link href="/account/profile">
+                            <Button variant="outline">Edit Profile</Button>
+                        </Link>
                     </CardContent>
                 </Card>
             </div>
