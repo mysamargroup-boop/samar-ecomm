@@ -15,6 +15,7 @@ import { WishlistContext } from '@/contexts/wishlist-context';
 import { HeaderSearch } from './header-search';
 import { useCart } from '@/contexts/cart-context';
 import { useAuth } from '@/contexts/auth-context';
+import { ScrollArea } from '../ui/scroll-area';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -75,7 +76,7 @@ export function AppHeader() {
         <HeaderSearch />
        </div>
 
-      <div className="flex-grow overflow-y-auto -mx-6 px-6">
+      <ScrollArea className="flex-grow -mx-6 px-6">
         <nav className="flex flex-col gap-4">
           <div>
             <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">Shop by Category</p>
@@ -101,7 +102,7 @@ export function AppHeader() {
              </div>
           </div>
         </nav>
-      </div>
+      </ScrollArea>
 
       <SheetFooter className="mt-auto border-t -mx-6 px-6 pt-6 flex-col items-center">
         <nav className="text-center mb-4">
