@@ -31,7 +31,7 @@ export default function AccountPage() {
                             </div>
                         </CardHeader>
                         <CardContent className="p-0">
-                             <Link href={item.href}>
+                             <Link href={item.href} passHref>
                                 <Button variant="link" className="text-lg font-semibold">
                                     {item.label}
                                 </Button>
@@ -46,7 +46,7 @@ export default function AccountPage() {
                         </div>
                     </CardHeader>
                     <CardContent className="p-0">
-                        <Link href="/">
+                        <Link href="/" passHref>
                             <Button variant="link" className="text-lg font-semibold">
                                 Logout
                             </Button>
