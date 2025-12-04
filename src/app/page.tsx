@@ -29,16 +29,13 @@ function HomePageContent() {
 
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
+          <div className="text-center mb-10">
             <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">
               Featured Products
             </h2>
-            <Link href="/products">
-                <Button variant="outline">
-                    View All
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-            </Link>
+            <p className="mt-2 text-lg text-muted-foreground">
+              Check out our hand-picked selection of the best products.
+            </p>
           </div>
           <FeaturedProductsSlider products={featuredProducts} />
         </div>
