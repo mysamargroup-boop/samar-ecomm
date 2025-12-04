@@ -62,7 +62,7 @@ export function Footer() {
   const SocialLinks = () => (
     <div className="space-y-4">
       <h3 className="font-semibold font-headline">Let's get social</h3>
-      <div className="flex space-x-1">
+      <div className="flex -ml-2">
         {socialLinks.map((social) => (
             <a key={social.name} href={social.href} aria-label={social.name}>
             <Button variant="ghost" size="icon">
