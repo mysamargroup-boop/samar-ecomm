@@ -61,7 +61,7 @@ function ProductFilters({
   const maxPrice = Math.max(...allProducts.map((p) => p.price));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <Accordion type="multiple" defaultValue={['price', 'category', 'status']} className="w-full">
         <AccordionItem value="price">
           <AccordionTrigger>Price</AccordionTrigger>
@@ -102,9 +102,9 @@ function ProductFilters({
          <AccordionItem value="status">
           <AccordionTrigger>Status</AccordionTrigger>
           <AccordionContent>
-            <div className="space-y-4 pt-2">
+            <div className="space-y-4 pt-4">
               <div className="flex items-center justify-between">
-                <Label htmlFor="in-stock-only">In Stock Only</Label>
+                <Label htmlFor="in-stock-only" className="cursor-pointer">In Stock Only</Label>
                 <Switch 
                   id="in-stock-only" 
                   checked={inStockOnly}
@@ -112,7 +112,7 @@ function ProductFilters({
                 />
               </div>
               <div className="flex items-center justify-between">
-                <Label htmlFor="on-sale-only">On Sale Only</Label>
+                <Label htmlFor="on-sale-only" className="cursor-pointer">On Sale Only</Label>
                 <Switch 
                   id="on-sale-only"
                   checked={onSaleOnly}
