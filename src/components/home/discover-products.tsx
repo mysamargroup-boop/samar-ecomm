@@ -5,26 +5,9 @@ import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductCard } from '@/components/products/product-card';
 import type { Product } from '@/lib/types';
-import { useCollection, useMemoFirebase } from '@/firebase';
-import { collection, getFirestore, limit, orderBy, query, where } from 'firebase/firestore';
-import { Loader2 } from 'lucide-react';
-import { Skeleton } from '../ui/skeleton';
+import { products } from '@/lib/placeholder-data';
 
-function ProductGrid({ products, isLoading }: { products: Product[] | null, isLoading: boolean }) {
-    if (isLoading) {
-        return (
-             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                {[...Array(8)].map((_, i) => (
-                    <div key={i} className="space-y-2">
-                        <Skeleton className="aspect-square w-full" />
-                        <Skeleton className="h-6 w-3/4" />
-                        <Skeleton className="h-6 w-1/2" />
-                    </div>
-                ))}
-            </div>
-        )
-    }
-
+function ProductGrid({ products }: { products: Product[] }) {
     if (!products || products.length === 0) {
         return <p className="text-center text-muted-foreground py-8">No products found.</p>
     }
@@ -40,24 +23,9 @@ function ProductGrid({ products, isLoading }: { products: Product[] | null, isLo
 
 
 export function DiscoverProducts() {
-  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
-  
-  const newArrivalsQuery = useMemoFirebase(
-    () => firestore ? query(collection(firestore, 'products'), orderBy('createdAt', 'desc'), limit(8)) : null,
-    [firestore]
-  );
-  const bestSellersQuery = useMemoFirebase(
-    () => firestore ? query(collection(firestore, 'products'), where('salePrice', '!=', null), limit(8)) : null,
-    [firestore]
-  );
-  const topRatedQuery = useMemoFirebase(
-    () => firestore ? query(collection(firestore, 'products'), limit(8)) : null, // Placeholder for now
-    [firestore]
-  );
-
-  const { data: newArrivals, isLoading: isLoadingNew } = useCollection<Product>(newArrivalsQuery);
-  const { data: bestSellers, isLoading: isLoadingBest } = useCollection<Product>(bestSellersQuery);
-  const { data: topRated, isLoading: isLoadingTop } = useCollection<Product>(topRatedQuery);
+  const newArrivals = products.slice(0, 8);
+  const bestSellers = products.slice(2, 10);
+  const topRated = products.slice(4, 12);
 
   return (
     <section className="py-12 bg-muted/20">
@@ -71,13 +39,13 @@ export function DiscoverProducts() {
                 </TabsList>
             </div>
           <TabsContent value="new-arrivals">
-            <ProductGrid products={newArrivals} isLoading={isLoadingNew} />
+            <ProductGrid products={newArrivals} />
           </TabsContent>
           <TabsContent value="best-sellers">
-            <ProductGrid products={bestSellers} isLoading={isLoadingBest} />
+            <ProductGrid products={bestSellers} />
           </TabsContent>
           <TabsContent value="top-rated">
-            <ProductGrid products={topRated} isLoading={isLoadingTop} />
+            <ProductGrid products={topRated} />
           </TabsContent>
         </Tabs>
       </div>

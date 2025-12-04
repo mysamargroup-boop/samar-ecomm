@@ -2,7 +2,7 @@
 'use client';
 
 import { HeroSlider } from '@/components/home/hero-slider';
-import { blogPosts } from '@/lib/placeholder-data';
+import { products, blogPosts } from '@/lib/placeholder-data';
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 import { InfoBar } from '@/components/home/info-bar';
 import { CategorySlider } from '@/components/home/category-slider';
@@ -12,24 +12,13 @@ import { BlogSection } from '@/components/home/blog-section';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useCollection, useMemoFirebase } from '@/firebase';
-import { collection, getFirestore, limit, query, where } from 'firebase/firestore';
-import type { Product } from '@/lib/types';
 import { ExploreBanner } from '@/components/home/explore-banner';
 import { DiscoverProducts } from '@/components/home/discover-products';
 
 function HomePageContent() {
-  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
-
-  const featuredQuery = useMemoFirebase(
-    () => firestore ? query(collection(firestore, 'products'), limit(8)) : null,
-    [firestore]
-  );
-  
-  const { data: featuredProducts, isLoading: isLoadingFeatured } = useCollection<Product>(featuredQuery);
-  
+  const featuredProducts = products.slice(0, 8);
   const recentPosts = blogPosts.slice(0, 3);
-  const recentlyViewedProducts = featuredProducts?.slice(4, 9) || [];
+  const recentlyViewedProducts = products.slice(4, 9);
 
 
   return (
@@ -51,13 +40,7 @@ function HomePageContent() {
                 </Button>
             </Link>
           </div>
-          {isLoadingFeatured ? (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-          ) : (
-            <FeaturedProductsSlider products={featuredProducts || []} />
-          )}
+          <FeaturedProductsSlider products={featuredProducts} />
         </div>
       </section>
 
