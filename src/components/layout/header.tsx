@@ -1,9 +1,10 @@
+
 'use client';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search } from 'lucide-react';
+import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search, UserCheck } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -13,12 +14,14 @@ import { Separator } from '../ui/separator';
 import { WishlistContext } from '@/contexts/wishlist-context';
 import { HeaderSearch } from './header-search';
 import { useCart } from '@/contexts/cart-context';
+import { useAuth } from '@/contexts/auth-context';
 
 export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { wishlistItems } = useContext(WishlistContext);
   const { cartCount } = useCart();
+  const { isLoggedIn } = useAuth();
   const wishlistCount = wishlistItems.length;
 
   // Hide header on admin routes
@@ -45,6 +48,7 @@ export function AppHeader() {
     { name: 'LinkedIn', icon: Linkedin, href: '#' },
   ];
 
+  const AccountIcon = isLoggedIn ? UserCheck : User;
 
   const mainNav = (
     <>
@@ -155,7 +159,7 @@ export function AppHeader() {
                 </Link>
                 <Link href="/account" aria-label="My Account">
                     <Button variant="ghost" size="icon">
-                    <User className="h-5 w-5" />
+                    <AccountIcon className="h-5 w-5" />
                     <span className="sr-only">My Account</span>
                     </Button>
                 </Link>

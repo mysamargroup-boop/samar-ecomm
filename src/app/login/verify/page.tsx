@@ -14,6 +14,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/auth-context';
 
 
 function VerifyOTPComponent() {
@@ -22,12 +23,14 @@ function VerifyOTPComponent() {
   const phone = searchParams.get('phone');
   const { toast } = useToast();
   const [otp, setOtp] = useState('');
+  const { login } = useAuth();
 
   const handleComplete = (value: string) => {
     // In a real app, you would verify the OTP here against a backend service.
     // For this demo, we'll accept a specific OTP.
     console.log('Verifying OTP:', value);
     if (value === '123456') {
+        login();
         toast({
             title: 'Login Successful',
             description: 'Welcome back!',

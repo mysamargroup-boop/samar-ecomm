@@ -10,6 +10,7 @@ import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav';
 import { WishlistProvider } from '@/contexts/wishlist-context';
 import Link from 'next/link';
 import { CartProvider } from '@/contexts/cart-context';
+import { AuthProvider } from '@/contexts/auth-context';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -42,16 +43,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)}>
-        <WishlistProvider>
-          <CartProvider>
-            <AnnouncementBar />
-            <AppHeader />
-            <main className="flex-grow pb-20 md:pb-0">{children}</main>
-            <Footer />
-            <MobileBottomNav />
-            <Toaster />
-          </CartProvider>
-        </WishlistProvider>
+        <AuthProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <AnnouncementBar />
+              <AppHeader />
+              <main className="flex-grow pb-20 md:pb-0">{children}</main>
+              <Footer />
+              <MobileBottomNav />
+              <Toaster />
+            </CartProvider>
+          </WishlistProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,10 +1,14 @@
 
+'use client';
+
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ListOrdered, User, Heart, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function AccountPage() {
+    const { logout } = useAuth();
     const userName = "Alice";
 
     const navItems = [
@@ -46,11 +50,9 @@ export default function AccountPage() {
                         </div>
                     </CardHeader>
                     <CardContent className="p-0">
-                        <Link href="/" passHref>
-                            <Button variant="link" className="text-lg font-semibold">
-                                Logout
-                            </Button>
-                        </Link>
+                        <Button variant="link" className="text-lg font-semibold" onClick={logout}>
+                            Logout
+                        </Button>
                     </CardContent>
                 </Card>
             </div>
