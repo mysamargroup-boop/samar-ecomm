@@ -5,11 +5,11 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 type Props = {
-  params: { productSlug: string };
+  params: { productId: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = products.find((p) => p.slug === params.productSlug);
+  const product = products.find((p) => p.id === params.productId);
   if (!product) {
     return {
       title: 'Product Not Found',
@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ProductPage({ params }: { params: { productSlug: string } }) {
-  return <ProductPageClient productSlug={params.productSlug} />;
+export default function ProductPage({ params }: { params: { productId: string } }) {
+  return <ProductPageClient productId={params.productId} />;
 }
 
 export async function generateStaticParams() {
   return products.map((product) => ({
-    productSlug: product.slug,
+    productId: product.id,
   }));
 }
