@@ -35,7 +35,7 @@ export default function SamarLayout({
     const isVerifyPage = pathname.startsWith('/samar/verify');
 
     // If authenticated, and on a login/verify page, redirect to dashboard
-    if (isAuthenticated && (isLoginPage || isVerifyPage)) {
+    if (isAuthenticated && isLoginPage) {
       router.push('/samar/dashboard');
     }
     
