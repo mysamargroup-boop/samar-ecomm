@@ -18,10 +18,9 @@ import { categories } from '@/lib/placeholder-data';
 
 type ProductCardProps = {
   product: Product;
-  showBuyNow?: boolean;
 };
 
-export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
   const onSale = product.salePrice && product.salePrice < product.price;
   const discountPercentage = onSale
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
@@ -61,15 +60,15 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
       <CardContent className="p-4 flex-grow flex flex-col items-center text-center">
         {category && (
             <Link href={`/${category.slug}`}>
-                <Badge variant="secondary" className="mb-2 w-fit text-xs">{category.name}</Badge>
+                <Badge variant="secondary" className="mb-1 w-fit text-xs">{category.name}</Badge>
             </Link>
         )}
-        <CardTitle className="text-base leading-snug mb-2 flex-grow flex flex-col justify-center min-h-[2.5em]">
+        <CardTitle className="text-base leading-snug mb-1 flex-grow flex flex-col justify-center min-h-[2.5em]">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors no-underline">
             {product.name}
           </Link>
         </CardTitle>
-        <div className="flex items-baseline gap-2 mt-auto">
+        <div className="flex items-baseline gap-2">
             {onSale ? (
                 <>
                     <p className="text-lg font-bold font-headline text-maroon">{formatPrice(product.salePrice!)}</p>
@@ -80,7 +79,7 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             )}
         </div>
       </CardContent>
-      {showBuyNow && (
+      
         <CardFooter className="p-2 pt-0">
             <div className="flex flex-col w-full gap-2">
                 <Button variant="outline" size="sm" onClick={() => addToCart(product)}>
@@ -93,7 +92,7 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
                 </Button>
             </div>
         </CardFooter>
-      )}
+      
     </Card>
   );
 }
