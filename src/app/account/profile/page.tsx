@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -181,27 +182,31 @@ function ProfilePageContent() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <h3 className="font-medium">Default Shipping Address</h3>
-              <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-medium">Default Shipping Address</h3>
+                <Button variant="outline" size="sm">
+                  Edit Address
+                </Button>
+              </div>
+              <div className="space-y-1 text-sm text-muted-foreground border p-4 rounded-md">
                 <p>123 Commerce Lane</p>
                 <p>Shopsville, IN 12345</p>
                 <p>United States</p>
               </div>
-              <Button variant="outline" size="sm">
-                Edit Address
-              </Button>
             </div>
-            <div className="space-y-4">
-              <h3 className="font-medium">Default Billing Address</h3>
-              <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="font-medium">Default Billing Address</h3>
+                <Button variant="outline" size="sm">
+                  Edit Address
+                </Button>
+              </div>
+              <div className="space-y-1 text-sm text-muted-foreground border p-4 rounded-md">
                 <p>123 Commerce Lane</p>
                 <p>Shopsville, IN 12345</p>
                 <p>United States</p>
               </div>
-              <Button variant="outline" size="sm">
-                Edit Address
-              </Button>
             </div>
           </CardContent>
         </Card>
