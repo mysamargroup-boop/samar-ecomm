@@ -76,7 +76,7 @@ export function AppHeader() {
         <HeaderSearch />
        </div>
 
-      <ScrollArea className="flex-grow -mx-6 px-6">
+      <ScrollArea className="flex-grow px-6 -mx-6">
         <nav className="flex flex-col gap-4">
           <div>
             <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">Shop by Category</p>
