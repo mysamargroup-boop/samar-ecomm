@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 type Customer = {
     id: string;
@@ -31,6 +33,11 @@ type Customer = {
 }
 
 export function CustomersTable({ customers }: { customers: Customer[] }) {
+  const router = useRouter();
+
+  const handleViewOrders = (email: string) => {
+    router.push(`/samar/orders?customer=${encodeURIComponent(email)}`);
+  };
 
   return (
     <>
@@ -75,8 +82,12 @@ export function CustomersTable({ customers }: { customers: Customer[] }) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>View Details</DropdownMenuItem>
-                      <DropdownMenuItem>View Orders</DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href={`/samar/customers/${customer.id}`}>View Details</Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => handleViewOrders(customer.email)}>
+                        View Orders
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
@@ -109,8 +120,12 @@ export function CustomersTable({ customers }: { customers: Customer[] }) {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>View Details</DropdownMenuItem>
-                          <DropdownMenuItem>View Orders</DropdownMenuItem>
+                           <DropdownMenuItem asChild>
+                             <Link href={`/samar/customers/${customer.id}`}>View Details</Link>
+                           </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewOrders(customer.email)}>
+                            View Orders
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                 </CardHeader>
