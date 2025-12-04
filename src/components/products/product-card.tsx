@@ -14,6 +14,7 @@ import { useCart } from '@/contexts/cart-context';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Separator } from '../ui/separator';
+import { categories } from '@/lib/placeholder-data';
 
 type ProductCardProps = {
   product: Product;
@@ -33,6 +34,8 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
     addToCart(product);
     router.push('/checkout');
   }
+
+  const category = categories.find(c => c.id === product.categoryId);
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl group">
@@ -55,8 +58,13 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             <WishlistButton productId={product.id} />
         </div>
       </CardHeader>
-      <CardContent className="p-4 flex-grow flex flex-col items-center text-center">
-        <CardTitle className="text-base leading-tight mb-2 flex-grow flex flex-col justify-center min-h-[2.5em]">
+      <CardContent className="p-3 flex-grow flex flex-col items-center text-center">
+        {category && (
+            <Link href={`/${category.slug}`}>
+                <Badge variant="secondary" className="mb-1 w-fit text-xs">{category.name}</Badge>
+            </Link>
+        )}
+        <CardTitle className="text-sm leading-snug mb-1 flex-grow flex flex-col justify-center min-h-[2.5em]">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors no-underline">
             {product.name}
           </Link>
@@ -64,22 +72,22 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
         <div className="flex items-baseline gap-2 mt-auto">
             {onSale ? (
                 <>
-                    <p className="text-xl font-bold font-headline text-maroon">{formatPrice(product.salePrice!)}</p>
-                    <p className="text-sm font-medium text-muted-foreground line-through">{formatPrice(product.price)}</p>
+                    <p className="text-lg font-bold font-headline text-maroon">{formatPrice(product.salePrice!)}</p>
+                    <p className="text-xs font-medium text-muted-foreground line-through">{formatPrice(product.price)}</p>
                 </>
             ) : (
-                <p className="text-xl font-bold font-headline text-primary">{formatPrice(product.price)}</p>
+                <p className="text-lg font-bold font-headline text-primary">{formatPrice(product.price)}</p>
             )}
         </div>
       </CardContent>
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-2 pt-0">
         <div className="flex flex-col w-full gap-2">
-            <Button variant="outline" onClick={() => addToCart(product)}>
+            <Button variant="outline" size="sm" onClick={() => addToCart(product)}>
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart
             </Button>
             {showBuyNow && (
-              <Button className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={handleBuyNow}>
+              <Button size="sm" className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={handleBuyNow}>
                 <Zap className="mr-2 h-4 w-4" />
                 Buy Now
               </Button>
