@@ -28,6 +28,39 @@ import { useCart } from '@/contexts/cart-context';
 import type { Product } from '@/lib/types';
 
 
+function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { product: Product, onAddToCart: () => void, onBuyNow: () => void, onSale: boolean }) {
+    const discountPercentage = onSale
+    ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
+    : 0;
+
+  return (
+    <div className="md:hidden fixed bottom-16 left-0 right-0 bg-background border-t p-4 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] z-40">
+        <div className="flex items-center justify-between mb-3">
+             {onSale ? (
+                <div className="flex items-baseline gap-2">
+                    <p className="text-xl font-bold text-maroon">{formatPrice(product.salePrice!)}</p>
+                    <p className="text-sm font-medium text-muted-foreground line-through">{formatPrice(product.price)}</p>
+                    <p className="text-sm font-bold text-green-600">{discountPercentage}% OFF</p>
+                </div>
+            ) : (
+                <p className="text-xl font-bold text-primary">{formatPrice(product.price)}</p>
+            )}
+             <p className="text-xs text-muted-foreground">Inclusive of all taxes</p>
+        </div>
+        <div className="flex items-center gap-4">
+            <Button size="lg" variant="outline" className="w-full" onClick={onAddToCart}>
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                Add to Cart
+            </Button>
+            <Button size="lg" className="w-full" onClick={onBuyNow}>
+                <Zap className="mr-2 h-5 w-5"/>
+                Buy Now
+            </Button>
+        </div>
+    </div>
+  )
+}
+
 export function ProductPageClient({ product }: { product: Product }) {
   const { addToCart } = useCart();
   const router = useRouter();
@@ -35,6 +68,10 @@ export function ProductPageClient({ product }: { product: Product }) {
 
   if (!product) {
     notFound();
+  }
+
+  const handleAddToCart = () => {
+    addToCart(product);
   }
 
   const handleBuyNow = () => {
@@ -51,7 +88,7 @@ export function ProductPageClient({ product }: { product: Product }) {
 
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
+      <div className="grid md:grid-cols-2 gap-8 lg:gap-16 pb-24 md:pb-0">
         <div>
           <Carousel className="w-full">
             <CarouselContent>
@@ -98,9 +135,9 @@ export function ProductPageClient({ product }: { product: Product }) {
           
           <p className="text-muted-foreground mb-6">{product.description}</p>
           
-          <div className="pt-6 space-y-6">
+          <div className="pt-6 space-y-6 hidden md:block">
             <div className="flex items-center gap-4">
-              <Button size="lg" className="w-full" onClick={() => addToCart(product)}>
+              <Button size="lg" className="w-full" onClick={handleAddToCart}>
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
@@ -195,8 +232,8 @@ export function ProductPageClient({ product }: { product: Product }) {
           </div>
          </>
        )}
-
+      
+      <StickyAddToCartBar product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onSale={onSale} />
     </>
   );
 }
-
