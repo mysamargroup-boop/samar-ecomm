@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -6,6 +5,8 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Home, ShoppingCart, User, Heart } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { useWishlist } from '@/contexts/wishlist-context';
+import { useCart } from '@/contexts/cart-context';
 
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -20,8 +21,10 @@ const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export function MobileBottomNav() {
   const pathname = usePathname();
-  const wishlistCount = 3; // Placeholder
-  const cartCount = 2; // Placeholder
+  const { wishlistItems } = useWishlist();
+  const { cartCount } = useCart();
+  const wishlistCount = wishlistItems.length;
+
   const whatsappLink = "https://wa.me/"; // Replace with your WhatsApp number if needed
 
   const navItems = [

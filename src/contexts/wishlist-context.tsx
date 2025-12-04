@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useState, ReactNode, useEffect, useContext } from 'react';
 
 type WishlistContextType = {
   wishlistItems: string[];
@@ -13,6 +13,9 @@ export const WishlistContext = createContext<WishlistContextType>({
   addToWishlist: () => {},
   removeFromWishlist: () => {},
 });
+
+export const useWishlist = () => useContext(WishlistContext);
+
 
 type WishlistProviderProps = {
   children: ReactNode;

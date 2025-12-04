@@ -1,26 +1,20 @@
-
 'use client';
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
+import { useCart } from "@/contexts/cart-context";
+import { Input } from "@/components/ui/input";
+import { Trash2 } from "lucide-react";
 
 export default function CartPage() {
-    const cartItems = [
-        { product: products[0], quantity: 1 },
-        { product: products[2], quantity: 2 },
-    ];
-
-    const subtotal = cartItems.reduce((acc, item) => {
-        const price = item.product.salePrice ?? item.product.price;
-        return acc + price * item.quantity;
-    }, 0);
-    const shipping = 50.00;
-    const total = subtotal + shipping;
+    const { cartItems, cartTotal, removeFromCart, updateQuantity } = useCart();
+    
+    const shipping = cartTotal > 0 ? 50.00 : 0;
+    const total = cartTotal + shipping;
 
     return (
         <div className="container mx-auto px-4 py-12">
@@ -32,13 +26,25 @@ export default function CartPage() {
                              {cartItems.length > 0 ? (
                                 <ul className="divide-y">
                                     {cartItems.map(item => (
-                                        <li key={item.product.id} className="flex items-center gap-4 p-4">
-                                            <Image src={item.product.images[0]} alt={item.product.name} width={80} height={80} className="rounded-md object-cover" data-ai-hint="product image"/>
+                                        <li key={item.id} className="flex items-center gap-4 p-4">
+                                            <Image src={item.image} alt={item.name} width={80} height={80} className="rounded-md object-cover" data-ai-hint="product image"/>
                                             <div className="flex-1">
-                                                <h3 className="font-semibold">{item.product.name}</h3>
-                                                <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
+                                                <h3 className="font-semibold">{item.name}</h3>
+                                                <p className="text-sm text-muted-foreground">{formatPrice(item.price)}</p>
                                             </div>
-                                            <p className="font-semibold">{formatPrice((item.product.salePrice ?? item.product.price) * item.quantity)}</p>
+                                            <div className="flex items-center gap-2">
+                                                <Input 
+                                                    type="number" 
+                                                    value={item.quantity} 
+                                                    onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                                                    className="w-16 h-9"
+                                                    min="1"
+                                                />
+                                                <Button variant="ghost" size="icon" onClick={() => removeFromCart(item.id)}>
+                                                    <Trash2 className="h-4 w-4 text-destructive"/>
+                                                </Button>
+                                            </div>
+                                            <p className="font-semibold w-20 text-right">{formatPrice(item.price * item.quantity)}</p>
                                         </li>
                                     ))}
                                 </ul>
@@ -56,7 +62,7 @@ export default function CartPage() {
                         <CardContent className="space-y-4">
                             <div className="flex justify-between">
                                 <span>Subtotal</span>
-                                <span>{formatPrice(subtotal)}</span>
+                                <span>{formatPrice(cartTotal)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Shipping</span>

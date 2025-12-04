@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { MobileBottomNav } from '@/components/layout/mobile-bottom-nav';
 import { WishlistProvider } from '@/contexts/wishlist-context';
 import Link from 'next/link';
+import { CartProvider } from '@/contexts/cart-context';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -40,12 +41,14 @@ export default function RootLayout({
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
         <WishlistProvider>
-          <AnnouncementBar />
-          <AppHeader />
-          <main className="flex-grow pb-20 md:pb-0">{children}</main>
-          <Footer />
-          <MobileBottomNav />
-          <Toaster />
+          <CartProvider>
+            <AnnouncementBar />
+            <AppHeader />
+            <main className="flex-grow pb-20 md:pb-0">{children}</main>
+            <Footer />
+            <MobileBottomNav />
+            <Toaster />
+          </CartProvider>
         </WishlistProvider>
       </body>
     </html>

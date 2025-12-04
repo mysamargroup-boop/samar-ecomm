@@ -1,4 +1,3 @@
-
 import { z } from 'zod';
 
 export const CategorySchema = z.object({
@@ -78,3 +77,12 @@ export const BlogPostSchema = z.object({
     tags: z.array(z.string()),
 });
 export type BlogPost = z.infer<typeof BlogPostSchema>;
+
+
+export type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+}

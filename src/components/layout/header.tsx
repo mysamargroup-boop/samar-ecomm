@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -13,13 +12,14 @@ import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import { WishlistContext } from '@/contexts/wishlist-context';
 import { HeaderSearch } from './header-search';
+import { useCart } from '@/contexts/cart-context';
 
 export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const { wishlistItems } = useContext(WishlistContext);
+  const { cartCount } = useCart();
   const wishlistCount = wishlistItems.length;
-  const cartCount = 2; // Placeholder value
 
   // Hide header on admin routes
   if (pathname.startsWith('/samar') || pathname.startsWith('/login')) {

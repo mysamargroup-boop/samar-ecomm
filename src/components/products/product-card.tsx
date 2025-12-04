@@ -1,4 +1,6 @@
 
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/lib/types';
@@ -9,6 +11,8 @@ import { Badge } from '@/components/ui/badge';
 import { categories } from '@/lib/placeholder-data';
 import { WishlistButton } from './wishlist-button';
 import { ShoppingCart, Zap } from 'lucide-react';
+import { useCart } from '@/contexts/cart-context';
+import { useRouter } from 'next/navigation';
 
 type ProductCardProps = {
   product: Product;
@@ -21,6 +25,14 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
   const discountPercentage = onSale
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
     : 0;
+
+  const { addToCart } = useCart();
+  const router = useRouter();
+
+  const handleBuyNow = () => {
+    addToCart(product);
+    router.push('/checkout');
+  }
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl group">
@@ -65,17 +77,15 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
       </CardContent>
       <CardFooter className="p-4 pt-0">
         <div className="flex flex-col w-full gap-2">
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => addToCart(product)}>
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart
             </Button>
             {showBuyNow && (
-              <Link href="/checkout">
-                  <Button className="w-full">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Buy Now
-                  </Button>
-              </Link>
+              <Button className="w-full" onClick={handleBuyNow}>
+                <Zap className="mr-2 h-4 w-4" />
+                Buy Now
+              </Button>
             )}
         </div>
       </CardFooter>

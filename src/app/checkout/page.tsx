@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -7,20 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { products } from "@/lib/placeholder-data";
 import { formatPrice } from "@/lib/utils";
 import { createPaymentOrder, verifyPaymentSignature } from "@/lib/payment";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import type { Metadata } from 'next';
+import { useCart } from '@/contexts/cart-context';
 
-// This is a client-side only component to handle the payment button
 function PaymentButton({ amount, disabled }: { amount: number, disabled: boolean }) {
   const { toast } = useToast();
   const router = useRouter();
+  const { clearCart } = useCart();
 
   async function handlePayment() {
-    const response = await createPaymentOrder(amount * 100); // Amount in paise
+    const response = await createPaymentOrder(amount * 100);
 
     if (!response.success) {
       toast({
@@ -47,6 +45,7 @@ function PaymentButton({ amount, disabled }: { amount: number, disabled: boolean
         title: 'Payment Successful!',
         description: 'Your order has been placed.',
       });
+      clearCart();
       router.push('/order-confirmation');
     } else {
       toast({
@@ -65,24 +64,14 @@ function PaymentButton({ amount, disabled }: { amount: number, disabled: boolean
 
 export default function CheckoutPage() {
     const [isClient, setIsClient] = useState(false);
-
+    const { cartItems, cartTotal } = useCart();
+    
     useEffect(() => {
         setIsClient(true);
     }, []);
 
-    // In a real app, this data would come from a cart state management
-    const cartItems = [
-        { product: products[0], quantity: 1 },
-        { product: products[2], quantity: 2 },
-    ];
-
-    const subtotal = cartItems.reduce((acc, item) => {
-        const price = item.product.salePrice ?? item.product.price;
-        return acc + price * item.quantity;
-    }, 0);
-    const shipping = 50.00;
-    const total = subtotal + shipping;
-
+    const shipping = cartTotal > 0 ? 50.00 : 0;
+    const total = cartTotal + shipping;
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-4xl">
@@ -153,7 +142,7 @@ export default function CheckoutPage() {
                          <CardContent className="space-y-4">
                             <div className="flex justify-between">
                                 <span>Subtotal</span>
-                                <span>{formatPrice(subtotal)}</span>
+                                <span>{formatPrice(cartTotal)}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Shipping</span>
