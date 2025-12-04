@@ -6,8 +6,9 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, ResponsiveContaine
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { formatPrice } from '@/lib/utils';
 import { ChartTooltipContent } from '@/components/ui/chart';
+import { useEffect, useState } from 'react';
 
-const chartData = [
+const generateChartData = () => [
   { month: 'Jan', total: Math.floor(Math.random() * 5000) + 1000 },
   { month: 'Feb', total: Math.floor(Math.random() * 5000) + 1000 },
   { month: 'Mar', total: Math.floor(Math.random() * 5000) + 1000 },
@@ -23,6 +24,20 @@ const chartData = [
 ];
 
 export function SalesAnalyticsChart() {
+  const [chartData, setChartData] = useState<any[]>([]);
+
+  useEffect(() => {
+    setChartData(generateChartData());
+  }, []);
+
+  if (chartData.length === 0) {
+    return (
+       <div className="w-full h-[350px] flex items-center justify-center">
+        <p>Loading chart data...</p>
+      </div>
+    )
+  }
+  
   return (
     <ResponsiveContainer width="100%" height={350}>
       <BarChart data={chartData}>
