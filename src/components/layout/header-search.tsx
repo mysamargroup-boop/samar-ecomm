@@ -103,7 +103,7 @@ export function HeaderSearch() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute inset-y-0 right-0 h-full w-10"
+                        className="absolute inset-y-0 right-0 h-full w-10 rounded-full"
                         aria-label="Clear search"
                         onClick={handleClear}
                     >
