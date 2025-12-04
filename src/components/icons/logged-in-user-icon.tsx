@@ -21,7 +21,7 @@ export function LoggedInUserIcon(props: React.SVGProps<SVGSVGElement>) {
       </defs>
       <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
       <circle cx="9" cy="7" r="4" />
-      <polygon points="13 2 15 7 21 7 17 11 18 17 13 14 8 17 9 11 5 7 11 7" fill="url(#green-gradient)" stroke="none" />
+      <polyline points="16 11 18 13 22 9" stroke="url(#green-gradient)" strokeWidth="2.5" fill="none"/>
     </svg>
   );
 }
