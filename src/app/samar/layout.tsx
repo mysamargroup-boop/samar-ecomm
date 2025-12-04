@@ -4,6 +4,7 @@
 import { SamarSidebar, SamarMobileHeader } from '@/components/layout/samar-sidebar';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { ThemeProvider } from '@/components/ui/theme-provider';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
 
@@ -55,21 +56,23 @@ export default function SamarLayout({
 
   // If on a public samar page (login/verify), just render the content.
   if (isLoginPage || isVerifyPage) {
-    return <>{children}</>;
+    return <ThemeProvider attribute="class" defaultTheme="system" enableSystem>{children}</ThemeProvider>;
   }
 
   // If authenticated, show the full samar layout.
   if (isAuthenticated) {
     return (
-      <div className="flex min-h-screen bg-background">
-        <SamarSidebar />
-        <div className="flex flex-col flex-1">
-          <SamarMobileHeader />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8">
-            {children}
-          </main>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <div className="flex min-h-screen bg-background">
+          <SamarSidebar />
+          <div className="flex flex-col flex-1">
+            <SamarMobileHeader />
+            <main className="flex-1 p-4 sm:p-6 lg:p-8">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
   

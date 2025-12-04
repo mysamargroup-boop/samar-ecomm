@@ -23,6 +23,7 @@ import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { useState } from 'react';
 import { useAuth } from '@/contexts/auth-context';
+import { ThemeToggle } from '../ui/theme-toggle';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
 
@@ -87,23 +88,24 @@ export function SamarSidebar() {
 
   return (
     <aside className="w-64 flex-shrink-0 bg-sidebar border-r hidden md:flex flex-col">
-      <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
+      <div className="h-16 flex items-center justify-between px-6 border-b border-sidebar-border">
         <Link href="/samar" className="flex items-center gap-2 font-bold font-headline text-sidebar-foreground">
           <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
           <span>Samar Store</span>
         </Link>
       </div>
       <SidebarNavLinks />
-      <div className="mt-auto p-2 border-t border-sidebar-border">
+      <div className="mt-auto p-2 border-t border-sidebar-border flex items-center justify-between">
          <button
             onClick={handleLogout}
             className={cn(
-              'w-full flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
+              'flex-1 flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
             )}
           >
             <LogOut className="h-4 w-4" />
             <span>Logout</span>
           </button>
+          <ThemeToggle />
       </div>
     </aside>
   );
@@ -156,7 +158,9 @@ export function SamarMobileHeader() {
             <span>Samar</span>
           </Link>
        </div>
-       <div className="w-8"></div>
+       <div className="w-8">
+        <ThemeToggle />
+       </div>
     </header>
   )
 }
