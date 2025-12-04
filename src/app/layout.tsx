@@ -40,8 +40,8 @@ export default function RootLayout({
   const pathname = usePathname();
   const isSamarRoute = pathname.startsWith('/samar');
   return (
-    <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
+    <html lang="en" className="h-full">
+      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)} suppressHydrationWarning>
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
