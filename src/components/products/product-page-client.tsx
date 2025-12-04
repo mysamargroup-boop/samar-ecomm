@@ -34,7 +34,7 @@ import { Breadcrumbs } from '../ui/breadcrumbs';
 function SaleCountdownTimer({ endDate }: { endDate: Date }) {
   const calculateTimeLeft = () => {
     const difference = +new Date(endDate) - +new Date();
-    let timeLeft = {};
+    let timeLeft: { [key: string]: number } = {};
 
     if (difference > 0) {
       timeLeft = {
