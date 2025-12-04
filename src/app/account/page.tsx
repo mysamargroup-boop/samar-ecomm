@@ -128,7 +128,7 @@ export default function AccountPage() {
         <MoreNav />
         
         <Card className="overflow-hidden">
-            <Button variant="ghost" onClick={handleLogout} className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none justify-start p-4 text-base">
+            <Button variant="ghost" onClick={handleLogout} className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none justify-start px-4 py-5 text-base">
                 <LogOut className="mr-4 h-5 w-5" />
                 Logout
             </Button>
