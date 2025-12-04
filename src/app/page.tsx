@@ -1,6 +1,6 @@
 
 import { HeroSlider } from '@/components/home/hero-slider';
-import { products } from '@/lib/placeholder-data';
+import { products, blogPosts } from '@/lib/placeholder-data';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CategorySlider } from '@/components/home/category-slider';
@@ -9,11 +9,13 @@ import { FeaturedProductsSlider } from '@/components/home/featured-products-slid
 import { ProductCard } from '@/components/products/product-card';
 import { InfoBar } from '@/components/home/info-bar';
 import { RecentlyViewed } from '@/components/home/recently-viewed';
+import { BlogSection } from '@/components/home/blog-section';
 
 export default function Home() {
   const featuredProducts = products.slice(0, 8);
   const newArrivals = products.slice(2, 6);
   const recentlyViewedProducts = products.slice(6, 8);
+  const featuredBlogPosts = blogPosts.slice(0, 2);
 
   return (
     <div className="flex flex-col">
@@ -54,6 +56,7 @@ export default function Home() {
         </div>
       </section>
       
+      <BlogSection posts={featuredBlogPosts} />
       <RecentlyViewed products={recentlyViewedProducts} />
     </div>
   );
