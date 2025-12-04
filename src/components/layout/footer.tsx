@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowRight, ShoppingBag, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Twitter, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { categories } from '@/lib/placeholder-data';
@@ -37,8 +37,16 @@ export function Footer() {
     { name: 'Facebook', icon: Facebook, href: '#' },
     { name: 'Twitter', icon: Twitter, href: '#' },
     { name: 'Instagram', icon: Instagram, href: '#' },
+    { name: 'Youtube', icon: Youtube, href: '#'},
     { name: 'LinkedIn', icon: Linkedin, href: '#' },
   ];
+
+  const secondaryLegalLinks = [
+      { name: 'Privacy Policy', href: '/privacy' },
+      { name: 'Terms of Use', href: '/terms' },
+      { name: 'Warranty Policy', href: '#' },
+      { name: 'D2D Paid Repair Service Policy', href: '#' },
+  ]
 
   return (
     <footer className="bg-card border-t">
@@ -55,15 +63,6 @@ export function Footer() {
                 <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
                     <ArrowRight className="h-5 w-5"/>
                 </Button>
-            </div>
-             <div className="flex space-x-2 pt-2">
-              {socialLinks.map((social) => (
-                <a key={social.name} href={social.href} aria-label={social.name}>
-                  <Button variant="ghost" size="icon">
-                    <social.icon className="h-5 w-5" />
-                  </Button>
-                </a>
-              ))}
             </div>
           </div>
           
@@ -107,9 +106,35 @@ export function Footer() {
           </div>
 
         </div>
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Samar Store. All rights reserved.</p>
-          <p>Designed by Samar</p>
+        <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground space-y-6">
+            <div className="flex items-center justify-center gap-4">
+                <p className="font-medium">Let's get social</p>
+                <div className="flex space-x-1">
+                {socialLinks.map((social) => (
+                    <a key={social.name} href={social.href} aria-label={social.name}>
+                    <Button variant="ghost" size="icon">
+                        <social.icon className="h-5 w-5" />
+                    </Button>
+                    </a>
+                ))}
+                </div>
+            </div>
+
+             <div className="flex justify-center items-center flex-wrap gap-x-4 gap-y-2">
+                {secondaryLegalLinks.map((link, index) => (
+                    <React.Fragment key={link.name}>
+                        <Link href={link.href} className="hover:text-primary transition-colors text-xs">
+                            {link.name}
+                        </Link>
+                        {index < secondaryLegalLinks.length - 1 && <span className="text-muted-foreground/50">•</span>}
+                    </React.Fragment>
+                ))}
+            </div>
+
+            <p>&copy; {new Date().getFullYear()} Samar Store. All Rights Reserved.</p>
+            <p className="text-xs text-muted-foreground/80 max-w-2xl mx-auto">
+                For queries contact us: Manager, Samar Store, Unit no. 204 & 205, 2nd floor, D-wing & E-wing, Corporate Avenue, Andheri Ghatkopar Link Road, Mumbai, Maharashtra-400093, India
+            </p>
         </div>
       </div>
     </footer>
