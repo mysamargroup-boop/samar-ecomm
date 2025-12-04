@@ -72,7 +72,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       images: product?.images || [],
       variants: product?.variants || [],
       weight: product?.weight || undefined,
-      dimensions: product?.dimensions || '',
+      dimensions: product?.dimensions || { length: undefined, width: undefined, height: undefined },
       material: product?.material || '',
     },
   });
@@ -128,7 +128,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
-      if ((key === 'tags' || key === 'images' || key === 'variants') && Array.isArray(value)) {
+      if ((key === 'tags' || key === 'images' || key === 'variants' || key === 'dimensions') && (typeof value === 'object' && value !== null)) {
         formData.append(key, JSON.stringify(value));
       } else if (value instanceof Date) {
         formData.append(key, value.toISOString());
@@ -673,19 +673,45 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                     </FormItem>
                   )}
                 />
-                 <FormField
-                  control={form.control}
-                  name="dimensions"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Dimensions (LxWxH cm)</FormLabel>
-                      <FormControl>
-                        <Input placeholder="18x7.5x25" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                 <div className="space-y-2">
+                    <FormLabel>Dimensions (cm)</FormLabel>
+                    <div className="grid grid-cols-3 gap-2">
+                        <FormField
+                            control={form.control}
+                            name="dimensions.length"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input type="number" placeholder="L" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="dimensions.width"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input type="number" placeholder="W" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="dimensions.height"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input type="number" placeholder="H" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                     <FormMessage>{form.formState.errors.dimensions?.root?.message}</FormMessage>
+                 </div>
                 <FormField
                   control={form.control}
                   name="material"

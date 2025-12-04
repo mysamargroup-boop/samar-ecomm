@@ -11,6 +11,7 @@ export async function createProduct(formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
   
   const parsedTags = rawFormData.tags ? JSON.parse(rawFormData.tags as string) : [];
+  const parsedDimensions = rawFormData.dimensions ? JSON.parse(rawFormData.dimensions as string) : {};
 
   const validatedFields = ProductSchema.omit({ id: true, images: true }).safeParse({
     name: rawFormData.name,
@@ -20,6 +21,11 @@ export async function createProduct(formData: FormData) {
     categoryId: rawFormData.categoryId,
     inventory: Number(rawFormData.inventory),
     tags: parsedTags,
+    dimensions: {
+        length: parsedDimensions.length ? Number(parsedDimensions.length) : undefined,
+        width: parsedDimensions.width ? Number(parsedDimensions.width) : undefined,
+        height: parsedDimensions.height ? Number(parsedDimensions.height) : undefined,
+    }
   });
 
   if (!validatedFields.success) {
@@ -40,6 +46,8 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(id: string, formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
   const parsedTags = rawFormData.tags ? JSON.parse(rawFormData.tags as string) : [];
+  const parsedDimensions = rawFormData.dimensions ? JSON.parse(rawFormData.dimensions as string) : {};
+
 
    const validatedFields = ProductSchema.omit({ id: true, images: true }).safeParse({
     name: rawFormData.name,
@@ -49,6 +57,11 @@ export async function updateProduct(id: string, formData: FormData) {
     categoryId: rawFormData.categoryId,
     inventory: Number(rawFormData.inventory),
     tags: parsedTags,
+    dimensions: {
+        length: parsedDimensions.length ? Number(parsedDimensions.length) : undefined,
+        width: parsedDimensions.width ? Number(parsedDimensions.width) : undefined,
+        height: parsedDimensions.height ? Number(parsedDimensions.height) : undefined,
+    }
   });
 
   if (!validatedFields.success) {

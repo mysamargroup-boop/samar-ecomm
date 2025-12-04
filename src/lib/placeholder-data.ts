@@ -1,5 +1,4 @@
 
-
 import type { Product, Category, Order, Review, BlogPost } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
@@ -33,7 +32,7 @@ export const products: Product[] = [
     sku: 'SAM-HDP-BLK-01',
     tags: ['audio', 'tech', 'headphones'],
     weight: 254, // in grams
-    dimensions: '18 x 7.5 x 25 cm',
+    dimensions: { length: 18, width: 7.5, height: 25 },
   },
   {
     id: 'prod_2',
@@ -49,7 +48,7 @@ export const products: Product[] = [
     sku: 'SAM-SWT-S8-GRY-01',
     tags: ['smartwatch', 'fitness', 'tech'],
     weight: 45,
-    dimensions: '45 x 38 x 10.7 mm',
+    dimensions: { length: 4.5, width: 3.8, height: 1.07 },
   },
   {
     id: 'prod_3',
@@ -64,7 +63,6 @@ export const products: Product[] = [
     sku: 'SAM-TSH-MEN-WHT-M',
     tags: ['apparel', 't-shirt', 'basics'],
     weight: 180,
-    dimensions: 'N/A',
   },
   {
     id: 'prod_4',
@@ -80,7 +78,7 @@ export const products: Product[] = [
     sku: 'SAM-BAG-LTHR-BRN-01',
     tags: ['bags', 'leather', 'fashion'],
     weight: 1200,
-    dimensions: '42 x 30 x 12 cm',
+    dimensions: { length: 42, width: 30, height: 12 },
   },
   {
     id: 'prod_5',
@@ -95,7 +93,7 @@ export const products: Product[] = [
     sku: 'SAM-KITCH-ESP-01',
     tags: ['kitchen', 'coffee', 'home'],
     weight: 8500,
-    dimensions: '35 x 25 x 42 cm',
+    dimensions: { length: 35, width: 25, height: 42 },
   },
   {
     id: 'prod_6',
@@ -110,7 +108,7 @@ export const products: Product[] = [
     inventory: 120,
     sku: 'SAM-HOME-BLK-GRY-01',
     tags: ['home decor', 'textiles', 'cozy'],
-    dimensions: '127 x 152 cm',
+    dimensions: { length: 127, width: 152 },
   },
   {
     id: 'prod_7',

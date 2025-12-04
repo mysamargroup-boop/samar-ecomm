@@ -35,7 +35,11 @@ export const ProductSchema = z.object({
   tags: z.array(z.string()).optional(),
   variants: z.array(ProductVariantSchema).optional(),
   weight: z.number().optional(), // in grams
-  dimensions: z.string().optional(), // e.g., "10x5x2 cm"
+  dimensions: z.object({
+    length: z.number().optional(),
+    width: z.number().optional(),
+    height: z.number().optional(),
+  }).optional(),
   material: z.string().optional(),
 });
 export type Product = z.infer<typeof ProductSchema>;

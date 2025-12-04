@@ -145,6 +145,10 @@ export function ProductPageClient({ product }: { product: Product }) {
     .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
     .slice(0, 8);
 
+  const dimensionsString = product.dimensions && product.dimensions.length && product.dimensions.width && product.dimensions.height 
+    ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} cm`
+    : null;
+
   return (
     <>
       <div className="grid md:grid-cols-2 gap-8 lg:gap-16 pb-24 md:pb-0">
@@ -233,7 +237,7 @@ export function ProductPageClient({ product }: { product: Product }) {
               <AccordionContent>
                 <ul className="space-y-2 text-muted-foreground">
                     {product.weight && <li className="flex justify-between"><span>Weight</span><span>{product.weight}g</span></li>}
-                    {product.dimensions && <li className="flex justify-between"><span>Dimensions</span><span>{product.dimensions}</span></li>}
+                    {dimensionsString && <li className="flex justify-between"><span>Dimensions</span><span>{dimensionsString}</span></li>}
                     {product.material && <li className="flex justify-between"><span>Material</span><span>{product.material}</span></li>}
                      {product.tags && product.tags.length > 0 && (
                        <li className="flex justify-between items-start">
