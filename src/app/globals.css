@@ -32,6 +32,9 @@
     --radius: 0.5rem;
     --maroon: 0 100% 25%;
 
+    --buy-now-start: 142 76% 36%;
+    --buy-now-end: 142 76% 26%;
+
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 220 12% 10%;
     --sidebar-primary: 231 48% 48%;
@@ -41,8 +44,8 @@
     --sidebar-border: 220 13% 89%;
     --sidebar-ring: 231 48% 48%;
 
-    --font-body: 'Manrope', sans-serif;
-    --font-headline: 'Manrope', sans-serif;
+    --font-body: 'Poppins', sans-serif;
+    --font-headline: 'Poppins', sans-serif;
   }
  
   .dark {
@@ -71,6 +74,9 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
     --maroon: 0 100% 35%;
+
+    --buy-now-start: 142 76% 46%;
+    --buy-now-end: 142 76% 36%;
 
     --sidebar-background: 220 12% 12%;
     --sidebar-foreground: 220 13% 96%;

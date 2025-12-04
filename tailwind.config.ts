@@ -50,6 +50,8 @@ export default {
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         maroon: 'hsl(var(--maroon))',
+        'buy-now-start': 'hsl(var(--buy-now-start))',
+        'buy-now-end': 'hsl(var(--buy-now-end))',
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',

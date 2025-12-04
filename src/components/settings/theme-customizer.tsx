@@ -38,6 +38,14 @@ export function ThemeCustomizer() {
                     <Label>Accent Color</Label>
                     <ColorPicker initialColor="0 59% 45%" />
                 </div>
+                 <div className="space-y-2">
+                    <Label>Buy Now Button (Start)</Label>
+                    <ColorPicker initialColor="142 76% 36%" />
+                </div>
+                 <div className="space-y-2">
+                    <Label>Buy Now Button (End)</Label>
+                    <ColorPicker initialColor="142 76% 26%" />
+                </div>
             </div>
         </div>
          <div className="space-y-6">

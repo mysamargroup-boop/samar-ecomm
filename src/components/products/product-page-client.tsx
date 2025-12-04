@@ -26,6 +26,7 @@ import { FeaturedProductsSlider } from '@/components/home/featured-products-slid
 import { InfoBar } from '@/components/home/info-bar';
 import { useCart } from '@/contexts/cart-context';
 import type { Product } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 
 function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { product: Product, onAddToCart: () => void, onBuyNow: () => void, onSale: boolean }) {
@@ -52,7 +53,7 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
             </Button>
-            <Button size="lg" className="w-full" onClick={onBuyNow}>
+            <Button size="lg" className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={onBuyNow}>
                 <Zap className="mr-2 h-5 w-5"/>
                 Buy Now
             </Button>
@@ -141,7 +142,7 @@ export function ProductPageClient({ product }: { product: Product }) {
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
-              <Button size="lg" variant="secondary" className="w-full" onClick={handleBuyNow}>
+              <Button size="lg" className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={handleBuyNow}>
                   <Zap className="mr-2 h-5 w-5"/>
                   Buy Now
               </Button>

@@ -13,6 +13,7 @@ import { WishlistButton } from './wishlist-button';
 import { ShoppingCart, Zap } from 'lucide-react';
 import { useCart } from '@/contexts/cart-context';
 import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 type ProductCardProps = {
   product: Product;
@@ -82,7 +83,7 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
                 Add to Cart
             </Button>
             {showBuyNow && (
-              <Button className="w-full" onClick={handleBuyNow}>
+              <Button className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={handleBuyNow}>
                 <Zap className="mr-2 h-4 w-4" />
                 Buy Now
               </Button>
