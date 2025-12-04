@@ -22,6 +22,9 @@ import { ProductReviewForm } from '@/components/reviews/product-review-form';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { ProductCard } from '@/components/products/product-card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Breadcrumbs } from '@/components/ui/breadcrumbs';
+import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
+
 
 type Props = {
   params: { productId: string };
@@ -52,10 +55,20 @@ export default function ProductPage({ params }: Props) {
   const productReviews = allReviews.filter(r => r.productId === product.id && r.status === 'Approved');
   const relatedProducts = products
     .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
-    .slice(0, 4);
+    .slice(0, 8);
+
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+  ];
+  if (category) {
+    breadcrumbItems.push({ label: category.name, href: `/${category.slug}` });
+  }
+  breadcrumbItems.push({ label: product.name });
+
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-8 md:py-12">
+      <Breadcrumbs items={breadcrumbItems} />
       <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
         <div>
           <Carousel className="w-full">
@@ -198,11 +211,7 @@ export default function ProductPage({ params }: Props) {
             <div className="text-center">
               <h2 className="text-3xl font-bold font-headline">You Might Also Like</h2>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-              {relatedProducts.map(relatedProduct => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
-              ))}
-            </div>
+            <FeaturedProductsSlider products={relatedProducts} />
           </div>
          </>
        )}
