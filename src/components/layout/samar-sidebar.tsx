@@ -58,10 +58,6 @@ function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
           isActive ? 'text-sidebar-foreground bg-sidebar-accent font-medium' : ''
         )}
       >
-        <div className={cn(
-          "absolute left-0 top-1/2 -translate-y-1/2 h-0 w-1 bg-maroon rounded-r-full transition-all duration-200",
-          isActive ? "h-5" : "group-hover:h-3"
-        )}></div>
         <item.icon className="h-4 w-4" />
         {item.label}
       </Link>

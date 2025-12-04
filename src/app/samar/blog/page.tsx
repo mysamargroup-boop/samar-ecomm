@@ -15,8 +15,8 @@ import { BlogPostsTable } from '@/components/blog/blog-posts-table';
 export default function BlogSamarPage() {
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold font-headline text-center md:text-left">Blog Posts</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-3xl font-bold font-headline">Blog Posts</h1>
         <Link href="/samar/blog/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />

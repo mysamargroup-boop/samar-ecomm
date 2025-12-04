@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusCircle } from 'lucide-react';
@@ -14,8 +15,8 @@ import {
 export default function ProductsPage() {
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold font-headline text-center md:text-left">Products</h1>
+      <div className="flex items-center justify-between gap-4">
+        <h1 className="text-3xl font-bold font-headline">Products</h1>
         <Link href="/samar/products/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
