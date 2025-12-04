@@ -68,43 +68,44 @@ export function AppHeader() {
 
   const mobileNav = (
     <div className="flex flex-col h-full">
-       <div className="p-6">
+      <div className="p-6 border-b">
         <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setIsSheetOpen(false)}>
             <ShoppingBag className="h-6 w-6 text-primary" />
             <span className="font-bold text-lg font-headline">Samar Store</span>
         </Link>
-        <HeaderSearch />
-       </div>
+      </div>
 
-      <ScrollArea className="flex-grow px-6 -mx-6">
-        <nav className="flex flex-col gap-4">
-          <div>
-            <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">Shop by Category</p>
-            <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-4 py-2 text-base rounded-md hover:bg-muted">
-                  {link.label}
-                </Link>
-              ))}
+      <ScrollArea className="flex-grow">
+        <div className="p-6">
+          <nav className="flex flex-col gap-4">
+            <div>
+              <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">Shop by Category</p>
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link) => (
+                  <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-4 py-2 text-base rounded-md hover:bg-muted">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-          
-          <Separator />
-          
-          <div>
-             <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">More</p>
-             <div className="flex flex-col gap-1">
-              {moreLinks.map((link) => (
-                 <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-4 py-2 text-base rounded-md hover:bg-muted">
-                  {link.label}
-                </Link>
-              ))}
-             </div>
-          </div>
-        </nav>
+            
+            <Separator />
+            
+            <div>
+              <p className="font-semibold text-sm text-muted-foreground px-4 mb-2">More</p>
+              <div className="flex flex-col gap-1">
+                {moreLinks.map((link) => (
+                  <Link key={link.href} href={link.href} onClick={() => setIsSheetOpen(false)} className="px-4 py-2 text-base rounded-md hover:bg-muted">
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </nav>
+        </div>
       </ScrollArea>
 
-      <SheetFooter className="mt-auto border-t -mx-6 px-6 pt-6 flex-col items-center">
+      <SheetFooter className="mt-auto border-t p-6 flex-col items-center">
         <nav className="text-center mb-4">
             <span className="text-sm text-muted-foreground">
                 <Link href="/returns" className="hover:text-primary transition-colors" onClick={() => setIsSheetOpen(false)}>Return Policy</Link>
