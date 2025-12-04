@@ -7,6 +7,7 @@ import { CategorySlider } from '@/components/home/category-slider';
 import { PromoBanners } from '@/components/home/promo-banners';
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 import { ProductCard } from '@/components/products/product-card';
+import { InfoBar } from '@/components/home/info-bar';
 
 export default function Home() {
   const featuredProducts = products.slice(0, 8);
@@ -15,6 +16,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <HeroSlider />
+      <InfoBar />
       <CategorySlider />
       <PromoBanners />
       <section className="py-12 md:py-20 bg-background">
