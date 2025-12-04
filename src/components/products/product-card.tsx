@@ -34,10 +34,12 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             data-ai-hint="product image"
           />
         </Link>
-        <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
-            {onSale && (
+         {onSale && (
+            <div className="absolute top-2 left-2">
                 <Badge variant="destructive">{discountPercentage}% OFF</Badge>
-            )}
+            </div>
+        )}
+        <div className="absolute top-2 right-2">
             <WishlistButton productId={product.id} />
         </div>
       </CardHeader>
