@@ -64,7 +64,7 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
                 <Badge variant="secondary" className="mb-1 w-fit text-xs">{category.name}</Badge>
             </Link>
         )}
-        <CardTitle className="text-sm leading-snug mb-1 flex-grow flex flex-col justify-center min-h-[2.5em]">
+        <CardTitle className="text-base leading-snug mb-1 flex-grow flex flex-col justify-center min-h-[2.5em]">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors no-underline">
             {product.name}
           </Link>
