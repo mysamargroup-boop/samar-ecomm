@@ -1,5 +1,7 @@
+
 'use client';
 
+import React from 'react';
 import { ArrowRight, ShoppingBag, Twitter, Facebook, Instagram, Linkedin, Youtube } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
