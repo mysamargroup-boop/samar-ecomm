@@ -1,5 +1,4 @@
 
-
 import { z } from 'zod';
 
 export const CategorySchema = z.object({
@@ -30,7 +29,7 @@ export const ProductSchema = z.object({
   salePriceEndDate: z.date().optional(),
   categoryId: z.string(),
   slug: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with dashes'),
-  images: z.array(z.string().url('Must be a valid URL')),
+  images: z.array(z.string().url('Must be a valid URL')).min(1, 'At least one image is required'),
   inventory: z.number().int().min(0, 'Inventory cannot be negative'),
   sku: z.string().optional(),
   tags: z.array(z.string()).optional(),

@@ -2,7 +2,7 @@
 'use client';
 
 import { HeroSlider } from '@/components/home/hero-slider';
-import { products, blogPosts } from '@/lib/placeholder-data';
+import { blogPosts } from '@/lib/placeholder-data';
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 import { InfoBar } from '@/components/home/info-bar';
 import { CategorySlider } from '@/components/home/category-slider';
@@ -10,14 +10,29 @@ import { PromoBanners } from '@/components/home/promo-banners';
 import { RecentlyViewed } from '@/components/home/recently-viewed';
 import { BlogSection } from '@/components/home/blog-section';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useCollection, useMemoFirebase } from '@/firebase';
+import { collection, getFirestore, limit, query, where } from 'firebase/firestore';
+import type { Product } from '@/lib/types';
 
-export default function Home() {
-  const featuredProducts = products.slice(0, 8);
-  const onSaleProducts = products.filter(p => p.salePrice).slice(0, 8);
+function HomePageContent() {
+  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
+
+  const featuredQuery = useMemoFirebase(
+    () => firestore ? query(collection(firestore, 'products'), limit(8)) : null,
+    [firestore]
+  );
+  const onSaleQuery = useMemoFirebase(
+    () => firestore ? query(collection(firestore, 'products'), where('salePrice', '!=', null), limit(8)) : null,
+    [firestore]
+  );
+
+  const { data: featuredProducts, isLoading: isLoadingFeatured } = useCollection<Product>(featuredQuery);
+  const { data: onSaleProducts, isLoading: isLoadingSale } = useCollection<Product>(onSaleQuery);
+  
   const recentPosts = blogPosts.slice(0, 3);
-  const recentlyViewedProducts = products.slice(4,9);
+  const recentlyViewedProducts = featuredProducts?.slice(4, 9) || [];
 
 
   return (
@@ -39,7 +54,13 @@ export default function Home() {
                 </Button>
             </Link>
           </div>
-          <FeaturedProductsSlider products={featuredProducts} />
+          {isLoadingFeatured ? (
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <FeaturedProductsSlider products={featuredProducts || []} />
+          )}
         </div>
       </section>
 
@@ -58,14 +79,23 @@ export default function Home() {
                 </Button>
             </Link>
           </div>
-          <FeaturedProductsSlider products={onSaleProducts} />
+          {isLoadingSale ? (
+             <div className="flex items-center justify-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <FeaturedProductsSlider products={onSaleProducts || []} />
+          )}
         </div>
       </section>
 
       <RecentlyViewed products={recentlyViewedProducts} />
 
       <BlogSection posts={recentPosts} />
-
     </>
   );
+}
+
+export default function Home() {
+  return <HomePageContent />;
 }

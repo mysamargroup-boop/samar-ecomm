@@ -5,6 +5,7 @@ import { SamarSidebar, SamarMobileHeader } from '@/components/layout/samar-sideb
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@/components/ui/theme-provider';
+import { FirebaseClientProvider } from '@/firebase';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
 
@@ -56,22 +57,28 @@ export default function SamarLayout({
 
   // If on a public samar page (login/verify), just render the content.
   if (isLoginPage || isVerifyPage) {
-    return <ThemeProvider attribute="class" defaultTheme="system" enableSystem>{children}</ThemeProvider>;
+    return (
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <FirebaseClientProvider>{children}</FirebaseClientProvider>
+      </ThemeProvider>
+    );
   }
 
   // If authenticated, show the full samar layout.
   if (isAuthenticated) {
     return (
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <div className="flex min-h-screen bg-background">
-          <SamarSidebar />
-          <div className="flex flex-col flex-1">
-            <SamarMobileHeader />
-            <main className="flex-1 p-4 sm:p-6 lg:p-8">
-              {children}
-            </main>
+        <FirebaseClientProvider>
+          <div className="flex min-h-screen bg-background">
+            <SamarSidebar />
+            <div className="flex flex-col flex-1">
+              <SamarMobileHeader />
+              <main className="flex-1 p-4 sm:p-6 lg:p-8">
+                {children}
+              </main>
+            </div>
           </div>
-        </div>
+        </FirebaseClientProvider>
       </ThemeProvider>
     );
   }

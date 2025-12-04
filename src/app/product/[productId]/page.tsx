@@ -1,29 +1,38 @@
 
-import { products, categories, reviews as allReviews } from '@/lib/placeholder-data';
+'use client';
+
+import { products as placeholderProducts, categories, reviews as allReviews } from '@/lib/placeholder-data';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { ProductPageClient } from '@/components/products/product-page-client';
+import { useDoc, useMemoFirebase } from '@/firebase';
+import { doc, getFirestore } from 'firebase/firestore';
+import { Product } from '@/lib/types';
+import { Skeleton } from '@/components/ui/skeleton';
 
-type Props = {
-  params: { productId: string };
-};
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = products.find((p) => p.id === params.productId);
-  if (!product) {
-    return {
-      title: 'Product Not Found',
-    };
+function ProductPageContent({ productId }: { productId: string }) {
+  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
+  const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
+  const { data: product, isLoading } = useDoc<Product>(productRef);
+  
+  if (isLoading) {
+    return (
+       <div className="container mx-auto px-4 py-8 md:py-12">
+        <Skeleton className="h-6 w-1/3 mb-8" />
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
+          <Skeleton className="aspect-square w-full rounded-lg" />
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-1/2" />
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+      </div>
+    );
   }
-  return {
-    title: `${product.name} | Samar Store`,
-    description: product.description.substring(0, 160),
-  };
-}
-
-export default function ProductPage({ params }: Props) {
-  const product = products.find((p) => p.id === params.productId);
 
   if (!product) {
     notFound();
@@ -48,8 +57,7 @@ export default function ProductPage({ params }: Props) {
   );
 }
 
-export async function generateStaticParams() {
-    return products.map(product => ({
-        productId: product.id,
-    }));
+
+export default function ProductPage({ params }: { params: { productId: string } }) {
+  return <ProductPageContent productId={params.productId} />;
 }

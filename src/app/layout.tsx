@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { CartProvider } from '@/contexts/cart-context';
 import { AuthProvider } from '@/contexts/auth-context';
 import { usePathname } from 'next/navigation';
+import { FirebaseClientProvider } from '@/firebase';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -42,18 +43,20 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)} suppressHydrationWarning>
-        <AuthProvider>
-          <WishlistProvider>
-            <CartProvider>
-              {!isSamarRoute && <AnnouncementBar />}
-              <AppHeader />
-              <main className="flex-grow pb-20 md:pb-0">{children}</main>
-              <Footer />
-              <MobileBottomNav />
-              <Toaster />
-            </CartProvider>
-          </WishlistProvider>
-        </AuthProvider>
+        <FirebaseClientProvider>
+          <AuthProvider>
+            <WishlistProvider>
+              <CartProvider>
+                {!isSamarRoute && <AnnouncementBar />}
+                <AppHeader />
+                <main className="flex-grow pb-20 md:pb-0">{children}</main>
+                <Footer />
+                <MobileBottomNav />
+                <Toaster />
+              </CartProvider>
+            </WishlistProvider>
+          </AuthProvider>
+        </FirebaseClientProvider>
       </body>
     </html>
   );
