@@ -9,6 +9,7 @@ import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { Input } from '../ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { PaymentMethods } from './payment-methods';
 
 export function Footer() {
   const pathname = usePathname();
@@ -158,6 +159,7 @@ export function Footer() {
 
 
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground space-y-6">
+            <PaymentMethods />
             <div className="flex items-center justify-center gap-4">
                 <p className="font-medium">Let's get social</p>
                 <div className="flex space-x-1">
