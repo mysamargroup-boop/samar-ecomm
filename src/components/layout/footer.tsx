@@ -120,13 +120,13 @@ export function Footer() {
 
          {/* Mobile Footer */}
         <div className="md:hidden">
-           <div className="flex flex-col space-y-4 col-span-2 mb-8">
+           <div className="flex flex-col items-center text-center space-y-4 col-span-2 mb-8">
             <Link href="/" className="flex items-center space-x-2">
               <ShoppingBag className="h-8 w-8 text-primary" />
               <span className="text-xl font-bold font-headline">Samar Store</span>
             </Link>
              <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
-            <div className="relative max-w-sm">
+            <div className="relative max-w-sm w-full">
                 <Input placeholder="Enter your email address" className="pr-10 h-11"/>
                 <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
                     <ArrowRight className="h-5 w-5"/>
