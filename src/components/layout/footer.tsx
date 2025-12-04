@@ -59,6 +59,27 @@ export function Footer() {
     { title: 'Legal', links: legalLinks },
   ];
 
+  const SocialAndPayments = () => (
+    <>
+      <div className="space-y-4">
+        <h3 className="font-semibold font-headline">Let's get social</h3>
+        <div className="flex space-x-1">
+          {socialLinks.map((social) => (
+              <a key={social.name} href={social.href} aria-label={social.name}>
+              <Button variant="ghost" size="icon">
+                  <social.icon className="h-5 w-5" />
+              </Button>
+              </a>
+          ))}
+        </div>
+      </div>
+      <div className="space-y-4">
+        <h3 className="font-semibold font-headline">We Accept</h3>
+        <PaymentMethods />
+      </div>
+    </>
+  );
+
 
   return (
     <footer className="bg-card border-t">
@@ -105,17 +126,8 @@ export function Footer() {
             </ul>
           </div>
           
-          <div>
-            <h3 className="font-semibold mb-4 font-headline">Legal</h3>
-            <ul className="space-y-2">
-                {legalLinks.map((link) => (
-                  <li key={link.name}>
-                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                          {link.name}
-                      </Link>
-                  </li>
-                ))}
-            </ul>
+          <div className="flex flex-col space-y-6">
+            <SocialAndPayments />
           </div>
 
         </div>
@@ -139,41 +151,37 @@ export function Footer() {
            <Accordion type="multiple" className="w-full">
             {linkSections.map((section) => (
                 <AccordionItem key={section.title} value={section.title}>
-                <AccordionTrigger className="font-semibold font-headline text-base py-4">
-                    {section.title}
-                </AccordionTrigger>
-                <AccordionContent>
-                    <ul className="space-y-3 pl-1">
-                    {section.links.map((link) => (
-                        <li key={link.name}>
-                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                            {link.name}
-                        </Link>
-                        </li>
-                    ))}
-                    </ul>
-                </AccordionContent>
+                  <AccordionTrigger className="font-semibold font-headline text-base py-4">
+                      {section.title}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                      <ul className="space-y-3 pl-1">
+                      {section.links.map((link) => (
+                          <li key={link.name}>
+                          <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                              {link.name}
+                          </Link>
+                          </li>
+                      ))}
+                      </ul>
+                  </AccordionContent>
                 </AccordionItem>
             ))}
+             <AccordionItem value="social-payments">
+                <AccordionTrigger className="font-semibold font-headline text-base py-4">
+                  Social & Payments
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-6">
+                    <SocialAndPayments />
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
         </div>
 
 
         <div className="mt-12 border-t pt-8 text-center text-sm text-muted-foreground space-y-6">
-            <PaymentMethods />
-            <div className="flex items-center justify-center gap-4">
-                <p className="font-medium">Let's get social</p>
-                <div className="flex space-x-1">
-                {socialLinks.map((social) => (
-                    <a key={social.name} href={social.href} aria-label={social.name}>
-                    <Button variant="ghost" size="icon">
-                        <social.icon className="h-5 w-5" />
-                    </Button>
-                    </a>
-                ))}
-                </div>
-            </div>
-
              <div className="flex justify-center items-center flex-wrap gap-x-4 gap-y-2">
                 {secondaryLegalLinks.map((link, index) => (
                     <React.Fragment key={link.name}>

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import type { BlogPost } from '@/lib/types';
@@ -7,6 +8,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
+import React from 'react';
 
 type BlogCardProps = {
   post: BlogPost;
@@ -38,13 +40,14 @@ export function BlogCard({ post }: BlogCardProps) {
         <p className="text-sm text-muted-foreground mb-4 h-16 overflow-hidden">
           {post.excerpt}
         </p>
-        <Button asChild variant="outline" className="rounded-full">
-            <Link href={`/blog/${post.slug}`}>
-                Read More
-                <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-        </Button>
+        <Link href={`/blog/${post.slug}`} legacyBehavior>
+          <Button variant="outline" className="rounded-full">
+              Read More
+              <ArrowRight className="ml-2 h-4 w-4 inline" />
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
 }
+
