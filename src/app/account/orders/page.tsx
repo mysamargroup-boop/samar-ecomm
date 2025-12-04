@@ -21,7 +21,7 @@ function AccountOrdersContent() {
   if (isLoading) {
     return (
         <div className="space-y-8">
-            <h1 className="text-3xl font-bold font-headline">My Orders</h1>
+            <h1 className="text-3xl font-bold font-headline text-center">My Orders</h1>
             <div className="space-y-6">
                 <Skeleton className="h-48 w-full" />
                 <Skeleton className="h-48 w-full" />
@@ -32,7 +32,7 @@ function AccountOrdersContent() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold font-headline">My Orders</h1>
+      <h1 className="text-3xl font-bold font-headline text-center">My Orders</h1>
 
       {customerOrders && customerOrders.length > 0 ? (
         <div className="space-y-6">

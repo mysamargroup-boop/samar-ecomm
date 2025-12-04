@@ -91,7 +91,7 @@ function ProfilePageContent() {
   if (isUserLoading || isCustomerLoading) {
     return (
         <div className="space-y-8">
-            <h1 className="text-3xl font-bold font-headline">My Profile</h1>
+            <h1 className="text-3xl font-bold font-headline text-center">My Profile</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Card>
                     <CardHeader>
@@ -121,7 +121,7 @@ function ProfilePageContent() {
 
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold font-headline">My Profile</h1>
+      <h1 className="text-3xl font-bold font-headline text-center">My Profile</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Card>
