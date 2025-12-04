@@ -12,9 +12,10 @@ import { ShoppingCart } from 'lucide-react';
 
 type ProductCardProps = {
   product: Product;
+  showBuyNow?: boolean;
 };
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
   const category = categories.find(c => c.id === product.categoryId);
   const onSale = product.salePrice && product.salePrice < product.price;
   const discountPercentage = onSale
@@ -35,9 +36,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
         <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
             {onSale && (
-              <div className="flex gap-2">
                 <Badge variant="destructive">{discountPercentage}% OFF</Badge>
-              </div>
             )}
             <WishlistButton productId={product.id} />
         </div>
@@ -68,9 +67,11 @@ export function ProductCard({ product }: ProductCardProps) {
                 <ShoppingCart className="mr-2 h-4 w-4" />
                 Add to Cart
             </Button>
-            <Link href="/checkout">
-                <Button className="w-full">Buy Now</Button>
-            </Link>
+            {showBuyNow && (
+              <Link href="/checkout">
+                  <Button className="w-full">Buy Now</Button>
+              </Link>
+            )}
         </div>
       </CardFooter>
     </Card>

@@ -8,10 +8,12 @@ import { PromoBanners } from '@/components/home/promo-banners';
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 import { ProductCard } from '@/components/products/product-card';
 import { InfoBar } from '@/components/home/info-bar';
+import { RecentlyViewed } from '@/components/home/recently-viewed';
 
 export default function Home() {
   const featuredProducts = products.slice(0, 8);
   const newArrivals = products.slice(2, 6);
+  const recentlyViewedProducts = products.slice(6, 8);
 
   return (
     <div className="flex flex-col">
@@ -51,7 +53,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      
+      <RecentlyViewed products={recentlyViewedProducts} />
     </div>
   );
 }
