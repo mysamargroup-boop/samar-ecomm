@@ -16,9 +16,9 @@ import { useState } from 'react';
 
 export default function Home() {
   const featuredProducts = products.slice(0, 8);
-  const newArrivals = products.slice(0, 6);
-  const bestSellers = products.slice(2, 8);
-  const topRated = products.slice(4, 10).reverse();
+  const newArrivals = products.slice(0, 5);
+  const bestSellers = products.slice(1, 6);
+  const topRated = products.slice(2, 7).reverse();
   
   const recentlyViewedProducts = products.slice(6, 8);
   const featuredBlogPosts = blogPosts.slice(0, 3);
@@ -72,7 +72,7 @@ export default function Home() {
                 ))}
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4">
             {tabProducts[activeTab].map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
