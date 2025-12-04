@@ -28,6 +28,10 @@ import { useCart } from '@/contexts/cart-context';
 import type { Product } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+import { useDoc, useMemoFirebase } from '@/firebase';
+import { doc, getFirestore } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
+import { Breadcrumbs } from '../ui/breadcrumbs';
 
 function SaleCountdownTimer({ endDate }: { endDate: Date }) {
   const calculateTimeLeft = () => {
@@ -115,10 +119,32 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
   )
 }
 
-export function ProductPageClient({ product }: { product: Product }) {
+export function ProductPageClient({ productId }: { productId: string }) {
   const { addToCart } = useCart();
   const router = useRouter();
 
+  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
+  const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
+  const { data: product, isLoading } = useDoc<Product>(productRef);
+
+
+  if (isLoading) {
+    return (
+       <div className="container mx-auto px-4 py-8 md:py-12">
+        <Skeleton className="h-6 w-1/3 mb-8" />
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-16">
+          <Skeleton className="aspect-square w-full rounded-lg" />
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-1/2" />
+            <Skeleton className="h-10 w-3/4" />
+            <Skeleton className="h-6 w-1/4" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!product) {
     notFound();
@@ -148,9 +174,18 @@ export function ProductPageClient({ product }: { product: Product }) {
   const dimensionsString = product.dimensions && product.dimensions.length && product.dimensions.width && product.dimensions.height 
     ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} cm`
     : null;
+    
+  const breadcrumbItems = [
+    { label: 'Home', href: '/' },
+  ];
+  if (category) {
+    breadcrumbItems.push({ label: category.name, href: `/${category.slug}` });
+  }
+  breadcrumbItems.push({ label: product.name });
 
   return (
-    <>
+    <div className="container mx-auto px-4 py-8 md:py-12">
+      <Breadcrumbs items={breadcrumbItems} />
       <div className="grid md:grid-cols-2 gap-8 lg:gap-16 pb-24 md:pb-0">
         <div>
           <Carousel className="w-full">
@@ -302,6 +337,6 @@ export function ProductPageClient({ product }: { product: Product }) {
        )}
       
       <StickyAddToCartBar product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onSale={isSaleActive} />
-    </>
+    </div>
   );
 }
