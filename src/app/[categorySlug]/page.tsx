@@ -11,9 +11,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = categories.find((c) => c.slug === params.categorySlug);
   if (!category) {
-    return {
-      title: 'Category Not Found',
-    };
+    notFound();
   }
   return {
     title: `${category.name} | Samar Store`,
