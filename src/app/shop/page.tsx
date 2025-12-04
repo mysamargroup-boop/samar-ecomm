@@ -25,6 +25,7 @@ import { ListFilter } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 
 function ProductFilters({
@@ -182,17 +183,19 @@ export default function ShopPage() {
         <aside className="hidden lg:block lg:col-span-1">
           <div className="sticky top-24">
             <h2 className="text-xl font-bold mb-4">Filters</h2>
-            <ProductFilters
-              selectedCategories={selectedCategories}
-              setSelectedCategories={setSelectedCategories}
-              priceRange={priceRange}
-              setPriceRange={setPriceRange}
-              onSaleOnly={onSaleOnly}
-              setOnSaleOnly={setOnSaleOnly}
-              inStockOnly={inStockOnly}
-              setInStockOnly={setInStockOnly}
-              clearFilters={clearFilters}
-            />
+            <ScrollArea className="h-[calc(100vh-10rem)] pr-4">
+                <ProductFilters
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+                onSaleOnly={onSaleOnly}
+                setOnSaleOnly={setOnSaleOnly}
+                inStockOnly={inStockOnly}
+                setInStockOnly={setInStockOnly}
+                clearFilters={clearFilters}
+                />
+            </ScrollArea>
           </div>
         </aside>
 
@@ -211,17 +214,19 @@ export default function ShopPage() {
                          <SheetHeader className="mb-8">
                             <SheetTitle className="text-2xl">Filters</SheetTitle>
                          </SheetHeader>
-                        <ProductFilters
-                          selectedCategories={selectedCategories}
-                          setSelectedCategories={setSelectedCategories}
-                          priceRange={priceRange}
-                          setPriceRange={setPriceRange}
-                          onSaleOnly={onSaleOnly}
-                          setOnSaleOnly={setOnSaleOnly}
-                          inStockOnly={inStockOnly}
-                          setInStockOnly={setInStockOnly}
-                          clearFilters={clearFilters}
-                        />
+                        <ScrollArea className="h-full pr-4">
+                            <ProductFilters
+                            selectedCategories={selectedCategories}
+                            setSelectedCategories={setSelectedCategories}
+                            priceRange={priceRange}
+                            setPriceRange={setPriceRange}
+                            onSaleOnly={onSaleOnly}
+                            setOnSaleOnly={setOnSaleOnly}
+                            inStockOnly={inStockOnly}
+                            setInStockOnly={setInStockOnly}
+                            clearFilters={clearFilters}
+                            />
+                        </ScrollArea>
                     </SheetContent>
                 </Sheet>
                 <Select value={sortOption} onValueChange={setSortOption}>
