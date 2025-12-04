@@ -2,7 +2,7 @@
 'use client';
 
 import type { Metadata } from 'next';
-import { Manrope } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/header';
@@ -16,10 +16,11 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { usePathname } from 'next/navigation';
 import { FirebaseClientProvider } from '@/firebase';
 
-const manrope = Manrope({
+const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-manrope',
+  variable: '--font-poppins',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
 });
 
 function AnnouncementBar() {
@@ -42,7 +43,7 @@ export default function RootLayout({
   const isSamarRoute = pathname.startsWith('/samar');
   return (
     <html lang="en" className="h-full">
-      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)} suppressHydrationWarning>
+      <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)} suppressHydrationWarning>
         <FirebaseClientProvider>
           <AuthProvider>
             <WishlistProvider>

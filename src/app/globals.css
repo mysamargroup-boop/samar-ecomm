@@ -44,8 +44,8 @@
     --sidebar-border: 220 13% 89%;
     --sidebar-ring: 231 48% 48%;
 
-    --font-body: 'Poppins', sans-serif;
-    --font-headline: 'Poppins', sans-serif;
+    --font-body: var(--font-poppins), sans-serif;
+    --font-headline: var(--font-poppins), sans-serif;
   }
  
   .dark {
