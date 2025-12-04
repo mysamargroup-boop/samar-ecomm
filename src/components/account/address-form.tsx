@@ -20,12 +20,57 @@ import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { Address, AddressSchema } from '@/lib/types';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Combobox } from '../ui/combobox';
 
 type AddressFormProps = {
   address: Address | undefined;
   onSave: () => void;
 };
+
+// Sample data for comboboxes
+const countries = [
+  { label: 'India', value: 'India' },
+  { label: 'United States', value: 'United States' },
+  { label: 'Canada', value: 'Canada' },
+  { label: 'United Kingdom', value: 'United Kingdom' },
+];
+
+const statesByCountry: { [key: string]: { label: string; value: string }[] } = {
+  India: [
+    { label: 'Madhya Pradesh', value: 'Madhya Pradesh' },
+    { label: 'Maharashtra', value: 'Maharashtra' },
+    { label: 'Karnataka', value: 'Karnataka' },
+  ],
+  'United States': [
+    { label: 'California', value: 'California' },
+    { label: 'New York', value: 'New York' },
+    { label: 'Texas', value: 'Texas' },
+  ],
+  Canada: [
+    { label: 'Ontario', value: 'Ontario' },
+    { label: 'Quebec', value: 'Quebec' },
+    { label: 'British Columbia', value: 'British Columbia' },
+  ],
+};
+
+const citiesByState: { [key: string]: { label: string; value: string }[] } = {
+    'Madhya Pradesh': [
+        { label: 'Sagar', value: 'Sagar' },
+        { label: 'Bhopal', value: 'Bhopal' },
+        { label: 'Indore', value: 'Indore' },
+    ],
+    'California': [
+        { label: 'Los Angeles', value: 'Los Angeles' },
+        { label: 'San Francisco', value: 'San Francisco' },
+        { label: 'San Diego', value: 'San Diego' },
+    ],
+    'Ontario': [
+        { label: 'Toronto', value: 'Toronto' },
+        { label: 'Ottawa', value: 'Ottawa' },
+        { label: 'Mississauga', value: 'Mississauga' },
+    ]
+}
+
 
 export function AddressForm({ address, onSave }: AddressFormProps) {
   const { user } = useUser();
@@ -44,6 +89,8 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
   });
 
   const { isSubmitting } = useFormState({ control: form.control });
+  const selectedCountry = form.watch('country');
+  const selectedState = form.watch('state');
 
   async function onSubmit(values: z.infer<typeof AddressSchema>) {
     if (!user) {
@@ -77,68 +124,64 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a country" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="India">India</SelectItem>
-                  <SelectItem value="United States">United States</SelectItem>
-                  <SelectItem value="Canada">Canada</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <Combobox
+                  options={countries}
+                  value={field.value}
+                  onChange={(value) => {
+                      field.onChange(value);
+                      form.setValue('state', ''); // Reset state
+                      form.setValue('city', ''); // Reset city
+                  }}
+                  placeholder="Select a country..."
+                  emptyMessage="No country found."
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="grid grid-cols-2 gap-4">
-          <FormField
-            control={form.control}
-            name="state"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>State</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a state" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Madhya Pradesh">Madhya Pradesh</SelectItem>
-                    <SelectItem value="California">California</SelectItem>
-                    <SelectItem value="Ontario">Ontario</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-           <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>City</FormLabel>
-                 <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a city" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="Sagar">Sagar</SelectItem>
-                    <SelectItem value="Los Angeles">Los Angeles</SelectItem>
-                    <SelectItem value="Toronto">Toronto</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="state"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>State</FormLabel>
+              <FormControl>
+                <Combobox
+                  options={statesByCountry[selectedCountry] || []}
+                  value={field.value}
+                   onChange={(value) => {
+                      field.onChange(value);
+                      form.setValue('city', ''); // Reset city
+                  }}
+                  placeholder="Select a state..."
+                  emptyMessage="No state found."
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>City</FormLabel>
+              <FormControl>
+                 <Combobox
+                  options={citiesByState[selectedState] || []}
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Select a city..."
+                  emptyMessage="No city found."
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormField
           control={form.control}
           name="street"
