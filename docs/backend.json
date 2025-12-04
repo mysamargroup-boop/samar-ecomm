@@ -1,5 +1,36 @@
+
 {
   "entities": {
+    "Address": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Address",
+      "type": "object",
+      "description": "Represents a physical address.",
+      "properties": {
+        "street": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "street",
+        "city",
+        "state",
+        "zip",
+        "country"
+      ]
+    },
     "Product": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Product",
@@ -182,17 +213,17 @@
           "description": "Phone number of the customer."
         },
         "shippingAddress": {
-          "type": "string",
-          "description": "Shipping address of the customer."
+          "$ref": "#/backend/entities/Address"
+        },
+        "billingAddress": {
+          "$ref": "#/backend/entities/Address"
         }
       },
       "required": [
         "id",
         "firstName",
         "lastName",
-        "email",
-        "phoneNumber",
-        "shippingAddress"
+        "email"
       ]
     }
   },

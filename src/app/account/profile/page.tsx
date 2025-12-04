@@ -9,10 +9,9 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -28,6 +27,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { AddressCard } from '@/components/account/address-card';
 
 const ProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -47,7 +47,7 @@ function ProfilePageContent() {
     () => (user ? doc(firestore, 'customers', user.uid) : null),
     [firestore, user]
   );
-  const { data: customer, isLoading: isCustomerLoading } = useDoc(userDocRef);
+  const { data: customer, isLoading: isCustomerLoading } = useDoc<any>(userDocRef);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileSchema),
@@ -112,6 +112,7 @@ function ProfilePageContent() {
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <Skeleton className="h-24 w-full" />
+                         <Skeleton className="h-24 w-full" />
                     </CardContent>
                 </Card>
             </div>
@@ -200,32 +201,14 @@ function ProfilePageContent() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium">Default Shipping Address</h3>
-                <Button variant="outline" size="sm">
-                  Edit Address
-                </Button>
-              </div>
-              <div className="space-y-1 text-sm text-muted-foreground border p-4 rounded-md">
-                <p>123 Commerce Lane</p>
-                <p>Shopsville, IN 12345</p>
-                <p>United States</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-medium">Default Billing Address</h3>
-                <Button variant="outline" size="sm">
-                  Edit Address
-                </Button>
-              </div>
-              <div className="space-y-1 text-sm text-muted-foreground border p-4 rounded-md">
-                <p>123 Commerce Lane</p>
-                <p>Shopsville, IN 12345</p>
-                <p>United States</p>
-              </div>
-            </div>
+            <AddressCard
+              title="Default Shipping Address"
+              address={customer?.shippingAddress}
+            />
+            <AddressCard
+              title="Default Billing Address"
+              address={customer?.billingAddress}
+            />
           </CardContent>
         </Card>
       </div>
