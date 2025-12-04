@@ -12,20 +12,25 @@ import { FeaturedProductsCustomizer } from '@/components/appearance/featured-pro
 import { products } from '@/lib/placeholder-data';
 import { InfoBarCustomizer } from '@/components/appearance/info-bar-customizer';
 import { PromoBannersCustomizer } from '@/components/appearance/promo-banners-customizer';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+
 
 export default function AppearancePage() {
   const featuredProducts = products.slice(0, 4).map(p => p.id);
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Appearance</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Appearance</h1>
       <Tabs defaultValue="hero">
-        <TabsList className="h-auto flex-wrap justify-start">
-          <TabsTrigger value="hero">Hero Banner</TabsTrigger>
-          <TabsTrigger value="featured-products">Featured Products</TabsTrigger>
-          <TabsTrigger value="info-bar">Info Bar</TabsTrigger>
-          <TabsTrigger value="promo-banners">Promo Banners</TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full whitespace-nowrap rounded-md">
+            <TabsList className="h-auto justify-start">
+            <TabsTrigger value="hero">Hero Banner</TabsTrigger>
+            <TabsTrigger value="featured-products">Featured Products</TabsTrigger>
+            <TabsTrigger value="info-bar">Info Bar</TabsTrigger>
+            <TabsTrigger value="promo-banners">Promo Banners</TabsTrigger>
+            </TabsList>
+             <ScrollBar orientation="horizontal" />
+        </ScrollArea>
         <TabsContent value="hero">
           <Card>
             <CardHeader>
