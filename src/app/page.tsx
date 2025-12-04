@@ -1,4 +1,6 @@
 
+'use client';
+
 import { HeroSlider } from '@/components/home/hero-slider';
 import { products, blogPosts } from '@/lib/placeholder-data';
 import { Button } from '@/components/ui/button';
@@ -10,12 +12,25 @@ import { ProductCard } from '@/components/products/product-card';
 import { InfoBar } from '@/components/home/info-bar';
 import { RecentlyViewed } from '@/components/home/recently-viewed';
 import { BlogSection } from '@/components/home/blog-section';
+import { useState } from 'react';
 
 export default function Home() {
   const featuredProducts = products.slice(0, 8);
   const newArrivals = products.slice(2, 6);
+  const bestSellers = products.slice(4, 8);
+  const topRated = products.slice(0, 4).reverse();
+  
   const recentlyViewedProducts = products.slice(6, 8);
-  const featuredBlogPosts = blogPosts.slice(0, 2);
+  const featuredBlogPosts = blogPosts.slice(0, 3);
+  
+  const [activeTab, setActiveTab] = useState('New Arrivals');
+
+  const tabProducts: { [key: string]: typeof products } = {
+    'New Arrivals': newArrivals,
+    'Best Sellers': bestSellers,
+    'Top Rated': topRated,
+  };
+
 
   return (
     <div className="flex flex-col">
@@ -43,13 +58,22 @@ export default function Home() {
       <section className="py-12 md:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">New Arrivals</h2>
-            <p className="mt-2 text-lg text-muted-foreground">
-              Fresh picks, just for you.
-            </p>
+            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">Discover Your Next Favorite</h2>
+             <div className="flex justify-center items-center gap-2 mt-6">
+                {Object.keys(tabProducts).map((tab) => (
+                    <Button
+                    key={tab}
+                    variant={activeTab === tab ? 'default' : 'outline'}
+                    className="rounded-full"
+                    onClick={() => setActiveTab(tab)}
+                    >
+                    {tab}
+                    </Button>
+                ))}
+            </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-            {newArrivals.map((product) => (
+            {tabProducts[activeTab].map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
