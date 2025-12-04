@@ -11,7 +11,7 @@ import { ReviewsTable } from '@/components/reviews/reviews-table';
 export default function ReviewsPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Manage Reviews</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Manage Reviews</h1>
       <Card>
         <CardHeader>
           <CardTitle>Product Reviews</CardTitle>

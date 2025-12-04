@@ -10,7 +10,7 @@ import {
 export default function CustomersPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Customers</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Customers</h1>
       <Card>
         <CardHeader>
           <CardTitle>All Customers</CardTitle>

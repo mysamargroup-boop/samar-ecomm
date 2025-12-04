@@ -12,7 +12,7 @@ export default function EditCategoryPage({ params }: { params: { categoryId: str
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Edit Category</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Edit Category</h1>
       <Card>
         <CardHeader>
           <CardTitle>Category Details</CardTitle>

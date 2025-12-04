@@ -10,7 +10,7 @@ import {
 export default function TagsPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Tags</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Tags</h1>
       <Card>
         <CardHeader>
           <CardTitle>Product Tags</CardTitle>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export default function NewProductPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Add New Product</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Add New Product</h1>
       <Card>
         <CardHeader>
             <CardTitle>Product Details</CardTitle>

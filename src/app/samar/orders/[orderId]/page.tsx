@@ -22,7 +22,7 @@ export default function OrderDetailsPage({ params }: { params: { orderId: string
                     <span className="sr-only">Back to Orders</span>
                 </Link>
             </Button>
-            <h1 className="text-2xl font-bold font-headline">Order #{order.id.split('_')[1]}</h1>
+            <h1 className="text-2xl font-bold font-headline text-center md:text-left">Order #{order.id.split('_')[1]}</h1>
         </div>
       <OrderDetails order={order} />
     </div>

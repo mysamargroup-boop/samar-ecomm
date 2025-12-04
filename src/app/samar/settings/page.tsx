@@ -43,7 +43,7 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Settings</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Settings</h1>
       <Tabs defaultValue="store-details" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-7">
           <TabsTrigger value="store-details">Store Details</TabsTrigger>

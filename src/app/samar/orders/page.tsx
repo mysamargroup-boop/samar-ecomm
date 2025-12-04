@@ -11,7 +11,7 @@ import {
 export default function OrdersPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Orders</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Orders</h1>
       <Card>
         <CardHeader>
           <CardTitle>All Orders</CardTitle>

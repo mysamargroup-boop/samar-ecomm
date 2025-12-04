@@ -12,7 +12,7 @@ export default function EditProductPage({ params }: { params: { productId: strin
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Edit Product</h1>
+      <h1 className="text-3xl font-bold font-headline text-center md:text-left">Edit Product</h1>
        <Card>
         <CardHeader>
             <CardTitle>Product Details</CardTitle>
