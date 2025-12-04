@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { categories } from '@/lib/placeholder-data';
 import { WishlistButton } from './wishlist-button';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Zap } from 'lucide-react';
 
 type ProductCardProps = {
   product: Product;
@@ -71,7 +71,10 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             </Button>
             {showBuyNow && (
               <Link href="/checkout">
-                  <Button className="w-full">Buy Now</Button>
+                  <Button className="w-full">
+                    <Zap className="mr-2 h-4 w-4" />
+                    Buy Now
+                  </Button>
               </Link>
             )}
         </div>
