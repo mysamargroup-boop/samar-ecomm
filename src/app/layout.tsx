@@ -1,7 +1,6 @@
 
 'use client';
 
-import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
@@ -41,10 +40,15 @@ function AppStructure({
 }) {
   const pathname = usePathname();
   const isSamarRoute = pathname.startsWith('/samar');
+  const isLoginRoute = pathname.startsWith('/login');
+
+  if (isSamarRoute || isLoginRoute) {
+    return <>{children}</>;
+  }
 
   return (
     <>
-      {!isSamarRoute && <AnnouncementBar />}
+      <AnnouncementBar />
       <AppHeader />
       <main className="flex-grow pb-20 md:pb-0">{children}</main>
       <Footer />
