@@ -1,7 +1,7 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ListOrdered, User, Heart, LogOut } from "lucide-react";
@@ -42,16 +42,18 @@ export default function AccountPage() {
                     </Card>
                 ))}
                  <Card className="text-center group hover:shadow-lg transition-shadow">
-                    <button onClick={logout} className="block w-full p-6 text-left">
+                    <div className="block w-full p-6 text-center">
                         <CardHeader className="p-0 mb-4">
                             <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                                 <LogOut className="h-8 w-8" />
                             </div>
                         </CardHeader>
-                        <CardContent className="p-0 text-center">
-                            <span className="text-lg font-semibold">Logout</span>
+                        <CardContent className="p-0">
+                           <Button variant="link" onClick={logout} className="text-lg font-semibold text-foreground hover:no-underline">
+                                Logout
+                            </Button>
                         </CardContent>
-                    </button>
+                    </div>
                 </Card>
             </div>
         </div>
