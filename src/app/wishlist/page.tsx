@@ -35,9 +35,9 @@ export default function WishlistPage() {
           <p className="text-muted-foreground mt-2 mb-6">
             Looks like you haven't added anything yet.
           </p>
-          <Button asChild>
-            <Link href="/">Start Shopping</Link>
-          </Button>
+          <Link href="/">
+            <Button>Start Shopping</Button>
+          </Link>
         </div>
       )}
     </div>
