@@ -85,7 +85,8 @@ export function ThemeCustomizer() {
             </div>
         </div>
       </div>
-      <div className="flex justify-end">
+      <div className="md:hidden h-20"></div>
+      <div className="flex justify-end fixed bottom-0 left-0 right-0 md:relative bg-background/80 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none border-t md:border-none p-4 md:p-0">
         <Button type="submit">Save Changes</Button>
       </div>
     </form>
