@@ -8,7 +8,6 @@ import { formatPrice } from '@/lib/utils';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { categories } from '@/lib/placeholder-data';
 import { WishlistButton } from './wishlist-button';
 import { ShoppingCart, Zap } from 'lucide-react';
 import { useCart } from '@/contexts/cart-context';
@@ -22,7 +21,6 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
-  const category = categories.find(c => c.id === product.categoryId);
   const onSale = product.salePrice && product.salePrice < product.price;
   const discountPercentage = onSale
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
@@ -58,15 +56,11 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
         </div>
       </CardHeader>
       <CardContent className="p-4 flex-grow flex flex-col items-center text-center">
-        {category && (
-          <Badge variant="secondary" className="mb-2">{category.name}</Badge>
-        )}
         <CardTitle className="text-base leading-tight mb-2 flex-grow flex flex-col justify-center min-h-[2.5em]">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors no-underline">
             {product.name}
           </Link>
         </CardTitle>
-        <Separator className="my-2 w-3/4 mx-auto" />
         <div className="flex items-baseline gap-2 mt-auto">
             {onSale ? (
                 <>
