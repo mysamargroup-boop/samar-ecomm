@@ -60,6 +60,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setIsLoggedIn(false);
+    try {
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+    } catch (error) {
+      console.error("Failed to remove auth state from sessionStorage", error);
+    }
     // Redirect to home page on logout
     router.push('/');
   };
