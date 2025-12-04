@@ -6,7 +6,7 @@ export default function AccountLayout({
 }) {
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl">
+    <div className="container mx-auto px-4 py-12 max-w-6xl">
         {children}
     </div>
   );
