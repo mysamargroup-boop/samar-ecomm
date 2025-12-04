@@ -41,6 +41,7 @@ export const ProductSchema = z.object({
     height: z.number().optional(),
   }).optional(),
   material: z.string().optional(),
+  createdAt: z.date().optional(),
 });
 export type Product = z.infer<typeof ProductSchema>;
 

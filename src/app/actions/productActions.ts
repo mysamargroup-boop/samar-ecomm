@@ -4,7 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { ProductSchema } from '@/lib/types';
-import { collection, addDoc, updateDoc, doc, deleteDoc, getFirestore } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, deleteDoc, getFirestore, serverTimestamp } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 
 const { firestore } = initializeFirebase();
@@ -30,7 +30,8 @@ export async function createProduct(formData: FormData) {
         length: parsedDimensions.length ? Number(parsedDimensions.length) : undefined,
         width: parsedDimensions.width ? Number(parsedDimensions.width) : undefined,
         height: parsedDimensions.height ? Number(parsedDimensions.height) : undefined,
-    }
+    },
+    createdAt: new Date(),
   });
 
   if (!validatedFields.success) {
@@ -42,7 +43,10 @@ export async function createProduct(formData: FormData) {
   }
 
   try {
-    const docRef = await addDoc(productsCollection, validatedFields.data);
+    const docRef = await addDoc(productsCollection, {
+        ...validatedFields.data,
+        createdAt: serverTimestamp(),
+    });
     console.log('Product created with ID:', docRef.id);
     revalidatePath('/samar/products');
     revalidatePath('/');
@@ -59,7 +63,7 @@ export async function updateProduct(id: string, formData: FormData) {
   const parsedDimensions = rawFormData.dimensions ? JSON.parse(rawFormData.dimensions as string) : {};
   const parsedImages = rawFormData.images ? JSON.parse(rawFormData.images as string) : [];
 
-   const validatedFields = ProductSchema.omit({ id: true }).safeParse({
+   const validatedFields = ProductSchema.omit({ id: true, createdAt: true }).safeParse({
     name: rawFormData.name,
     description: rawFormData.description,
     price: Number(rawFormData.price),
