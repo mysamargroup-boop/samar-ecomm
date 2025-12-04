@@ -40,14 +40,13 @@ export function BlogCard({ post }: BlogCardProps) {
         <p className="text-sm text-muted-foreground mb-4 h-16 overflow-hidden">
           {post.excerpt}
         </p>
-        <Link href={`/blog/${post.slug}`} legacyBehavior>
+        <Link href={`/blog/${post.slug}`}>
           <Button variant="outline" className="rounded-full">
-              Read More
-              <ArrowRight className="ml-2 h-4 w-4 inline" />
+            Read More
+            <ArrowRight className="ml-2 h-4 w-4 inline" />
           </Button>
         </Link>
       </CardContent>
     </Card>
   );
 }
-
