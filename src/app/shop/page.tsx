@@ -22,7 +22,9 @@ import { Slider } from '@/components/ui/slider';
 import { formatPrice } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ListFilter } from 'lucide-react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
 
 
 function ProductFilters({
@@ -30,11 +32,21 @@ function ProductFilters({
   setSelectedCategories,
   priceRange,
   setPriceRange,
+  onSaleOnly,
+  setOnSaleOnly,
+  inStockOnly,
+  setInStockOnly,
+  clearFilters,
 }: {
   selectedCategories: string[];
   setSelectedCategories: (categories: string[]) => void;
   priceRange: [number, number];
   setPriceRange: (range: [number, number]) => void;
+  onSaleOnly: boolean;
+  setOnSaleOnly: (value: boolean) => void;
+  inStockOnly: boolean;
+  setInStockOnly: (value: boolean) => void;
+  clearFilters: () => void;
 }) {
 
   const handleCategoryChange = (categoryId: string, checked: boolean) => {
@@ -48,27 +60,8 @@ function ProductFilters({
   const maxPrice = Math.max(...allProducts.map((p) => p.price));
 
   return (
-    <div className="space-y-6">
-      <Accordion type="multiple" defaultValue={['category', 'price']} className="w-full">
-        <AccordionItem value="category">
-          <AccordionTrigger>Category</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2">
-              {categories.map((category) => (
-                <div key={category.id} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`cat-${category.id}`}
-                    checked={selectedCategories.includes(category.id)}
-                    onCheckedChange={(checked) => handleCategoryChange(category.id, !!checked)}
-                  />
-                  <label htmlFor={`cat-${category.id}`} className="text-sm font-medium leading-none">
-                    {category.name}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </AccordionContent>
-        </AccordionItem>
+    <div className="space-y-8">
+      <Accordion type="multiple" defaultValue={['price', 'category', 'status']} className="w-full">
         <AccordionItem value="price">
           <AccordionTrigger>Price</AccordionTrigger>
           <AccordionContent>
@@ -86,11 +79,52 @@ function ProductFilters({
             </div>
           </AccordionContent>
         </AccordionItem>
+        <AccordionItem value="category">
+          <AccordionTrigger>Category</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-2 pt-2">
+              {categories.map((category) => (
+                <div key={category.id} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`cat-${category.id}`}
+                    checked={selectedCategories.includes(category.id)}
+                    onCheckedChange={(checked) => handleCategoryChange(category.id, !!checked)}
+                  />
+                  <label htmlFor={`cat-${category.id}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    {category.name}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+         <AccordionItem value="status">
+          <AccordionTrigger>Status</AccordionTrigger>
+          <AccordionContent>
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="in-stock-only">In Stock Only</Label>
+                <Switch 
+                  id="in-stock-only" 
+                  checked={inStockOnly}
+                  onCheckedChange={setInStockOnly}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="on-sale-only">On Sale Only</Label>
+                <Switch 
+                  id="on-sale-only"
+                  checked={onSaleOnly}
+                  onCheckedChange={setOnSaleOnly}
+                />
+              </div>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
       </Accordion>
-      <Button variant="outline" className="w-full" onClick={() => {
-          setSelectedCategories([]);
-          setPriceRange([0, maxPrice]);
-      }}>Clear Filters</Button>
+      <Button variant="outline" className="w-full" onClick={clearFilters}>
+        Clear All Filters
+      </Button>
     </div>
   );
 }
@@ -100,12 +134,23 @@ export default function ShopPage() {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const maxPrice = Math.max(...allProducts.map(p => p.price));
   const [priceRange, setPriceRange] = useState<[number, number]>([0, maxPrice]);
+  const [onSaleOnly, setOnSaleOnly] = useState(false);
+  const [inStockOnly, setInStockOnly] = useState(false);
+
+  const clearFilters = () => {
+    setSelectedCategories([]);
+    setPriceRange([0, maxPrice]);
+    setOnSaleOnly(false);
+    setInStockOnly(false);
+  };
 
   const filteredProducts = allProducts
     .filter((product) => {
         const categoryMatch = selectedCategories.length === 0 || selectedCategories.includes(product.categoryId);
         const priceMatch = product.price >= priceRange[0] && product.price <= priceRange[1];
-        return categoryMatch && priceMatch;
+        const saleMatch = !onSaleOnly || (product.salePrice && product.salePrice < product.price);
+        const stockMatch = !inStockOnly || product.inventory > 0;
+        return categoryMatch && priceMatch && saleMatch && stockMatch;
     })
     .sort((a, b) => {
       switch (sortOption) {
@@ -126,7 +171,7 @@ export default function ShopPage() {
     <div className="container mx-auto px-4 py-12">
        <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold font-headline tracking-tight">
-          Shop All Products
+          Shop Now
         </h1>
         <p className="mt-3 max-w-2xl mx-auto text-xl text-muted-foreground">
           Find your next favorite item from our curated collection.
@@ -142,6 +187,11 @@ export default function ShopPage() {
               setSelectedCategories={setSelectedCategories}
               priceRange={priceRange}
               setPriceRange={setPriceRange}
+              onSaleOnly={onSaleOnly}
+              setOnSaleOnly={setOnSaleOnly}
+              inStockOnly={inStockOnly}
+              setInStockOnly={setInStockOnly}
+              clearFilters={clearFilters}
             />
           </div>
         </aside>
@@ -157,13 +207,20 @@ export default function ShopPage() {
                             Filter
                         </Button>
                     </SheetTrigger>
-                    <SheetContent>
-                         <h2 className="text-xl font-bold mb-4 mt-8">Filters</h2>
+                    <SheetContent side="left">
+                         <SheetHeader className="mb-8">
+                            <SheetTitle className="text-2xl">Filters</SheetTitle>
+                         </SheetHeader>
                         <ProductFilters
                           selectedCategories={selectedCategories}
                           setSelectedCategories={setSelectedCategories}
                           priceRange={priceRange}
                           setPriceRange={setPriceRange}
+                          onSaleOnly={onSaleOnly}
+                          setOnSaleOnly={setOnSaleOnly}
+                          inStockOnly={inStockOnly}
+                          setInStockOnly={setInStockOnly}
+                          clearFilters={clearFilters}
                         />
                     </SheetContent>
                 </Sheet>
@@ -182,11 +239,20 @@ export default function ShopPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {filteredProducts.length > 0 ? (
+             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+             <div className="text-center py-20 border rounded-lg">
+                <h2 className="text-2xl font-semibold">No Products Found</h2>
+                <p className="text-muted-foreground mt-2">
+                    Try adjusting your filters to find what you're looking for.
+                </p>
+            </div>
+          )}
         </main>
       </div>
     </div>
