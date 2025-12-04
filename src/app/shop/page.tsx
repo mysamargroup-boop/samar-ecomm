@@ -11,12 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
 import { formatPrice } from '@/lib/utils';
@@ -26,6 +20,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Separator } from '@/components/ui/separator';
 
 
 function ProductFilters({
@@ -61,29 +56,30 @@ function ProductFilters({
   const maxPrice = Math.max(...allProducts.map((p) => p.price));
 
   return (
-    <div className="space-y-6">
-      <Accordion type="multiple" defaultValue={['price', 'category', 'status']} className="w-full">
-        <AccordionItem value="price">
-          <AccordionTrigger>Price</AccordionTrigger>
-          <AccordionContent>
-            <div className="py-4">
+    <div className="space-y-8">
+        {/* Price Filter */}
+        <div className="space-y-4">
+            <h3 className="text-lg font-semibold tracking-tight">Price</h3>
+            <div className="px-1">
                 <Slider
                     value={[priceRange[1]]}
                     max={maxPrice}
                     step={100}
                     onValueChange={(value) => setPriceRange([0, value[0]])}
                 />
-                 <div className="flex justify-between text-sm text-muted-foreground mt-2">
+                 <div className="flex justify-between text-sm text-muted-foreground mt-3">
                     <span>{formatPrice(0)}</span>
                     <span>{formatPrice(priceRange[1])}</span>
                 </div>
             </div>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="category">
-          <AccordionTrigger>Category</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2 pt-2">
+        </div>
+
+        <Separator />
+
+        {/* Category Filter */}
+        <div className="space-y-4">
+            <h3 className="text-lg font-semibold tracking-tight">Category</h3>
+            <div className="space-y-3">
               {categories.map((category) => (
                 <div key={category.id} className="flex items-center space-x-2">
                   <Checkbox
@@ -97,12 +93,14 @@ function ProductFilters({
                 </div>
               ))}
             </div>
-          </AccordionContent>
-        </AccordionItem>
-         <AccordionItem value="status">
-          <AccordionTrigger>Status</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-4 pt-4">
+        </div>
+        
+        <Separator />
+
+        {/* Status Filter */}
+        <div className="space-y-4">
+            <h3 className="text-lg font-semibold tracking-tight">Status</h3>
+            <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <Label htmlFor="in-stock-only" className="cursor-pointer">In Stock Only</Label>
                 <Switch 
@@ -120,9 +118,10 @@ function ProductFilters({
                 />
               </div>
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+        </div>
+
+        <Separator />
+
       <Button variant="outline" className="w-full" onClick={clearFilters}>
         Clear All Filters
       </Button>
