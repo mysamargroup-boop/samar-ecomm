@@ -3,6 +3,8 @@
 import {
   Card,
   CardContent,
+  CardHeader,
+  CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -10,11 +12,19 @@ import {
   MapPin,
   Package,
   User as UserIcon,
+  Bell,
+  Headphones,
+  CircleHelp,
+  FileText,
+  Mail,
+  ChevronRight,
+  LogOut,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 function AccountNav() {
     const navItems = [
@@ -31,18 +41,54 @@ function AccountNav() {
     ];
 
     return (
-        <div className="grid grid-cols-2 gap-4">
-            {navItems.map((item) => (
-                <Link href={item.href} key={item.label}>
-                    <Card className="hover:bg-muted hover:border-primary/50 transition-colors">
-                        <CardContent className="flex flex-col items-center justify-center p-6 space-y-2">
-                            <item.icon className="h-8 w-8 text-primary" />
-                            <span className="font-medium text-center">{item.label}</span>
-                        </CardContent>
-                    </Card>
-                </Link>
-            ))}
-        </div>
+        <Card>
+            <CardContent className="p-2">
+                 <div className="grid grid-cols-2 gap-2">
+                    {navItems.map((item) => (
+                        <Link href={item.href} key={item.label}>
+                            <div className="hover:bg-muted hover:border-primary/50 transition-colors p-4 rounded-md">
+                                <div className="flex flex-col items-center justify-center space-y-2">
+                                    <item.icon className="h-8 w-8 text-primary" />
+                                    <span className="font-medium text-center">{item.label}</span>
+                                </div>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
+function MoreNav() {
+    const navItems = [
+        { href: '#', label: 'Notification Center', icon: Bell },
+        { href: '#', label: 'Help and Support', icon: Headphones },
+        { href: '/faq', label: 'FAQs', icon: CircleHelp },
+        { href: '/terms', label: 'Terms & conditions', icon: FileText },
+        { href: '/contact', label: 'Get in touch', icon: Mail },
+    ];
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle className="text-xl">More</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+                <ul className="divide-y">
+                    {navItems.map(item => (
+                        <li key={item.label}>
+                           <Link href={item.href}>
+                                <div className="flex items-center p-4 hover:bg-muted transition-colors">
+                                    <item.icon className="h-5 w-5 mr-4 text-muted-foreground" />
+                                    <span className="flex-1">{item.label}</span>
+                                    <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                                </div>
+                           </Link>
+                        </li>
+                    ))}
+                </ul>
+            </CardContent>
+        </Card>
     )
 }
 
@@ -78,10 +124,15 @@ export default function AccountPage() {
         </Card>
         
         <AccountNav />
+
+        <MoreNav />
         
-        <div className="text-center">
-            <Button variant="link" onClick={handleLogout} className="text-destructive hover:text-destructive/80">Logout</Button>
-        </div>
+        <Card className="overflow-hidden">
+            <Button variant="ghost" onClick={handleLogout} className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none justify-start p-4 text-base">
+                <LogOut className="mr-4 h-5 w-5" />
+                Logout
+            </Button>
+        </Card>
     </div>
   );
 }
