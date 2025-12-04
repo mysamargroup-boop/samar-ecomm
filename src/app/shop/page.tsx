@@ -68,10 +68,10 @@ function ProductFilters({
           <AccordionContent>
             <div className="py-4">
                 <Slider
-                    defaultValue={[priceRange[1]]}
+                    value={[priceRange[1]]}
                     max={maxPrice}
                     step={100}
-                    onValueCommit={(value) => setPriceRange([0, value[0]])}
+                    onValueChange={(value) => setPriceRange([0, value[0]])}
                 />
                  <div className="flex justify-between text-sm text-muted-foreground mt-2">
                     <span>{formatPrice(0)}</span>
