@@ -28,8 +28,6 @@ import { useCart } from '@/contexts/cart-context';
 import type { Product } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
-import { useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getFirestore } from 'firebase/firestore';
 import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
 
@@ -119,14 +117,22 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
   )
 }
 
-export function ProductPageClient({ productId }: { productId: string }) {
+export function ProductPageClient({ productSlug }: { productSlug: string }) {
   const { addToCart } = useCart();
   const router = useRouter();
 
-  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
-  const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
-  const { data: product, isLoading } = useDoc<Product>(productRef);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // In a real app, you would fetch this from an API.
+    // For this demo, we find it in the placeholder data.
+    const foundProduct = products.find(p => p.slug === productSlug);
+    if (foundProduct) {
+      setProduct(foundProduct);
+    }
+    setIsLoading(false);
+  }, [productSlug]);
 
   if (isLoading) {
     return (

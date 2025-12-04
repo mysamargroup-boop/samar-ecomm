@@ -9,10 +9,17 @@ import { doc, getFirestore } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
-function EditProductForm({ productId }: { productId: string }) {
-  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
-  const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
-  const { data: product, isLoading } = useDoc<Product>(productRef);
+function EditProductForm({ productSlug }: { productSlug: string }) {
+  const product = placeholderProducts.find(p => p.slug === productSlug);
+
+  // Note: This component is not using live Firestore data for the product.
+  // To enable live data, you would replace the above line with something like:
+  // const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
+  // const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
+  // const { data: product, isLoading } = useDoc<Product>(productRef);
+
+  // For demo purposes, we'll simulate a loading state
+  const isLoading = false;
 
   if (isLoading) {
     return (
@@ -54,6 +61,6 @@ function EditProductForm({ productId }: { productId: string }) {
 }
 
 
-export default function EditProductPage({ params }: { params: { productId: string } }) {
-  return <EditProductForm productId={params.productId} />;
+export default function EditProductPage({ params }: { params: { productSlug: string } }) {
+  return <EditProductForm productSlug={params.productSlug} />;
 }

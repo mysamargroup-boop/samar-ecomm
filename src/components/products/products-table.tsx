@@ -92,7 +92,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem asChild>
-                        <Link href={`/samar/products/${product.id}/edit`}>
+                        <Link href={`/samar/products/${product.slug}/edit`}>
                           <Pen className="mr-2 h-4 w-4" /> Edit
                         </Link>
                       </DropdownMenuItem>
@@ -142,7 +142,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem asChild>
-                            <Link href={`/samar/products/${product.id}/edit`}>
+                            <Link href={`/samar/products/${product.slug}/edit`}>
                               <Pen className="mr-2 h-4 w-4" /> Edit
                             </Link>
                           </DropdownMenuItem>
