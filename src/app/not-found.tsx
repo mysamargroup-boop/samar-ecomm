@@ -11,7 +11,7 @@ export default function NotFound() {
         <p className="text-xl text-muted-foreground mb-8">
           Sorry, we couldn't find the page you were looking for.
         </p>
-        <Button asChild size="lg">
+        <Button size="lg" asChild>
           <Link href="/">Return to Homepage</Link>
         </Button>
       </div>

@@ -3,85 +3,69 @@
 
 import { HeroSlider } from '@/components/home/hero-slider';
 import { products, blogPosts } from '@/lib/placeholder-data';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
+import { InfoBar } from '@/components/home/info-bar';
 import { CategorySlider } from '@/components/home/category-slider';
 import { PromoBanners } from '@/components/home/promo-banners';
-import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
-import { ProductCard } from '@/components/products/product-card';
-import { InfoBar } from '@/components/home/info-bar';
 import { RecentlyViewed } from '@/components/home/recently-viewed';
 import { BlogSection } from '@/components/home/blog-section';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
   const featuredProducts = products.slice(0, 8);
-  const newArrivals = products.slice(0, 5);
-  const bestSellers = products.slice(1, 6);
-  const topRated = products.slice(2, 7).reverse();
-  
-  const recentlyViewedProducts = products.slice(6, 8);
-  const featuredBlogPosts = blogPosts.slice(0, 3);
-  
-  const [activeTab, setActiveTab] = useState('New Arrivals');
-
-  const tabProducts: { [key: string]: typeof products } = {
-    'New Arrivals': newArrivals,
-    'Best Sellers': bestSellers,
-    'Top Rated': topRated,
-  };
+  const onSaleProducts = products.filter(p => p.salePrice).slice(0, 8);
+  const recentPosts = blogPosts.slice(0, 3);
+  const recentlyViewedProducts = products.slice(4,9);
 
 
   return (
-    <div className="flex flex-col">
+    <>
       <HeroSlider />
       <InfoBar />
       <CategorySlider />
-      <PromoBanners />
-      <section className="py-8 md:py-12 bg-background">
+
+      <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">Featured Products</h2>
-            <p className="mt-2 text-lg text-muted-foreground">
-              Check out our hand-picked selection of the best products.
-            </p>
-          </div>
-          <FeaturedProductsSlider products={featuredProducts} />
-          <div className="text-center mt-12">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">
+              Featured Products
+            </h2>
             <Link href="/products">
-                <Button size="lg">Shop All Products</Button>
+                <Button variant="outline">
+                    View All
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
             </Link>
           </div>
+          <FeaturedProductsSlider products={featuredProducts} />
         </div>
       </section>
 
-      <section className="py-8 md:py-12">
+      <PromoBanners />
+
+      <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">Discover Your Next Favorite</h2>
-             <div className="flex justify-center items-center gap-2 mt-6">
-                {Object.keys(tabProducts).map((tab) => (
-                    <Button
-                    key={tab}
-                    variant={activeTab === tab ? 'default' : 'outline'}
-                    className="rounded-full"
-                    onClick={() => setActiveTab(tab)}
-                    >
-                    {tab}
-                    </Button>
-                ))}
-            </div>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight">
+              Discover Your Next Favorite
+            </h2>
+             <Link href="/products">
+                <Button variant="outline">
+                    View All
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+            </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-4">
-            {tabProducts[activeTab].map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <FeaturedProductsSlider products={onSaleProducts} />
         </div>
       </section>
-      
-      <BlogSection posts={featuredBlogPosts} />
+
       <RecentlyViewed products={recentlyViewedProducts} />
-    </div>
+
+      <BlogSection posts={recentPosts} />
+
+    </>
   );
 }
