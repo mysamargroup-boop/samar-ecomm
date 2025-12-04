@@ -21,7 +21,7 @@ type ProductCardProps = {
   showBuyNow?: boolean;
 };
 
-export function ProductCard({ product, showBuyNow = false }: ProductCardProps) {
+export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
   const onSale = product.salePrice && product.salePrice < product.price;
   const discountPercentage = onSale
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
