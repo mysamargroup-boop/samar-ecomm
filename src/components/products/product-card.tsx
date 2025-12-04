@@ -14,6 +14,7 @@ import { ShoppingCart, Zap } from 'lucide-react';
 import { useCart } from '@/contexts/cart-context';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { Separator } from '../ui/separator';
 
 type ProductCardProps = {
   product: Product;
@@ -65,6 +66,7 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             {product.name}
           </Link>
         </CardTitle>
+        <Separator className="my-2 w-3/4 mx-auto" />
         <div className="flex items-baseline gap-2 mt-auto">
             {onSale ? (
                 <>
