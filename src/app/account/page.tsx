@@ -16,6 +16,10 @@ export default function AccountPage() {
       { href: '/account/profile', label: 'My Profile', icon: User },
       { href: '/wishlist', label: 'Wishlist', icon: Heart },
     ];
+    
+    const handleLogout = () => {
+      logout();
+    }
 
     return (
         <div className="space-y-10">
@@ -42,14 +46,14 @@ export default function AccountPage() {
                     </Card>
                 ))}
                  <Card className="text-center group hover:shadow-lg transition-shadow">
-                    <div className="block w-full p-6 text-center">
+                    <div className="flex flex-col items-center justify-center p-6 h-full">
                         <CardHeader className="p-0 mb-4">
-                            <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                             <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                                 <LogOut className="h-8 w-8" />
                             </div>
                         </CardHeader>
                         <CardContent className="p-0">
-                           <Button variant="link" onClick={logout} className="text-lg font-semibold text-foreground hover:no-underline">
+                           <Button variant="link" onClick={handleLogout} className="text-lg font-semibold text-foreground hover:no-underline p-0">
                                 Logout
                             </Button>
                         </CardContent>

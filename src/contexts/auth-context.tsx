@@ -60,10 +60,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = () => {
     setIsLoggedIn(false);
-    // Redirect to home page on logout if on an account page
-    if (pathname.startsWith('/account')) {
-        router.push('/');
-    }
+    // Redirect to home page on logout
+    router.push('/');
   };
 
   const value = { isLoggedIn, login, logout };
