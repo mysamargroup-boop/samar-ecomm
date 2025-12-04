@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@/lib/types';
@@ -16,6 +17,9 @@ type ProductCardProps = {
 export function ProductCard({ product }: ProductCardProps) {
   const category = categories.find(c => c.id === product.categoryId);
   const onSale = product.salePrice && product.salePrice < product.price;
+  const discountPercentage = onSale
+    ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
+    : 0;
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl group">
@@ -31,7 +35,9 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
         <div className="absolute top-2 right-2 flex flex-col items-end gap-2">
             {onSale && (
-                <Badge variant="destructive">Sale</Badge>
+              <div className="flex gap-2">
+                <Badge variant="destructive">{discountPercentage}% OFF</Badge>
+              </div>
             )}
             <WishlistButton productId={product.id} />
         </div>
