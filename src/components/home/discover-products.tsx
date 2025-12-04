@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -37,10 +36,10 @@ export function DiscoverProducts() {
         </div>
         <Tabs defaultValue="new-arrivals" className="w-full">
             <div className="flex justify-center mb-8">
-                <TabsList>
-                    <TabsTrigger value="new-arrivals">New Arrivals</TabsTrigger>
-                    <TabsTrigger value="best-sellers">Best Sellers</TabsTrigger>
-                    <TabsTrigger value="top-rated">Top Rated</TabsTrigger>
+                <TabsList className="bg-transparent p-0 gap-2">
+                    <TabsTrigger value="new-arrivals" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full border border-border data-[state=active]:border-primary transition-all duration-300">New Arrivals</TabsTrigger>
+                    <TabsTrigger value="best-sellers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full border border-border data-[state=active]:border-primary transition-all duration-300">Best Sellers</TabsTrigger>
+                    <TabsTrigger value="top-rated" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-full border border-border data-[state=active]:border-primary transition-all duration-300">Top Rated</TabsTrigger>
                 </TabsList>
             </div>
           <TabsContent value="new-arrivals">
