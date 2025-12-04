@@ -59,25 +59,19 @@ export function Footer() {
     { title: 'Legal', links: legalLinks },
   ];
 
-  const SocialAndPayments = () => (
-    <>
-      <div className="space-y-4">
-        <h3 className="font-semibold font-headline">Let's get social</h3>
-        <div className="flex space-x-1">
-          {socialLinks.map((social) => (
-              <a key={social.name} href={social.href} aria-label={social.name}>
-              <Button variant="ghost" size="icon">
-                  <social.icon className="h-5 w-5" />
-              </Button>
-              </a>
-          ))}
-        </div>
+  const SocialLinks = () => (
+    <div className="space-y-4">
+      <h3 className="font-semibold font-headline">Let's get social</h3>
+      <div className="flex space-x-1">
+        {socialLinks.map((social) => (
+            <a key={social.name} href={social.href} aria-label={social.name}>
+            <Button variant="ghost" size="icon">
+                <social.icon className="h-5 w-5" />
+            </Button>
+            </a>
+        ))}
       </div>
-      <div className="space-y-4">
-        <h3 className="font-semibold font-headline">We Accept</h3>
-        <PaymentMethods />
-      </div>
-    </>
+    </div>
   );
 
 
@@ -127,7 +121,7 @@ export function Footer() {
           </div>
           
           <div className="flex flex-col space-y-6">
-            <SocialAndPayments />
+            <SocialLinks />
           </div>
 
         </div>
@@ -167,13 +161,13 @@ export function Footer() {
                   </AccordionContent>
                 </AccordionItem>
             ))}
-             <AccordionItem value="social-payments">
+             <AccordionItem value="social-links">
                 <AccordionTrigger className="font-semibold font-headline text-base py-4">
-                  Social & Payments
+                  Social
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-6">
-                    <SocialAndPayments />
+                    <SocialLinks />
                   </div>
                 </AccordionContent>
               </AccordionItem>
