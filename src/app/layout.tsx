@@ -34,13 +34,31 @@ function AnnouncementBar() {
   )
 }
 
+function AppStructure({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathname = usePathname();
+  const isSamarRoute = pathname.startsWith('/samar');
+
+  return (
+    <>
+      {!isSamarRoute && <AnnouncementBar />}
+      <AppHeader />
+      <main className="flex-grow pb-20 md:pb-0">{children}</main>
+      <Footer />
+      <MobileBottomNav />
+      <Toaster />
+    </>
+  );
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-  const isSamarRoute = pathname.startsWith('/samar');
   return (
     <html lang="en" className="h-full">
       <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)} suppressHydrationWarning>
@@ -48,12 +66,9 @@ export default function RootLayout({
           <AuthProvider>
             <WishlistProvider>
               <CartProvider>
-                {!isSamarRoute && <AnnouncementBar />}
-                <AppHeader />
-                <main className="flex-grow pb-20 md:pb-0">{children}</main>
-                <Footer />
-                <MobileBottomNav />
-                <Toaster />
+                <AppStructure>
+                  {children}
+                </AppStructure>
               </CartProvider>
             </WishlistProvider>
           </AuthProvider>

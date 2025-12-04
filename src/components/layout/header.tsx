@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter, SheetHeader } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search } from 'lucide-react';
+import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search, LogOut } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -17,6 +17,7 @@ import { useCart } from '@/contexts/cart-context';
 import { useAuth } from '@/contexts/auth-context';
 import { ScrollArea } from '../ui/scroll-area';
 import { LoggedInUserIcon } from '../icons/logged-in-user-icon';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -24,7 +25,7 @@ export function AppHeader() {
   const [isSearchSheetOpen, setIsSearchSheetOpen] = useState(false);
   const { wishlistItems } = useContext(WishlistContext);
   const { cartCount } = useCart();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const wishlistCount = wishlistItems.length;
 
   // Hide header on admin routes
@@ -161,12 +162,34 @@ export function AppHeader() {
                     <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartCount}</Badge>
                     )}
                 </Link>
-                <Link href={isLoggedIn ? "/account" : "/login"} aria-label="My Account">
+                {isLoggedIn ? (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon" aria-label="My Account">
+                        <AccountIcon className="h-6 w-6" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem asChild>
+                        <Link href="/account">
+                          <User className="mr-2 h-4 w-4" />
+                          <span>My Account</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => logout()}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        <span>Logout</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                ) : (
+                  <Link href="/login" aria-label="Login">
                     <Button variant="ghost" size="icon">
-                    <AccountIcon className="h-6 w-6" />
-                    <span className="sr-only">My Account</span>
+                      <AccountIcon className="h-6 w-6" />
+                      <span className="sr-only">Login</span>
                     </Button>
-                </Link>
+                  </Link>
+                )}
             </div>
         </div>
 
