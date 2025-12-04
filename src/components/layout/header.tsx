@@ -15,6 +15,7 @@ import { WishlistContext } from '@/contexts/wishlist-context';
 import { HeaderSearch } from './header-search';
 import { useCart } from '@/contexts/cart-context';
 import { useAuth } from '@/contexts/auth-context';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -191,6 +192,20 @@ export function AppHeader() {
             </div>
 
             <div className="flex items-center justify-end gap-1">
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <Search className="h-5 w-5" />
+                      <span className="sr-only">Search</span>
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="top-1/4">
+                    <DialogHeader>
+                      <DialogTitle>Search Products</DialogTitle>
+                    </DialogHeader>
+                    <HeaderSearch />
+                  </DialogContent>
+                </Dialog>
                 <Link href="/wishlist" aria-label="Wishlist" className="relative">
                     <Button variant="ghost" size="icon">
                     <Heart className="h-5 w-5" />
