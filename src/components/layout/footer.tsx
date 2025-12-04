@@ -6,7 +6,7 @@ import React from 'react';
 import { ArrowRight, ShoppingBag, Twitter, Facebook, Instagram, Linkedin, Youtube, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
-import { categories } from '@/lib/placeholder-data';
+import { categories, socialLinks as socialLinksData, storeDetails } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { Input } from '../ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
@@ -38,11 +38,11 @@ export function Footer() {
   }));
 
   const socialLinks = [
-    { name: 'Facebook', icon: Facebook, href: '#' },
-    { name: 'Twitter', icon: Twitter, href: '#' },
-    { name: 'Instagram', icon: Instagram, href: '#' },
-    { name: 'Youtube', icon: Youtube, href: '#'},
-    { name: 'LinkedIn', icon: Linkedin, href: '#' },
+    { name: 'Facebook', icon: Facebook, href: socialLinksData.facebook },
+    { name: 'Twitter', icon: Twitter, href: socialLinksData.twitter },
+    { name: 'Instagram', icon: Instagram, href: socialLinksData.instagram },
+    { name: 'Youtube', icon: Youtube, href: '#' },
+    { name: 'LinkedIn', icon: Linkedin, href: socialLinksData.linkedin },
   ];
 
   const secondaryLegalLinks = [
@@ -63,7 +63,7 @@ export function Footer() {
       <h3 className="font-semibold font-headline">Let's get social</h3>
       <div className="flex -ml-2">
         {socialLinks.map((social) => (
-            <a key={social.name} href={social.href} aria-label={social.name}>
+            <a key={social.name} href={social.href} aria-label={social.name} target="_blank" rel="noopener noreferrer">
             <Button variant="ghost" size="icon">
                 <social.icon className="h-5 w-5" />
             </Button>
@@ -71,13 +71,13 @@ export function Footer() {
         ))}
       </div>
       <div className="space-y-1 text-sm text-muted-foreground">
-        <a href="mailto:support@samarstore.com" className="flex items-center gap-2 hover:text-primary">
+        <a href={`mailto:${storeDetails.email}`} className="flex items-center gap-2 hover:text-primary">
             <Mail className="h-4 w-4"/>
-            support@samarstore.com
+            {storeDetails.email}
         </a>
-        <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-primary">
+        <a href={`tel:${storeDetails.phone}`} className="flex items-center gap-2 hover:text-primary">
             <Phone className="h-4 w-4"/>
-            +91 98765 43210
+            {storeDetails.phone}
         </a>
       </div>
     </div>
@@ -92,7 +92,7 @@ export function Footer() {
           <div className="flex flex-col space-y-4 col-span-2">
             <Link href="/" className="flex items-center space-x-2">
               <ShoppingBag className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold font-headline">Samar Store</span>
+              <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
             </Link>
              <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
             <div className="relative max-w-sm">
@@ -140,7 +140,7 @@ export function Footer() {
            <div className="flex flex-col items-center text-center space-y-4 col-span-2 mb-8">
             <Link href="/" className="flex items-center space-x-2">
               <ShoppingBag className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold font-headline">Samar Store</span>
+              <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
             </Link>
              <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
             <div className="relative max-w-sm w-full">
@@ -196,9 +196,9 @@ export function Footer() {
                 ))}
             </div>
 
-            <p>&copy; {new Date().getFullYear()} Samar Store. All Rights Reserved.</p>
+            <p>&copy; {new Date().getFullYear()} {storeDetails.name}. All Rights Reserved.</p>
             <p className="text-xs text-muted-foreground/80 max-w-2xl mx-auto">
-                For queries contact us: Manager, Samar Store, Unit no. 204 & 205, 2nd floor, D-wing & E-wing, Corporate Avenue, Andheri Ghatkopar Link Road, Mumbai, Maharashtra-400093, India
+                For queries contact us: Manager, {storeDetails.name}, {storeDetails.address}
             </p>
         </div>
       </div>

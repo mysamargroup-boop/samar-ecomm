@@ -1,4 +1,5 @@
 
+
 import {
   Card,
   CardContent,
@@ -6,6 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { customers } from '@/lib/placeholder-data';
+import { CustomersTable } from '@/components/customers/customers-table';
 
 export default function CustomersPage() {
   return (
@@ -19,7 +22,7 @@ export default function CustomersPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">Customer management functionality will be available here soon.</p>
+          <CustomersTable customers={customers} />
         </CardContent>
       </Card>
     </div>

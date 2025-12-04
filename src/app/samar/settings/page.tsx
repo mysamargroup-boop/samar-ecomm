@@ -1,5 +1,6 @@
 
 
+
 import {
   Card,
   CardContent,
@@ -14,24 +15,10 @@ import { PromotionalBannersForm } from '@/components/settings/promotional-banner
 import { MaintenanceModeForm } from '@/components/settings/maintenance-mode-form';
 import { AnalyticsForm } from '@/components/settings/analytics-form';
 import { RedirectsForm } from '@/components/settings/redirects-form';
-import { ThemeCustomizer } from '@/components/settings/theme-customizer';
-
+import { storeDetails, socialLinks } from '@/lib/placeholder-data';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SettingsPage() {
-  // Mock data for the forms
-  const storeDetails = {
-    name: 'Samar Store',
-    tagline: 'The future of e-commerce.',
-    address: '123 Commerce Lane, Shopsville, IN 12345',
-    phone: '+91 98765 43210',
-  };
-
-  const socialLinks = {
-    twitter: 'https://twitter.com/samarstore',
-    facebook: 'https://facebook.com/samarstore',
-    instagram: 'https://instagram.com/samarstore',
-    linkedin: 'https://linkedin.com/company/samarstore',
-  }
 
   const analyticsConfig = {
     googleAnalyticsId: 'G-XXXXXXXXXX',
@@ -45,15 +32,17 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold font-headline text-center md:text-left">Settings</h1>
       <Tabs defaultValue="store-details" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-7">
-          <TabsTrigger value="store-details">Store Details</TabsTrigger>
-          <TabsTrigger value="theme">Theme</TabsTrigger>
-          <TabsTrigger value="social">Social Links</TabsTrigger>
-          <TabsTrigger value="promotions">Promotions</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-          <TabsTrigger value="redirects">Redirects</TabsTrigger>
-          <TabsTrigger value="advanced">Advanced</TabsTrigger>
-        </TabsList>
+         <ScrollArea className="w-full whitespace-nowrap rounded-md">
+            <TabsList className="h-auto justify-start">
+              <TabsTrigger value="store-details">Store Details</TabsTrigger>
+              <TabsTrigger value="social">Social Links</TabsTrigger>
+              <TabsTrigger value="promotions">Promotions</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="redirects">Redirects</TabsTrigger>
+              <TabsTrigger value="advanced">Advanced</TabsTrigger>
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
         <TabsContent value="store-details">
           <Card>
@@ -65,20 +54,6 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent>
               <StoreDetailsForm details={storeDetails} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="theme">
-          <Card>
-            <CardHeader>
-              <CardTitle>Theme</CardTitle>
-              <CardDescription>
-                Customize your store's colors and fonts.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ThemeCustomizer />
             </CardContent>
           </Card>
         </TabsContent>

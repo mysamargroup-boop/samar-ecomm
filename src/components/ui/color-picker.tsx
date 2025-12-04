@@ -1,8 +1,11 @@
 
+
 'use client';
 
 import { useState } from "react";
 import { Input } from "./input";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
+import { Button } from "./button";
 
 export function ColorPicker({ initialColor }: { initialColor: string }) {
     const [color, setColor] = useState(initialColor);
@@ -16,13 +19,22 @@ export function ColorPicker({ initialColor }: { initialColor: string }) {
     }
 
     return (
-        <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-md border" style={{backgroundColor: `hsl(${color})`}}></div>
-            <div className="grid grid-cols-3 gap-2">
-                <Input value={h} onChange={e => handleColorChange('h', e.target.value)} placeholder="H"/>
-                <Input value={s} onChange={e => handleColorChange('s', e.target.value)} placeholder="S"/>
-                <Input value={l} onChange={e => handleColorChange('l', e.target.value)} placeholder="L"/>
-            </div>
+         <div className="flex items-center gap-2">
+            <Popover>
+                <PopoverTrigger asChild>
+                    <Button variant="outline" className="w-10 h-10 rounded-md border p-0">
+                        <div className="w-full h-full rounded-md" style={{backgroundColor: `hsl(${color})`}}></div>
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto">
+                    <div className="grid grid-cols-3 gap-2">
+                        <Input value={h} onChange={e => handleColorChange('h', e.target.value)} placeholder="H"/>
+                        <Input value={s} onChange={e => handleColorChange('s', e.target.value)} placeholder="S"/>
+                        <Input value={l} onChange={e => handleColorChange('l', e.target.value)} placeholder="L"/>
+                    </div>
+                </PopoverContent>
+            </Popover>
+            <Input value={color} readOnly className="font-mono"/>
         </div>
     )
 }

@@ -9,6 +9,7 @@ type StoreDetailsFormProps = {
   details: {
     name: string;
     tagline: string;
+    email: string;
     address: string;
     phone: string;
   };
@@ -25,6 +26,10 @@ export function StoreDetailsForm({ details }: StoreDetailsFormProps) {
         <div className="space-y-2">
           <Label htmlFor="store-tagline">Tagline</Label>
           <Input id="store-tagline" defaultValue={details.tagline} />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="store-email">Contact Email</Label>
+          <Input id="store-email" type="email" defaultValue={details.email} />
         </div>
         <div className="space-y-2">
           <Label htmlFor="store-phone">Phone Number</Label>

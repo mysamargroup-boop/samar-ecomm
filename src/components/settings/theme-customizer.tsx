@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -53,7 +54,7 @@ export function ThemeCustomizer() {
             <div className="space-y-4">
                <div className="space-y-2">
                  <Label>Headline Font</Label>
-                 <Select defaultValue="var(--font-poppins)">
+                 <Select defaultValue="var(--font-manrope)">
                     <SelectTrigger>
                         <SelectValue placeholder="Select a font" />
                     </SelectTrigger>
@@ -68,7 +69,7 @@ export function ThemeCustomizer() {
                </div>
                 <div className="space-y-2">
                  <Label>Body Font</Label>
-                 <Select defaultValue="var(--font-poppins)">
+                 <Select defaultValue="var(--font-manrope)">
                     <SelectTrigger>
                         <SelectValue placeholder="Select a font" />
                     </SelectTrigger>

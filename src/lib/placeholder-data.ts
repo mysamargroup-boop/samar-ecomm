@@ -4,6 +4,21 @@ import { PlaceHolderImages } from './placeholder-images';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)?.imageUrl || 'https://picsum.photos/seed/default/600/600';
 
+export const storeDetails = {
+    name: 'Samar Store',
+    tagline: 'The future of e-commerce.',
+    email: 'support@samarstore.com',
+    address: '123 Commerce Lane, Shopsville, IN 12345',
+    phone: '+91 98765 43210',
+};
+
+export const socialLinks = {
+    twitter: 'https://twitter.com/samarstore',
+    facebook: 'https://facebook.com/samarstore',
+    instagram: 'https://instagram.com/samarstore',
+    linkedin: 'https://linkedin.com/company/samarstore',
+};
+
 export const categories: Category[] = [
   { id: '1', name: 'Electronics', slug: 'electronics' },
   { id: '2', name: 'Apparel', slug: 'apparel' },
@@ -226,7 +241,7 @@ export const reviews: Review[] = [
         status: 'Approved',
         createdAt: new Date('2025-10-25T10:00:00Z'),
     }
-]
+];
 
 export const blogPosts: BlogPost[] = [
     {
@@ -262,4 +277,39 @@ export const blogPosts: BlogPost[] = [
         content: 'Full content goes here...',
         tags: ['Home', 'Tech', 'Lifestyle'],
     },
+];
+
+export const customers = [
+    {
+        id: 'cust_1',
+        name: 'Alice Johnson',
+        email: 'alice@example.com',
+        totalSpent: 16298,
+        orderCount: 1,
+        lastOrder: new Date('2025-10-26T10:00:00Z'),
+    },
+    {
+        id: 'cust_2',
+        name: 'Bob Smith',
+        email: 'bob@example.com',
+        totalSpent: 2997,
+        orderCount: 1,
+        lastOrder: new Date('2025-10-28T14:30:00Z'),
+    },
+    {
+        id: 'cust_3',
+        name: 'Charlie Brown',
+        email: 'charlie@example.com',
+        totalSpent: 59999,
+        orderCount: 1,
+        lastOrder: new Date('2025-10-20T09:00:00Z'),
+    },
+    {
+        id: 'cust_4',
+        name: 'Diana Prince',
+        email: 'diana@example.com',
+        totalSpent: 34998,
+        orderCount: 1,
+        lastOrder: new Date('2025-10-29T11:00:00Z'),
+    }
 ]

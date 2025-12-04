@@ -1,4 +1,5 @@
 
+
 import {
   Card,
   CardContent,
@@ -13,6 +14,7 @@ import { products } from '@/lib/placeholder-data';
 import { InfoBarCustomizer } from '@/components/appearance/info-bar-customizer';
 import { PromoBannersCustomizer } from '@/components/appearance/promo-banners-customizer';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { ThemeCustomizer } from '@/components/settings/theme-customizer';
 
 
 export default function AppearancePage() {
@@ -28,6 +30,7 @@ export default function AppearancePage() {
             <TabsTrigger value="featured-products">Featured Products</TabsTrigger>
             <TabsTrigger value="info-bar">Info Bar</TabsTrigger>
             <TabsTrigger value="promo-banners">Promo Banners</TabsTrigger>
+            <TabsTrigger value="theme">Theme</TabsTrigger>
             </TabsList>
              <ScrollBar orientation="horizontal" />
         </ScrollArea>
@@ -80,6 +83,19 @@ export default function AppearancePage() {
             </CardHeader>
             <CardContent>
               <PromoBannersCustomizer />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="theme">
+          <Card>
+            <CardHeader>
+              <CardTitle>Theme</CardTitle>
+              <CardDescription>
+                Customize your store's colors and fonts.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ThemeCustomizer />
             </CardContent>
           </Card>
         </TabsContent>
