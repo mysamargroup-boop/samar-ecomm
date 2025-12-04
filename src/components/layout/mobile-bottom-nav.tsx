@@ -4,11 +4,12 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Home, ShoppingCart, User, Heart, UserCheck } from 'lucide-react';
+import { Home, ShoppingCart, User, Heart } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useWishlist } from '@/contexts/wishlist-context';
 import { useCart } from '@/contexts/cart-context';
 import { useAuth } from '@/contexts/auth-context';
+import { LoggedInUserIcon } from '../icons/logged-in-user-icon';
 
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -30,7 +31,7 @@ export function MobileBottomNav() {
 
   const whatsappLink = "https://wa.me/"; // Replace with your WhatsApp number if needed
 
-  const AccountIcon = isLoggedIn ? UserCheck : User;
+  const AccountIcon = isLoggedIn ? LoggedInUserIcon : User;
 
   const navItems = [
     { href: '/', label: 'Shop', icon: Home },

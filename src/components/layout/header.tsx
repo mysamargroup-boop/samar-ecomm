@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter, SheetHeader } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search, UserCheck } from 'lucide-react';
+import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,7 @@ import { HeaderSearch } from './header-search';
 import { useCart } from '@/contexts/cart-context';
 import { useAuth } from '@/contexts/auth-context';
 import { ScrollArea } from '../ui/scroll-area';
+import { LoggedInUserIcon } from '../icons/logged-in-user-icon';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -50,7 +51,7 @@ export function AppHeader() {
     { name: 'LinkedIn', icon: Linkedin, href: '#' },
   ];
 
-  const AccountIcon = isLoggedIn ? UserCheck : User;
+  const AccountIcon = isLoggedIn ? LoggedInUserIcon : User;
 
   const mainNav = (
     <>
@@ -75,7 +76,7 @@ export function AppHeader() {
         </Link>
       </div>
 
-      <ScrollArea className="-mx-6 flex-grow">
+      <ScrollArea className="flex-grow">
         <div className="p-6">
           <nav className="flex flex-col gap-4">
             <div>
@@ -162,7 +163,7 @@ export function AppHeader() {
                 </Link>
                 <Link href={isLoggedIn ? "/account" : "/login"} aria-label="My Account">
                     <Button variant="ghost" size="icon">
-                    <AccountIcon className="h-5 w-5" />
+                    <AccountIcon className="h-6 w-6" />
                     <span className="sr-only">My Account</span>
                     </Button>
                 </Link>
