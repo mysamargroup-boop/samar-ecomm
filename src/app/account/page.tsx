@@ -26,34 +26,32 @@ export default function AccountPage() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                 {navItems.map((item) => (
-                    <Card key={item.href} className="text-center flex flex-col items-center justify-center p-6 hover:shadow-lg transition-shadow">
-                        <CardHeader className="p-0 mb-4">
-                            <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit">
-                                <item.icon className="h-8 w-8" />
-                            </div>
-                        </CardHeader>
-                        <CardContent className="p-0">
-                             <Link href={item.href} passHref>
-                                <Button variant="link" className="text-lg font-semibold">
-                                    {item.label}
-                                </Button>
-                            </Link>
-                        </CardContent>
+                    <Card key={item.href} className="text-center group hover:shadow-lg transition-shadow">
+                        <Link href={item.href} className="block p-6">
+                            <CardHeader className="p-0 mb-4">
+                                <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                                    <item.icon className="h-8 w-8" />
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-0">
+                                <span className="text-lg font-semibold">{item.label}</span>
+                            </CardContent>
+                        </Link>
                     </Card>
                 ))}
-                 <Card className="text-center flex flex-col items-center justify-center p-6 hover:shadow-lg transition-shadow">
-                    <CardHeader className="p-0 mb-4">
-                        <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit">
-                            <LogOut className="h-8 w-8" />
-                        </div>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                        <Button variant="link" className="text-lg font-semibold" onClick={logout}>
-                            Logout
-                        </Button>
-                    </CardContent>
+                 <Card className="text-center group hover:shadow-lg transition-shadow">
+                    <button onClick={logout} className="block w-full p-6 text-left">
+                        <CardHeader className="p-0 mb-4">
+                            <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                                <LogOut className="h-8 w-8" />
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-0 text-center">
+                            <span className="text-lg font-semibold">Logout</span>
+                        </CardContent>
+                    </button>
                 </Card>
             </div>
         </div>
