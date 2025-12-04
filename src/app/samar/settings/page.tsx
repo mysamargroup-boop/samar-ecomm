@@ -1,4 +1,5 @@
 
+
 import {
   Card,
   CardContent,
@@ -13,6 +14,7 @@ import { PromotionalBannersForm } from '@/components/settings/promotional-banner
 import { MaintenanceModeForm } from '@/components/settings/maintenance-mode-form';
 import { AnalyticsForm } from '@/components/settings/analytics-form';
 import { RedirectsForm } from '@/components/settings/redirects-form';
+import { ThemeCustomizer } from '@/components/settings/theme-customizer';
 
 
 export default function SettingsPage() {
@@ -43,8 +45,9 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold font-headline">Settings</h1>
       <Tabs defaultValue="store-details" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-7">
           <TabsTrigger value="store-details">Store Details</TabsTrigger>
+          <TabsTrigger value="theme">Theme</TabsTrigger>
           <TabsTrigger value="social">Social Links</TabsTrigger>
           <TabsTrigger value="promotions">Promotions</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
@@ -62,6 +65,20 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent>
               <StoreDetailsForm details={storeDetails} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="theme">
+          <Card>
+            <CardHeader>
+              <CardTitle>Theme</CardTitle>
+              <CardDescription>
+                Customize your store's colors and fonts.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ThemeCustomizer />
             </CardContent>
           </Card>
         </TabsContent>
