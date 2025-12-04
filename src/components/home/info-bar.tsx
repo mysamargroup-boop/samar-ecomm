@@ -24,12 +24,12 @@ const infoItems = [
 export function InfoBar() {
     return (
         <section className="bg-muted/40 border-y">
-            <div className="container mx-auto px-4 overflow-x-auto">
-                <div className="grid grid-cols-4 gap-1 divide-x divide-border">
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-1 divide-x divide-border -mx-4 md:mx-0">
                     {infoItems.map((item, index) => (
                         <div key={index} className="flex items-center justify-center gap-2 md:gap-4 py-4 px-2">
                             <item.icon className="h-6 w-6 text-primary flex-shrink-0" />
-                            <p className="text-xs sm:text-sm font-semibold whitespace-nowrap">{item.text}</p>
+                            <p className="text-xs sm:text-sm font-semibold">{item.text}</p>
                         </div>
                     ))}
                 </div>
