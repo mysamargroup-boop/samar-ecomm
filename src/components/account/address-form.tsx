@@ -72,23 +72,10 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="street"
+          name="country"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Street Address</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="city"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>City</FormLabel>
+              <FormLabel>Country</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -110,12 +97,12 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
               </FormItem>
             )}
           />
-          <FormField
+           <FormField
             control={form.control}
-            name="zip"
+            name="city"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>ZIP Code</FormLabel>
+                <FormLabel>City</FormLabel>
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
@@ -126,10 +113,10 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
         </div>
         <FormField
           control={form.control}
-          name="country"
+          name="street"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Country</FormLabel>
+              <FormLabel>Street Address</FormLabel>
               <FormControl>
                 <Input {...field} />
               </FormControl>
@@ -137,6 +124,20 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="zip"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>ZIP Code</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <div className="flex justify-end gap-2 pt-4">
           <Button type="button" variant="outline" onClick={onSave}>
             Cancel
