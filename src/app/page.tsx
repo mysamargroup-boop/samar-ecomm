@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { useCollection, useMemoFirebase } from '@/firebase';
 import { collection, getFirestore, limit, query, where } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
+import { ExploreBanner } from '@/components/home/explore-banner';
 
 function HomePageContent() {
   const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
@@ -65,6 +66,8 @@ function HomePageContent() {
       </section>
 
       <PromoBanners />
+
+      <ExploreBanner />
 
       <section className="py-8">
         <div className="container mx-auto px-4">

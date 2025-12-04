@@ -113,6 +113,12 @@
       "description": "A stack of science fiction novels.",
       "imageUrl": "https://images.unsplash.com/photo-1595123336219-5eedd543bc4a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxib29rJTIwc3RhY2t8ZW58MHx8fHwxNzY0NzY5MzAwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "book stack"
+    },
+    {
+      "id": "explore-banner",
+      "description": "A dark, moody shot of high-end wireless earbuds.",
+      "imageUrl": "https://images.unsplash.com/photo-1678852524356-08188528aed9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0ZWNoJTIwZ2FkZ2V0c3xlbnwwfHx8fDE3NjQ2ODc0NzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wireless earbuds"
     }
   ]
 }

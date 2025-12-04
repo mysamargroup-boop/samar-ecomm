@@ -13,6 +13,7 @@ import { products } from '@/lib/placeholder-data';
 import { InfoBarCustomizer } from '@/components/appearance/info-bar-customizer';
 import { PromoBannersCustomizer } from '@/components/appearance/promo-banners-customizer';
 import { ThemeCustomizer } from '@/components/settings/theme-customizer';
+import { ExploreBannerCustomizer } from '@/components/appearance/explore-banner-customizer';
 
 
 export default function AppearancePage() {
@@ -80,6 +81,18 @@ export default function AppearancePage() {
           </CardHeader>
           <CardContent>
             <PromoBannersCustomizer />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Explore Banner</CardTitle>
+            <CardDescription>
+              Customize the full-width promotional banner.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ExploreBannerCustomizer />
           </CardContent>
         </Card>
       </div>
