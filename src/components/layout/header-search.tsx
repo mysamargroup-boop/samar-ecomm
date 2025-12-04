@@ -52,18 +52,24 @@ export function HeaderSearch() {
     const inputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
-        if (query.length > 1) {
-            const searchResults = products.filter(p =>
-                p.name.toLowerCase().includes(query.toLowerCase()) ||
-                p.description.toLowerCase().includes(query.toLowerCase()) ||
-                p.tags?.some(t => t.toLowerCase().includes(query.toLowerCase()))
-            ).slice(0, 10); // Limit to 10 results
-            setResults(searchResults);
-            setIsOpen(true);
-        } else {
-            setResults([]);
-            setIsOpen(false);
-        }
+        const handler = setTimeout(() => {
+            if (query.length > 1) {
+                const searchResults = products.filter(p =>
+                    p.name.toLowerCase().includes(query.toLowerCase()) ||
+                    p.description.toLowerCase().includes(query.toLowerCase()) ||
+                    p.tags?.some(t => t.toLowerCase().includes(query.toLowerCase()))
+                ).slice(0, 10); // Limit to 10 results
+                setResults(searchResults);
+                setIsOpen(true);
+            } else {
+                setResults([]);
+                setIsOpen(false);
+            }
+        }, 300); // Debounce search by 300ms
+
+        return () => {
+            clearTimeout(handler);
+        };
     }, [query]);
 
     const handleClear = () => {
@@ -82,11 +88,12 @@ export function HeaderSearch() {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
              <form className="relative w-full max-w-md">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                     ref={inputRef}
                     type="search"
                     placeholder="Search for products..."
-                    className="w-full pr-16 h-10"
+                    className="w-full pl-10 pr-10 h-10"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     onFocus={() => query.length > 1 && setIsOpen(true)}
@@ -96,23 +103,13 @@ export function HeaderSearch() {
                         type="button"
                         variant="ghost"
                         size="icon"
-                        className="absolute inset-y-0 right-8 h-full w-10"
+                        className="absolute inset-y-0 right-0 h-full w-10"
                         aria-label="Clear search"
                         onClick={handleClear}
                     >
                         <X className="h-5 w-5 text-muted-foreground" />
                     </Button>
                 )}
-                <Button
-                    type="submit"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute inset-y-0 right-0 h-full w-12"
-                    aria-label="Search"
-                    onClick={(e) => e.preventDefault()} // Prevent form submission
-                >
-                    <Search className="h-5 w-5" />
-                </Button>
             </form>
         </PopoverTrigger>
         <PopoverContent className="w-[var(--radix-popover-trigger-width)] p-0" align="start">
