@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter, SheetHeader } from '@/components/ui/sheet';
 import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search, UserCheck } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
@@ -15,11 +15,11 @@ import { WishlistContext } from '@/contexts/wishlist-context';
 import { HeaderSearch } from './header-search';
 import { useCart } from '@/contexts/cart-context';
 import { useAuth } from '@/contexts/auth-context';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 
 export function AppHeader() {
   const pathname = usePathname();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isSearchSheetOpen, setIsSearchSheetOpen] = useState(false);
   const { wishlistItems } = useContext(WishlistContext);
   const { cartCount } = useCart();
   const { isLoggedIn } = useAuth();
@@ -192,20 +192,20 @@ export function AppHeader() {
             </div>
 
             <div className="flex items-center justify-end gap-1">
-                <Dialog>
-                  <DialogTrigger asChild>
+                <Sheet open={isSearchSheetOpen} onOpenChange={setIsSearchSheetOpen}>
+                  <SheetTrigger asChild>
                     <Button variant="ghost" size="icon">
                       <Search className="h-5 w-5" />
                       <span className="sr-only">Search</span>
                     </Button>
-                  </DialogTrigger>
-                  <DialogContent className="top-1/4">
-                    <DialogHeader>
-                      <DialogTitle>Search Products</DialogTitle>
-                    </DialogHeader>
+                  </SheetTrigger>
+                  <SheetContent side="top" className="p-4 pt-6">
+                    <SheetHeader className="sr-only">
+                        <SheetTitle>Search Products</SheetTitle>
+                    </SheetHeader>
                     <HeaderSearch />
-                  </DialogContent>
-                </Dialog>
+                  </SheetContent>
+                </Sheet>
                 <Link href="/wishlist" aria-label="Wishlist" className="relative">
                     <Button variant="ghost" size="icon">
                     <Heart className="h-5 w-5" />
