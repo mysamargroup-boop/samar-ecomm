@@ -21,7 +21,7 @@ type ProductCardProps = {
   showBuyNow?: boolean;
 };
 
-export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
+export function ProductCard({ product, showBuyNow = false }: ProductCardProps) {
   const onSale = product.salePrice && product.salePrice < product.price;
   const discountPercentage = onSale
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
@@ -58,13 +58,13 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             <WishlistButton productId={product.id} />
         </div>
       </CardHeader>
-      <CardContent className="p-3 flex-grow flex flex-col items-center text-center">
+      <CardContent className="p-4 flex-grow flex flex-col items-center text-center">
         {category && (
             <Link href={`/${category.slug}`}>
-                <Badge variant="secondary" className="mb-1 w-fit text-xs">{category.name}</Badge>
+                <Badge variant="secondary" className="mb-2 w-fit text-xs">{category.name}</Badge>
             </Link>
         )}
-        <CardTitle className="text-base leading-snug mb-1 flex-grow flex flex-col justify-center min-h-[2.5em]">
+        <CardTitle className="text-base leading-snug mb-2 flex-grow flex flex-col justify-center min-h-[2.5em]">
           <Link href={`/product/${product.id}`} className="hover:text-primary transition-colors no-underline">
             {product.name}
           </Link>
@@ -73,27 +73,27 @@ export function ProductCard({ product, showBuyNow = true }: ProductCardProps) {
             {onSale ? (
                 <>
                     <p className="text-lg font-bold font-headline text-maroon">{formatPrice(product.salePrice!)}</p>
-                    <p className="text-xs font-medium text-muted-foreground line-through">{formatPrice(product.price)}</p>
+                    <p className="text-sm font-medium text-muted-foreground line-through">{formatPrice(product.price)}</p>
                 </>
             ) : (
                 <p className="text-lg font-bold font-headline text-primary">{formatPrice(product.price)}</p>
             )}
         </div>
       </CardContent>
-      <CardFooter className="p-2 pt-0">
-        <div className="flex flex-col w-full gap-2">
-            <Button variant="outline" size="sm" onClick={() => addToCart(product)}>
-                <ShoppingCart className="mr-2 h-4 w-4" />
-                Add to Cart
-            </Button>
-            {showBuyNow && (
-              <Button size="sm" className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={handleBuyNow}>
-                <Zap className="mr-2 h-4 w-4" />
-                Buy Now
-              </Button>
-            )}
-        </div>
-      </CardFooter>
+      {showBuyNow && (
+        <CardFooter className="p-2 pt-0">
+            <div className="flex flex-col w-full gap-2">
+                <Button variant="outline" size="sm" onClick={() => addToCart(product)}>
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    Add to Cart
+                </Button>
+                <Button size="sm" className={cn("w-full bg-gradient-to-r from-buy-now-start to-buy-now-end text-white hover:opacity-90 transition-opacity")} onClick={handleBuyNow}>
+                    <Zap className="mr-2 h-4 w-4" />
+                    Buy Now
+                </Button>
+            </div>
+        </CardFooter>
+      )}
     </Card>
   );
 }
