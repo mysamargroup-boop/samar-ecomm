@@ -7,7 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { StoreDetailsForm } from '@/components/settings/store-details-form';
 import { SocialLinksForm } from '@/components/settings/social-links-form';
 import { PromotionalBannersForm } from '@/components/settings/promotional-banners-form';
@@ -15,7 +14,6 @@ import { MaintenanceModeForm } from '@/components/settings/maintenance-mode-form
 import { AnalyticsForm } from '@/components/settings/analytics-form';
 import { RedirectsForm } from '@/components/settings/redirects-form';
 import { storeDetails, socialLinks } from '@/lib/placeholder-data';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SettingsPage() {
 
@@ -30,20 +28,9 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold font-headline text-center md:text-left">Settings</h1>
-      <Tabs defaultValue="store-details" className="w-full">
-         <ScrollArea className="w-full whitespace-nowrap rounded-md">
-            <TabsList className="h-auto justify-start">
-              <TabsTrigger value="store-details">Store Details</TabsTrigger>
-              <TabsTrigger value="social">Social Links</TabsTrigger>
-              <TabsTrigger value="promotions">Promotions</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-              <TabsTrigger value="redirects">Redirects</TabsTrigger>
-              <TabsTrigger value="advanced">Advanced</TabsTrigger>
-            </TabsList>
-            <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-
-        <TabsContent value="store-details">
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Store Details</CardTitle>
@@ -55,23 +42,7 @@ export default function SettingsPage() {
               <StoreDetailsForm details={storeDetails} />
             </CardContent>
           </Card>
-        </TabsContent>
-        
-        <TabsContent value="social">
-          <Card>
-            <CardHeader>
-              <CardTitle>Social Media Links</CardTitle>
-              <CardDescription>
-                Connect your social media accounts to be displayed in the footer.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <SocialLinksForm links={socialLinks} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="promotions">
+          
           <Card>
             <CardHeader>
               <CardTitle>Promotional Banners</CardTitle>
@@ -83,9 +54,7 @@ export default function SettingsPage() {
               <PromotionalBannersForm />
             </CardContent>
           </Card>
-        </TabsContent>
-
-        <TabsContent value="analytics">
+          
           <Card>
             <CardHeader>
               <CardTitle>Analytics & SEO</CardTitle>
@@ -97,23 +66,7 @@ export default function SettingsPage() {
               <AnalyticsForm config={analyticsConfig}/>
             </CardContent>
           </Card>
-        </TabsContent>
-        
-        <TabsContent value="redirects">
-          <Card>
-            <CardHeader>
-              <CardTitle>URL Redirects</CardTitle>
-              <CardDescription>
-                Manage custom URL redirects for your store.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <RedirectsForm />
-            </CardContent>
-          </Card>
-        </TabsContent>
 
-        <TabsContent value="advanced">
           <Card>
             <CardHeader>
               <CardTitle>Advanced Settings</CardTitle>
@@ -125,9 +78,34 @@ export default function SettingsPage() {
               <MaintenanceModeForm />
             </CardContent>
           </Card>
-        </TabsContent>
+        </div>
 
-      </Tabs>
+        <div className="space-y-6">
+           <Card>
+            <CardHeader>
+              <CardTitle>Social Media Links</CardTitle>
+              <CardDescription>
+                Connect your social media accounts to be displayed in the footer.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <SocialLinksForm links={socialLinks} />
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle>URL Redirects</CardTitle>
+              <CardDescription>
+                Manage custom URL redirects for your store.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RedirectsForm />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   );
 }
