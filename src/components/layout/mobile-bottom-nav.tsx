@@ -1,12 +1,14 @@
+
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Home, ShoppingCart, User, Heart } from 'lucide-react';
+import { Home, ShoppingCart, User, Heart, UserCheck } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { useWishlist } from '@/contexts/wishlist-context';
 import { useCart } from '@/contexts/cart-context';
+import { useAuth } from '@/contexts/auth-context';
 
 const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
@@ -23,16 +25,19 @@ export function MobileBottomNav() {
   const pathname = usePathname();
   const { wishlistItems } = useWishlist();
   const { cartCount } = useCart();
+  const { isLoggedIn } = useAuth();
   const wishlistCount = wishlistItems.length;
 
   const whatsappLink = "https://wa.me/"; // Replace with your WhatsApp number if needed
+
+  const AccountIcon = isLoggedIn ? UserCheck : User;
 
   const navItems = [
     { href: '/', label: 'Shop', icon: Home },
     { href: '/wishlist', label: 'Wishlist', icon: Heart, count: wishlistCount },
     { href: '/cart', label: 'Cart', icon: ShoppingCart, count: cartCount },
     { href: whatsappLink, label: 'WhatsApp', icon: WhatsAppIcon, isExternal: true },
-    { href: '/account', label: 'Account', icon: User },
+    { href: isLoggedIn ? '/account' : '/login', label: 'Account', icon: AccountIcon },
   ];
 
   if (pathname.startsWith('/samar') || pathname.startsWith('/samar') || pathname.startsWith('/login')) {
@@ -44,6 +49,8 @@ export function MobileBottomNav() {
       <div className="grid h-full max-w-lg grid-cols-5 mx-auto font-medium">
         {navItems.map((item) => {
             const isWhatsApp = item.label === 'WhatsApp';
+            const isActive = (pathname === item.href && !isWhatsApp) || (item.href === '/account' && pathname.startsWith('/account'));
+            
             const linkContent = (
               <>
                 <item.icon className={cn("w-6 h-6 mb-1", isWhatsApp && 'text-green-600 dark:text-green-500')} />
@@ -56,7 +63,7 @@ export function MobileBottomNav() {
 
             const linkClass = cn(
               'inline-flex flex-col items-center justify-center px-5 hover:bg-muted group relative',
-              pathname === item.href && !isWhatsApp
+              isActive
                 ? 'text-primary'
                 : 'text-muted-foreground'
             )
