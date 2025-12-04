@@ -75,7 +75,7 @@ export function AppHeader() {
         </Link>
       </div>
 
-      <ScrollArea className="flex-grow">
+      <ScrollArea className="-mx-6 flex-grow">
         <div className="p-6">
           <nav className="flex flex-col gap-4">
             <div>
@@ -160,7 +160,7 @@ export function AppHeader() {
                     <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0">{cartCount}</Badge>
                     )}
                 </Link>
-                <Link href="/account" aria-label="My Account">
+                <Link href={isLoggedIn ? "/account" : "/login"} aria-label="My Account">
                     <Button variant="ghost" size="icon">
                     <AccountIcon className="h-5 w-5" />
                     <span className="sr-only">My Account</span>
