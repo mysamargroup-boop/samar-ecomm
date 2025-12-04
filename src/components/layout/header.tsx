@@ -1,9 +1,10 @@
+
 'use client';
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetFooter } from '@/components/ui/sheet';
-import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Menu, ShoppingCart, ShoppingBag, User, Heart, Twitter, Facebook, Instagram, Linkedin, Search } from 'lucide-react';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -11,6 +12,7 @@ import { useState, useContext } from 'react';
 import { Badge } from '../ui/badge';
 import { Separator } from '../ui/separator';
 import { WishlistContext } from '@/contexts/wishlist-context';
+import { HeaderSearch } from './header-search';
 
 export function AppHeader() {
   const pathname = usePathname();
@@ -59,11 +61,14 @@ export function AppHeader() {
   );
 
   const mobileNav = (
-    <div className="flex flex-col h-full p-6">
-       <Link href="/" className="mr-6 flex items-center space-x-2 mb-8" onClick={() => setIsSheetOpen(false)}>
-        <ShoppingBag className="h-6 w-6 text-primary" />
-        <span className="font-bold text-lg font-headline">Samar Store</span>
-      </Link>
+    <div className="flex flex-col h-full">
+       <div className="p-6">
+        <Link href="/" className="flex items-center space-x-2 mb-6" onClick={() => setIsSheetOpen(false)}>
+            <ShoppingBag className="h-6 w-6 text-primary" />
+            <span className="font-bold text-lg font-headline">Samar Store</span>
+        </Link>
+        <HeaderSearch />
+       </div>
 
       <div className="flex-grow overflow-y-auto -mx-6 px-6">
         <nav className="flex flex-col gap-4">
@@ -119,17 +124,17 @@ export function AppHeader() {
       <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
         
         {/* Desktop Header */}
-        <div className="hidden md:flex w-full items-center">
-            <div className="flex-1 justify-start">
+        <div className="hidden md:flex w-full items-center gap-8">
+            <div className="flex items-center">
                  <Link href="/" className="flex items-center space-x-2">
                     <ShoppingBag className="h-6 w-6 text-primary" />
                     <span className="font-bold sm:inline-block font-headline">Samar Store</span>
                 </Link>
             </div>
-            <nav className="flex flex-1 items-center justify-center gap-6 lg:gap-8">
-                {mainNav}
-            </nav>
-            <div className="flex flex-1 items-center justify-end gap-2">
+            <div className="flex-1 flex justify-center">
+              <HeaderSearch />
+            </div>
+            <div className="flex items-center justify-end gap-2">
                 <Link href="/wishlist" aria-label="Wishlist" className="relative">
                     <Button variant="ghost" size="icon">
                     <Heart className="h-5 w-5" />
@@ -202,6 +207,11 @@ export function AppHeader() {
                 </Link>
             </div>
         </div>
+      </div>
+      <div className="hidden md:flex container items-center justify-center h-10 border-t px-4">
+        <nav className="flex items-center gap-6">
+            {mainNav}
+        </nav>
       </div>
     </header>
   );

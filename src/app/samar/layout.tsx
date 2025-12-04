@@ -47,7 +47,7 @@ export default function SamarLayout({
 
   // While checking for authentication, show a loading state to prevent hydration mismatch.
   if (!isAuthChecked) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return <div className="flex items-center justify-center min-h-screen bg-background">Loading...</div>;
   }
   
   const isLoginPage = pathname === '/samar';
@@ -61,11 +61,11 @@ export default function SamarLayout({
   // If authenticated, show the full samar layout.
   if (isAuthenticated) {
     return (
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen bg-background">
         <SamarSidebar />
         <div className="flex flex-col flex-1">
           <SamarMobileHeader />
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 bg-background">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8">
             {children}
           </main>
         </div>
@@ -74,5 +74,5 @@ export default function SamarLayout({
   }
   
   // As a fallback during redirection, show loading.
-  return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+  return <div className="flex items-center justify-center min-h-screen bg-background">Loading...</div>;
 }
