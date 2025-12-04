@@ -20,7 +20,7 @@ export default function AppearancePage() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold font-headline">Appearance</h1>
       <Tabs defaultValue="hero">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4">
+        <TabsList className="h-auto flex-wrap justify-start">
           <TabsTrigger value="hero">Hero Banner</TabsTrigger>
           <TabsTrigger value="featured-products">Featured Products</TabsTrigger>
           <TabsTrigger value="info-bar">Info Bar</TabsTrigger>
