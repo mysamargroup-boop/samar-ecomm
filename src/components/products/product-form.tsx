@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useForm, useFormState } from 'react-hook-form';
@@ -29,7 +30,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { Sparkles, Loader2, X, ImagePlus, Trash2 } from 'lucide-react';
 import { useState, useTransition } from 'react';
-import { generateDescriptionAction } from '@/app/actions/aiActions';
+import { generateDescriptionAction, generateNameAction } from '@/app/actions/aiActions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 
@@ -43,7 +44,8 @@ type ProductFormProps = {
 export function ProductForm({ product, categories }: ProductFormProps) {
   const { toast } = useToast();
   const router = useRouter();
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingDesc, setIsGeneratingDesc] = useState(false);
+  const [isGeneratingName, setIsGeneratingName] = useState(false);
   const [isPending, startTransition] = useTransition();
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -150,7 +152,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
       return;
     }
 
-    setIsGenerating(true);
+    setIsGeneratingDesc(true);
     try {
       const result = await generateDescriptionAction({ productName, keywords: productName });
       if (result.success && result.description) {
@@ -169,9 +171,44 @@ export function ProductForm({ product, categories }: ProductFormProps) {
         variant: 'destructive',
       });
     } finally {
-      setIsGenerating(false);
+      setIsGeneratingDesc(false);
     }
   }
+
+    async function handleGenerateName() {
+    const currentTags = form.getValues('tags')?.join(', ');
+    if (!currentTags) {
+      toast({
+        title: 'Tags Required',
+        description: 'Please add some tags before generating a name.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setIsGeneratingName(true);
+    try {
+      const result = await generateNameAction({ keywords: currentTags });
+      if (result.success && result.productName) {
+        form.setValue('name', result.productName);
+        toast({
+          title: 'Name Generated',
+          description: 'The AI-powered product name has been added.',
+        });
+      } else {
+        throw new Error(result.error);
+      }
+    } catch (error) {
+      toast({
+        title: 'Generation Failed',
+        description: 'Could not generate a product name at this time.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsGeneratingName(false);
+    }
+  }
+
 
   return (
     <Form {...form}>
@@ -188,7 +225,23 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Name</FormLabel>
+                      <div className="flex items-center justify-between">
+                         <FormLabel>Product Name</FormLabel>
+                         <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={handleGenerateName}
+                          disabled={isGeneratingName}
+                        >
+                          {isGeneratingName ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <Sparkles className="mr-2 h-4 w-4" />
+                          )}
+                          Generate with AI
+                        </Button>
+                      </div>
                       <FormControl>
                         <Input placeholder="e.g. Wireless Headphones" {...field} />
                       </FormControl>
@@ -221,9 +274,9 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                           variant="outline"
                           size="sm"
                           onClick={handleGenerateDescription}
-                          disabled={isGenerating}
+                          disabled={isGeneratingDesc}
                         >
-                          {isGenerating ? (
+                          {isGeneratingDesc ? (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                           ) : (
                             <Sparkles className="mr-2 h-4 w-4" />

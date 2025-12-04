@@ -102,7 +102,7 @@ export default function SettingsPage() {
             <CardHeader>
               <CardTitle>Promotional Banners</CardTitle>
               <CardDescription>
-                Manage promotional content like top banners or pop-ups.
+                Manage the promotional banners displayed on your storefront.
               </CardDescription>
             </CardHeader>
             <CardContent>

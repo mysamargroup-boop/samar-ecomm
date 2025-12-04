@@ -1,4 +1,5 @@
 
+
 import type { Product, Category, Order, Review, BlogPost } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
@@ -152,7 +153,7 @@ export const orders: Order[] = [
     ],
     total: 16298,
     status: 'Shipped',
-    createdAt: new Date('2023-10-26T10:00:00Z'),
+    createdAt: new Date('2025-10-26T10:00:00Z'),
   },
   {
     id: 'ord_2',
@@ -163,7 +164,7 @@ export const orders: Order[] = [
     ],
     total: 2997,
     status: 'Processing',
-    createdAt: new Date('2023-10-28T14:30:00Z'),
+    createdAt: new Date('2025-10-28T14:30:00Z'),
   },
   {
     id: 'ord_3',
@@ -174,7 +175,7 @@ export const orders: Order[] = [
     ],
     total: 59999,
     status: 'Delivered',
-    createdAt: new Date('2023-10-20T09:00:00Z'),
+    createdAt: new Date('2025-10-20T09:00:00Z'),
   },
   {
     id: 'ord_4',
@@ -186,7 +187,7 @@ export const orders: Order[] = [
     ],
     total: 34998,
     status: 'Pending',
-    createdAt: new Date('2023-10-29T11:00:00Z'),
+    createdAt: new Date('2025-10-29T11:00:00Z'),
   },
 ];
 
@@ -198,7 +199,7 @@ export const reviews: Review[] = [
         rating: 5,
         comment: 'Absolutely phenomenal sound quality and the noise cancellation is top-tier. Worth every penny!',
         status: 'Approved',
-        createdAt: new Date('2023-10-27T10:00:00Z'),
+        createdAt: new Date('2025-10-27T10:00:00Z'),
     },
      {
         id: 'rev_2',
@@ -207,7 +208,7 @@ export const reviews: Review[] = [
         rating: 4,
         comment: 'Great for my daily commute on the train. Comfortable for long periods, though the battery could be slightly better.',
         status: 'Approved',
-        createdAt: new Date('2023-10-28T10:00:00Z'),
+        createdAt: new Date('2025-10-28T10:00:00Z'),
     },
      {
         id: 'rev_3',
@@ -216,7 +217,7 @@ export const reviews: Review[] = [
         rating: 5,
         comment: 'This is the softest t-shirt I have ever owned. I bought one in every color. Highly recommend!',
         status: 'Pending',
-        createdAt: new Date('2023-10-29T10:00:00Z'),
+        createdAt: new Date('2025-10-29T10:00:00Z'),
     },
      {
         id: 'rev_4',
@@ -225,7 +226,7 @@ export const reviews: Review[] = [
         rating: 4,
         comment: 'The fitness tracking is very accurate. I wish it had more third-party app integrations, but overall a solid device for workouts.',
         status: 'Approved',
-        createdAt: new Date('2023-10-25T10:00:00Z'),
+        createdAt: new Date('2025-10-25T10:00:00Z'),
     }
 ]
 
@@ -235,7 +236,7 @@ export const blogPosts: BlogPost[] = [
         title: 'The Ultimate Guide to Choosing the Right Headphones',
         slug: 'ultimate-guide-to-choosing-headphones',
         author: 'John Doe',
-        date: new Date('2023-10-15'),
+        date: new Date('2025-10-15'),
         image: findImage('slider1'),
         excerpt: 'In a world saturated with audio gadgets, finding the perfect pair of headphones can be overwhelming. This guide will walk you through the key factors to consider, from sound quality to comfort and design.',
         content: 'Full content goes here...',
@@ -246,7 +247,7 @@ export const blogPosts: BlogPost[] = [
         title: '5 Ways to Style a Classic White T-Shirt',
         slug: '5-ways-to-style-a-classic-white-t-shirt',
         author: 'Jane Smith',
-        date: new Date('2023-10-18'),
+        date: new Date('2025-10-18'),
         image: findImage('slider2'),
         excerpt: 'The white t-shirt is a timeless wardrobe staple. Discover five creative and stylish ways to elevate this simple piece for any occasion, from casual outings to chic evening looks.',
         content: 'Full content goes here...',
@@ -257,7 +258,7 @@ export const blogPosts: BlogPost[] = [
         title: 'Creating the Perfect Morning Routine with Smart Home Tech',
         slug: 'creating-the-perfect-morning-routine-with-smart-home-tech',
         author: 'Alex Johnson',
-        date: new Date('2023-10-22'),
+        date: new Date('2025-10-22'),
         image: findImage('slider3'),
         excerpt: 'Transform your mornings from chaotic to calm with the help of smart home technology. We explore how smartwatches, espresso machines, and other gadgets can help you start your day right.',
         content: 'Full content goes here...',
