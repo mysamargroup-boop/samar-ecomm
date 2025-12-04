@@ -26,13 +26,19 @@ export function ColorPicker({ initialColor }: { initialColor: string }) {
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>, component: 'r' | 'g' | 'b' | 'a') => {
-        const value = parseInt(e.target.value, 10);
-        if (!isNaN(value)) {
-            let clampedValue = Math.max(0, Math.min(component === 'a' ? 1 : 255, value));
-             if (component === 'a') {
-                clampedValue = Math.max(0, Math.min(1, parseFloat(e.target.value)));
+        const value = e.target.value;
+        if (component === 'a') {
+            const parsedValue = parseFloat(value);
+            if (!isNaN(parsedValue)) {
+                const clampedValue = Math.max(0, Math.min(1, parsedValue));
+                setRgbaColor(prev => ({ ...prev, a: clampedValue }));
             }
-            setRgbaColor(prev => ({ ...prev, [component]: clampedValue }));
+        } else {
+            const parsedValue = parseInt(value, 10);
+            if (!isNaN(parsedValue)) {
+                const clampedValue = Math.max(0, Math.min(255, parsedValue));
+                setRgbaColor(prev => ({ ...prev, [component]: clampedValue }));
+            }
         }
     }
     
@@ -52,19 +58,19 @@ export function ColorPicker({ initialColor }: { initialColor: string }) {
             </Popover>
             <div className="grid grid-cols-4 gap-2 w-full">
                 <div className="space-y-1">
-                    <Label htmlFor="r" className="text-xs">R</Label>
+                    <Label htmlFor="r" className="text-xs text-center block">R</Label>
                     <Input id="r" type="number" value={rgbaColor.r} onChange={(e) => handleInputChange(e, 'r')} className="h-8 text-center"/>
                 </div>
                  <div className="space-y-1">
-                    <Label htmlFor="g" className="text-xs">G</Label>
+                    <Label htmlFor="g" className="text-xs text-center block">G</Label>
                     <Input id="g" type="number" value={rgbaColor.g} onChange={(e) => handleInputChange(e, 'g')} className="h-8 text-center"/>
                 </div>
                  <div className="space-y-1">
-                    <Label htmlFor="b" className="text-xs">B</Label>
+                    <Label htmlFor="b" className="text-xs text-center block">B</Label>
                     <Input id="b" type="number" value={rgbaColor.b} onChange={(e) => handleInputChange(e, 'b')} className="h-8 text-center"/>
                 </div>
                  <div className="space-y-1">
-                    <Label htmlFor="a" className="text-xs">A</Label>
+                    <Label htmlFor="a" className="text-xs text-center block">A</Label>
                     <Input id="a" type="number" step="0.1" value={rgbaColor.a} onChange={(e) => handleInputChange(e, 'a')} className="h-8 text-center"/>
                 </div>
             </div>
