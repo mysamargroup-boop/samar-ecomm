@@ -20,6 +20,7 @@ import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { Address, AddressSchema } from '@/lib/types';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 type AddressFormProps = {
   address: Address | undefined;
@@ -38,7 +39,7 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
       city: address?.city || '',
       state: address?.state || '',
       zip: address?.zip || '',
-      country: address?.country || 'United States',
+      country: address?.country || 'India',
     },
   });
 
@@ -76,9 +77,18 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Country</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a country" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="India">India</SelectItem>
+                  <SelectItem value="United States">United States</SelectItem>
+                  <SelectItem value="Canada">Canada</SelectItem>
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}
@@ -90,9 +100,18 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>State</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a state" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Madhya Pradesh">Madhya Pradesh</SelectItem>
+                    <SelectItem value="California">California</SelectItem>
+                    <SelectItem value="Ontario">Ontario</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -103,9 +122,18 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>City</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
+                 <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a city" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Sagar">Sagar</SelectItem>
+                    <SelectItem value="Los Angeles">Los Angeles</SelectItem>
+                    <SelectItem value="Toronto">Toronto</SelectItem>
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}
@@ -118,7 +146,7 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
             <FormItem>
               <FormLabel>Street Address</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="123 Main St"/>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -131,7 +159,7 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
             <FormItem>
               <FormLabel>ZIP Code</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} placeholder="e.g. 470002" />
               </FormControl>
               <FormMessage />
             </FormItem>
