@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -21,6 +22,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { products } from '@/lib/placeholder-data';
 import { cn } from '@/lib/utils';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 
 export function ReviewsTable({ reviews }: { reviews: Review[] }) {
   const { toast } = useToast();
@@ -55,58 +57,112 @@ export function ReviewsTable({ reviews }: { reviews: Review[] }) {
     }
   }
 
+  const statusBadgeClass = (status: Review['status']) => {
+      if (status === 'Approved') return "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800";
+      return "";
+  }
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Author</TableHead>
-          <TableHead>Product</TableHead>
-          <TableHead>Rating</TableHead>
-          <TableHead className="hidden lg:table-cell">Comment</TableHead>
-          <TableHead>Status</TableHead>
-           <TableHead>
-            <span className="sr-only">Actions</span>
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+    <>
+      {/* Desktop Table View */}
+      <div className="hidden md:block">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Author</TableHead>
+              <TableHead>Product</TableHead>
+              <TableHead>Rating</TableHead>
+              <TableHead className="hidden lg:table-cell">Comment</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>
+                <span className="sr-only">Actions</span>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {reviews.map((review) => (
+              <TableRow key={review.id}>
+                <TableCell className="font-medium">{review.authorName}</TableCell>
+                <TableCell>{getProductName(review.productId)}</TableCell>
+                <TableCell>
+                    <div className="flex items-center gap-1">
+                        {[...Array(review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400"/>)}
+                        {[...Array(5 - review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-muted-foreground"/>)}
+                    </div>
+                </TableCell>
+                <TableCell className="hidden lg:table-cell max-w-sm truncate">{review.comment}</TableCell>
+                <TableCell>
+                    <Badge variant={statusVariant(review.status)} className={cn(statusBadgeClass(review.status))}>{review.status}</Badge>
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {review.status === 'Pending' && (
+                        <DropdownMenuItem onClick={() => handleApprove(review.id)}>
+                          <Check className="mr-2 h-4 w-4" /> Approve
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem onClick={() => handleDelete(review.id)} className="text-destructive">
+                        <Trash className="mr-2 h-4 w-4" /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
         {reviews.map((review) => (
-          <TableRow key={review.id}>
-            <TableCell className="font-medium">{review.authorName}</TableCell>
-            <TableCell>{getProductName(review.productId)}</TableCell>
-             <TableCell>
-                <div className="flex items-center gap-1">
-                    {[...Array(review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400"/>)}
-                    {[...Array(5 - review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-muted-foreground"/>)}
+          <Card key={review.id}>
+            <CardHeader>
+              <div className="flex justify-between items-start">
+                  <div>
+                      <CardTitle className="text-base">{review.authorName}</CardTitle>
+                      <CardDescription>{getProductName(review.productId)}</CardDescription>
+                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost" className="-mr-2 -mt-2">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      {review.status === 'Pending' && (
+                        <DropdownMenuItem onClick={() => handleApprove(review.id)}>
+                          <Check className="mr-2 h-4 w-4" /> Approve
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuItem onClick={() => handleDelete(review.id)} className="text-destructive">
+                        <Trash className="mr-2 h-4 w-4" /> Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                <p className="text-sm text-muted-foreground border-t pt-4">{review.comment}</p>
+                 <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-1">
+                        {[...Array(review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-yellow-400 fill-yellow-400"/>)}
+                        {[...Array(5 - review.rating)].map((_, i) => <Star key={i} className="h-4 w-4 text-muted-foreground"/>)}
+                    </div>
+                    <Badge variant={statusVariant(review.status)} className={cn(statusBadgeClass(review.status))}>{review.status}</Badge>
                 </div>
-            </TableCell>
-            <TableCell className="hidden lg:table-cell max-w-sm truncate">{review.comment}</TableCell>
-            <TableCell>
-                <Badge variant={statusVariant(review.status)} className={cn(review.status === 'Approved' && "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800")}>{review.status}</Badge>
-            </TableCell>
-            <TableCell>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost">
-                    <MoreHorizontal className="h-4 w-4" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  {review.status === 'Pending' && (
-                    <DropdownMenuItem onClick={() => handleApprove(review.id)}>
-                      <Check className="mr-2 h-4 w-4" /> Approve
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem onClick={() => handleDelete(review.id)} className="text-destructive">
-                    <Trash className="mr-2 h-4 w-4" /> Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TableCell>
-          </TableRow>
+            </CardContent>
+          </Card>
         ))}
-      </TableBody>
-    </Table>
+      </div>
+    </>
   );
 }

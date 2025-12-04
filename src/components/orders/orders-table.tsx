@@ -22,7 +22,7 @@ import { updateOrderStatus } from '@/app/actions/orderActions';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import { Badge } from '../ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 
 export function OrdersTable({ orders }: { orders: Order[] }) {
   const { toast } = useToast();
@@ -60,43 +60,83 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
 
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Order ID</TableHead>
-          <TableHead>Customer</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead className="hidden md:table-cell">Total</TableHead>
-          <TableHead>Status</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
+     <>
+      {/* Desktop Table View */}
+      <div className="hidden md:block">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Customer</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Total</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders.map((order) => (
+              <TableRow key={order.id} onClick={() => handleRowClick(order.id)} className="cursor-pointer">
+                <TableCell className="font-medium">#{order.id.split('_')[1]}</TableCell>
+                <TableCell>
+                  <div>{order.customerName}</div>
+                  <div className="text-sm text-muted-foreground">{order.customerEmail}</div>
+                </TableCell>
+                <TableCell>{order.createdAt.toLocaleDateString()}</TableCell>
+                <TableCell>{formatPrice(order.total)}</TableCell>
+                <TableCell onClick={(e) => e.stopPropagation()}>
+                  <Select defaultValue={order.status} onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}>
+                    <SelectTrigger className={cn("w-32", getStatusVariant(order.status))}>
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'] as Order['status'][]).map(status => (
+                        <SelectItem key={status} value={status}>
+                          {status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+
+       {/* Mobile Card View */}
+      <div className="md:hidden space-y-4">
         {orders.map((order) => (
-          <TableRow key={order.id} onClick={() => handleRowClick(order.id)} className="cursor-pointer">
-            <TableCell className="font-medium">#{order.id.split('_')[1]}</TableCell>
-            <TableCell>
-              <div>{order.customerName}</div>
-              <div className="text-sm text-muted-foreground">{order.customerEmail}</div>
-            </TableCell>
-            <TableCell>{order.createdAt.toLocaleDateString()}</TableCell>
-            <TableCell className="hidden md:table-cell">{formatPrice(order.total)}</TableCell>
-            <TableCell onClick={(e) => e.stopPropagation()}>
-              <Select defaultValue={order.status} onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}>
-                <SelectTrigger className={cn("w-32", getStatusVariant(order.status))}>
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  {(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'] as Order['status'][]).map(status => (
-                    <SelectItem key={status} value={status}>
-                      {status}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </TableCell>
-          </TableRow>
+          <Card key={order.id} onClick={() => handleRowClick(order.id)} className="cursor-pointer">
+            <CardHeader className="pb-4">
+                <CardTitle className="text-base flex justify-between items-center">
+                    <span>Order #{order.id.split('_')[1]}</span>
+                    <span>{formatPrice(order.total)}</span>
+                </CardTitle>
+                <div className="text-sm text-muted-foreground">{order.createdAt.toLocaleDateString()}</div>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                  <p className="font-medium">{order.customerName}</p>
+                  <p className="text-sm text-muted-foreground">{order.customerEmail}</p>
+              </div>
+              <div onClick={(e) => e.stopPropagation()}>
+                <Select defaultValue={order.status} onValueChange={(value) => handleStatusChange(order.id, value as Order['status'])}>
+                    <SelectTrigger className={cn("w-full", getStatusVariant(order.status))}>
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'] as Order['status'][]).map(status => (
+                        <SelectItem key={status} value={status}>
+                          {status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+              </div>
+            </CardContent>
+          </Card>
         ))}
-      </TableBody>
-    </Table>
+      </div>
+    </>
   );
 }
