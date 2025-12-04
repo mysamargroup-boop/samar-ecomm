@@ -178,7 +178,7 @@ export function ProductPageClient({ productId }: { productId: string }) {
     .slice(0, 8);
 
   const dimensionsString = product.dimensions && product.dimensions.length && product.dimensions.width && product.dimensions.height 
-    ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} cm`
+    ? `${'${product.dimensions.length}'} x ${'${product.dimensions.width}'} x ${'${product.dimensions.height}'} cm`
     : null;
     
   const breadcrumbItems = [
@@ -201,7 +201,7 @@ export function ProductPageClient({ productId }: { productId: string }) {
                   <div className="aspect-square relative rounded-lg overflow-hidden border">
                     <Image
                       src={img}
-                      alt={`${product.name} image ${index + 1}`}
+                      alt={`${'${product.name}'} image ${'${index}'} + 1`}
                       fill
                       className="object-cover"
                       data-ai-hint="product image"
@@ -258,7 +258,7 @@ export function ProductPageClient({ productId }: { productId: string }) {
             </div>
              <p className="text-sm text-muted-foreground">
               {product.inventory > 0
-                ? `${product.inventory} items in stock.`
+                ? `${'${product.inventory}'} items in stock.`
                 : 'Out of stock.'}
               {product.sku && <span className="ml-4">SKU: {product.sku}</span>}
             </p>

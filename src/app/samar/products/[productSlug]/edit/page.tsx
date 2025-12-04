@@ -4,8 +4,6 @@ import { ProductForm } from '@/components/products/product-form';
 import { categories, products as placeholderProducts } from '@/lib/placeholder-data';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useDoc, useMemoFirebase } from '@/firebase';
-import { doc, getFirestore } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -13,11 +11,6 @@ function EditProductForm({ productSlug }: { productSlug: string }) {
   const product = placeholderProducts.find(p => p.slug === productSlug);
 
   // Note: This component is not using live Firestore data for the product.
-  // To enable live data, you would replace the above line with something like:
-  // const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
-  // const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
-  // const { data: product, isLoading } = useDoc<Product>(productRef);
-
   // For demo purposes, we'll simulate a loading state
   const isLoading = false;
 
