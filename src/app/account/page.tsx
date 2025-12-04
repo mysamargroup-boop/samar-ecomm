@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -25,6 +26,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 function AccountNav() {
     const navItems = [
@@ -95,10 +97,12 @@ function MoreNav() {
 
 export default function AccountPage() {
   const { logout } = useAuth();
+  const router = useRouter();
 
 
   const handleLogout = () => {
     logout();
+    router.push('/');
   };
 
   return (

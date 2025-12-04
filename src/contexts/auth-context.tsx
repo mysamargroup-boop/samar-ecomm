@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isInitialized, setIsInitialized] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     try {
@@ -65,8 +64,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     } catch (error) {
       console.error("Failed to remove auth state from sessionStorage", error);
     }
-    // Redirect to home page on logout
-    router.push('/');
   };
 
   const value = { isLoggedIn, login, logout };

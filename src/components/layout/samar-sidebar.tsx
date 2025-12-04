@@ -94,16 +94,15 @@ export function SamarSidebar() {
       </div>
       <SidebarNavLinks />
       <div className="mt-auto p-2 border-t border-sidebar-border">
-         <a
-            href="/samar"
+         <button
             onClick={handleLogout}
             className={cn(
-              'flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
+              'w-full flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
             )}
           >
             <LogOut className="h-4 w-4" />
             <span>Logout</span>
-          </a>
+          </button>
       </div>
     </aside>
   );
@@ -139,16 +138,15 @@ export function SamarMobileHeader() {
           </div>
           <SidebarNavLinks onLinkClick={() => setIsSheetOpen(false)} />
            <div className="mt-auto p-2 border-t border-sidebar-border">
-             <a
-                href="/samar"
+             <button
                 onClick={handleLogout}
                 className={cn(
-                  'flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
+                  'w-full flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
                 )}
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>
-              </a>
+              </button>
           </div>
         </SheetContent>
       </Sheet>
