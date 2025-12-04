@@ -1,3 +1,4 @@
+
 import { ProductCard } from '@/components/products/product-card';
 import { categories, products } from '@/lib/placeholder-data';
 import type { Category } from '@/lib/types';
