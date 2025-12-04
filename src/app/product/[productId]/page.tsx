@@ -1,4 +1,5 @@
 
+
 import { products, categories, reviews as allReviews } from '@/lib/placeholder-data';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -24,6 +25,7 @@ import { ProductCard } from '@/components/products/product-card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
+import { InfoBar } from '@/components/home/info-bar';
 
 
 type Props = {
@@ -173,8 +175,10 @@ export default function ProductPage({ params }: Props) {
 
         </div>
       </div>
-
-       <Separator className="my-12" />
+      
+       <div className="my-12">
+        <InfoBar />
+      </div>
 
       <div className="max-w-4xl mx-auto">
         <h2 className="text-2xl font-bold font-headline mb-6 text-center">Customer Reviews</h2>
