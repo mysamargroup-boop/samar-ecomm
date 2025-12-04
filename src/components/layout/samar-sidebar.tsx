@@ -22,7 +22,6 @@ import {
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { useState } from 'react';
-import { useAuth } from '@/contexts/auth-context';
 import { ThemeToggle } from '../ui/theme-toggle';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
@@ -47,14 +46,14 @@ function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
   const pathname = usePathname();
 
   const renderLink = (item: typeof navItems[0]) => {
-    const isActive = pathname === item.href || (item.href !== '/samar' && pathname.startsWith(item.href));
+    const isActive = pathname === item.href || (item.href !== '/samar/dashboard' && pathname.startsWith(item.href));
     return (
       <Link
         key={item.href}
         href={item.href}
         onClick={onLinkClick}
         className={cn(
-          'group flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent relative',
+          'group flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent',
           isActive ? 'text-sidebar-foreground bg-sidebar-accent font-medium' : ''
         )}
       >
@@ -84,7 +83,7 @@ export function SamarSidebar() {
 
   return (
     <aside className="w-64 flex-shrink-0 bg-sidebar border-r hidden md:flex flex-col">
-      <div className="h-16 flex items-center justify-between px-6 border-b border-sidebar-border">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-sidebar-border">
         <Link href="/samar" className="flex items-center gap-2 font-bold font-headline text-sidebar-foreground">
           <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
           <span>Samar Store</span>
@@ -129,7 +128,7 @@ export function SamarMobileHeader() {
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="flex flex-col w-full max-w-xs sm:max-w-sm p-0 bg-sidebar text-sidebar-foreground">
-           <div className="h-16 flex items-center px-6 border-b border-sidebar-border">
+           <div className="flex items-center px-6 py-5 border-b border-sidebar-border">
             <Link href="/samar" className="flex items-center gap-2 font-bold font-headline" onClick={() => setIsSheetOpen(false)}>
               <ShoppingBag className="h-6 w-6 text-sidebar-primary" />
               <span>Samar Store</span>
