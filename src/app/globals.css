@@ -85,5 +85,9 @@
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+  }
+  main {
+    overflow-x: hidden;
   }
 }
