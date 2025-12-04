@@ -1,3 +1,4 @@
+
 import { z } from 'zod';
 
 export const CategorySchema = z.object({
@@ -19,18 +20,23 @@ export type ProductVariant = z.infer<typeof ProductVariantSchema>;
 export const ProductSchema = z.object({
   id: z.string(),
   name: z.string().min(2, 'Name must be at least 2 characters long'),
+  shortDescription: z.string().optional(),
   description: z.string().min(10, 'Description must be at least 10 characters long'),
   longDescription: z.string().optional(),
   price: z.number().positive('Price must be a positive number'),
   salePrice: z.number().positive('Sale price must be a positive number').optional(),
+  salePriceStartDate: z.date().optional(),
+  salePriceEndDate: z.date().optional(),
   categoryId: z.string(),
   slug: z.string().regex(/^[a-z0-9-]+$/, 'Slug must be lowercase with dashes'),
   images: z.array(z.string().url('Must be a valid URL')),
   inventory: z.number().int().min(0, 'Inventory cannot be negative'),
   sku: z.string().optional(),
   tags: z.array(z.string()).optional(),
+  variants: z.array(ProductVariantSchema).optional(),
   weight: z.number().optional(), // in grams
   dimensions: z.string().optional(), // e.g., "10x5x2 cm"
+  material: z.string().optional(),
 });
 export type Product = z.infer<typeof ProductSchema>;
 

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useForm, useFormState } from 'react-hook-form';
+import { useForm, useFieldArray, useFormState } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -28,11 +28,17 @@ import { Product, Category, ProductSchema } from '@/lib/types';
 import { createProduct, updateProduct } from '@/app/actions/productActions';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
-import { Sparkles, Loader2, X, ImagePlus, Trash2 } from 'lucide-react';
+import { Sparkles, Loader2, X, ImagePlus, Trash2, CalendarIcon } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { generateDescriptionAction, generateNameAction } from '@/app/actions/aiActions';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Calendar } from '../ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { Checkbox } from '../ui/checkbox';
+
 
 const formSchema = ProductSchema.omit({ id: true });
 
@@ -53,15 +59,27 @@ export function ProductForm({ product, categories }: ProductFormProps) {
     defaultValues: {
       name: product?.name || '',
       description: product?.description || '',
+      shortDescription: product?.shortDescription || '',
       price: product?.price || 0,
       slug: product?.slug || '',
       salePrice: product?.salePrice || undefined,
+      salePriceStartDate: product?.salePriceStartDate ? new Date(product.salePriceStartDate) : undefined,
+      salePriceEndDate: product?.salePriceEndDate ? new Date(product.salePriceEndDate) : undefined,
       categoryId: product?.categoryId || '',
       inventory: product?.inventory || 0,
       sku: product?.sku || '',
       tags: product?.tags || [],
       images: product?.images || [],
+      variants: product?.variants || [],
+      weight: product?.weight || undefined,
+      dimensions: product?.dimensions || '',
+      material: product?.material || '',
     },
+  });
+
+  const { fields: variantFields, append: appendVariant, remove: removeVariant } = useFieldArray({
+    control: form.control,
+    name: "variants",
   });
   
   const { isSubmitting } = useFormState({ control: form.control });
@@ -110,10 +128,10 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
-      if (key === 'tags' && Array.isArray(value)) {
+      if ((key === 'tags' || key === 'images' || key === 'variants') && Array.isArray(value)) {
         formData.append(key, JSON.stringify(value));
-      } else if (key === 'images' && Array.isArray(value)) {
-        formData.append(key, JSON.stringify(value));
+      } else if (value instanceof Date) {
+        formData.append(key, value.toISOString());
       }
       else if (value !== undefined && value !== null) {
         formData.append(key, String(value));
@@ -262,13 +280,29 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                     </FormItem>
                   )}
                 />
+                 <FormField
+                  control={form.control}
+                  name="shortDescription"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Short Description</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder="A brief summary for product cards..."
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="description"
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex items-center justify-between">
-                        <FormLabel>Description</FormLabel>
+                        <FormLabel>Full Description</FormLabel>
                         <Button
                           type="button"
                           variant="outline"
@@ -343,35 +377,174 @@ export function ProductForm({ product, categories }: ProductFormProps) {
               <CardHeader>
                 <CardTitle>Pricing</CardTitle>
               </CardHeader>
-              <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                 <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Price</FormLabel>
-                      <FormControl>
-                        <Input type="number" step="0.01" placeholder="e.g. 999.00" {...field} onChange={e => field.onChange(parseFloat(e.target.value))}/>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="salePrice"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sale Price</FormLabel>
-                       <FormControl>
-                        <Input type="number" step="0.01" placeholder="e.g. 799.00" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || undefined)}/>
-                      </FormControl>
-                      <FormDescription>Leave blank if not on sale.</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Price</FormLabel>
+                        <FormControl>
+                          <Input type="number" step="0.01" placeholder="e.g. 999.00" {...field} onChange={e => field.onChange(parseFloat(e.target.value))}/>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="salePrice"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Sale Price</FormLabel>
+                        <FormControl>
+                          <Input type="number" step="0.01" placeholder="e.g. 799.00" {...field} onChange={e => field.onChange(parseFloat(e.target.value) || undefined)}/>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                     <FormField
+                      control={form.control}
+                      name="salePriceStartDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Sale Start Date</FormLabel>
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) => date < new Date("1900-01-01")}
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                     <FormField
+                      control={form.control}
+                      name="salePriceEndDate"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                          <FormLabel>Sale End Date</FormLabel>
+                           <Popover>
+                            <PopoverTrigger asChild>
+                              <FormControl>
+                                <Button
+                                  variant={"outline"}
+                                  className={cn(
+                                    "w-full pl-3 text-left font-normal",
+                                    !field.value && "text-muted-foreground"
+                                  )}
+                                >
+                                  {field.value ? (
+                                    format(field.value, "PPP")
+                                  ) : (
+                                    <span>Pick a date</span>
+                                  )}
+                                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                </Button>
+                              </FormControl>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <Calendar
+                                mode="single"
+                                selected={field.value}
+                                onSelect={field.onChange}
+                                disabled={(date) =>
+                                  date < (form.getValues('salePriceStartDate') || new Date("1900-01-01"))
+                                }
+                                initialFocus
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                 </div>
+                 <FormDescription>Schedule a start and end date for your sale price.</FormDescription>
               </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Variants</CardTitle>
+                    <CardDescription>Add product variants like size or color.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    {variantFields.map((field, index) => (
+                        <div key={field.id} className="flex items-end gap-2 p-2 border rounded-md">
+                            <FormField
+                                control={form.control}
+                                name={`variants.${index}.name`}
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>Type</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="e.g. Size" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                             <FormField
+                                control={form.control}
+                                name={`variants.${index}.value`}
+                                render={({ field }) => (
+                                    <FormItem className="flex-1">
+                                        <FormLabel>Value</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="e.g. Large" {...field} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name={`variants.${index}.stock`}
+                                render={({ field }) => (
+                                    <FormItem className="w-24">
+                                        <FormLabel>Stock</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" placeholder="10" {...field} onChange={e => field.onChange(parseInt(e.target.value, 10))}/>
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                             <Button type="button" variant="ghost" size="icon" onClick={() => removeVariant(index)}>
+                                <Trash2 className="h-4 w-4 text-destructive"/>
+                            </Button>
+                        </div>
+                    ))}
+                    <Button type="button" variant="outline" onClick={() => appendVariant({ id: `var_${Date.now()}`, name: '', value: '', stock: 0 })}>
+                        Add Variant
+                    </Button>
+                </CardContent>
             </Card>
           </div>
           <div className="space-y-8">
@@ -386,20 +559,38 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Category</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select a category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                       <div className="space-y-2">
+                        {categories.filter(c => !c.parentId).map(category => (
+                            <div key={category.id} className="flex items-start">
+                                <div className="flex items-center h-5">
+                                    <Checkbox 
+                                        id={`cat-${category.id}`} 
+                                        // A real multi-select would store an array of IDs.
+                                        // For this demo, we'll keep it as a single select.
+                                        checked={field.value === category.id}
+                                        onCheckedChange={(checked) => {
+                                            return checked ? field.onChange(category.id) : field.onChange('');
+                                        }}
+                                    />
+                                </div>
+                                <div className="ml-3 text-sm">
+                                    <label htmlFor={`cat-${category.id}`} className="font-medium text-foreground">{category.name}</label>
+                                    {categories.filter(c => c.parentId === category.id).map(subCategory => (
+                                        <div key={subCategory.id} className="flex items-center mt-2 ml-4">
+                                            <Checkbox 
+                                                id={`cat-${subCategory.id}`} 
+                                                checked={field.value === subCategory.id}
+                                                onCheckedChange={(checked) => {
+                                                    return checked ? field.onChange(subCategory.id) : field.onChange('');
+                                                }}
+                                            />
+                                            <label htmlFor={`cat-${subCategory.id}`} className="ml-2 font-normal text-muted-foreground">{subCategory.name}</label>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                       </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -440,7 +631,7 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
             <Card>
               <CardHeader>
-                <CardTitle>Inventory</CardTitle>
+                <CardTitle>Inventory & Shipping</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <FormField
@@ -464,6 +655,45 @@ export function ProductForm({ product, categories }: ProductFormProps) {
                       <FormLabel>SKU (Stock Keeping Unit)</FormLabel>
                       <FormControl>
                         <Input placeholder="e.g. HDPHN-WRLS-BLK" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="weight"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Weight (grams)</FormLabel>
+                      <FormControl>
+                        <Input type="number" placeholder="250" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                 <FormField
+                  control={form.control}
+                  name="dimensions"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Dimensions (LxWxH cm)</FormLabel>
+                      <FormControl>
+                        <Input placeholder="18x7.5x25" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="material"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Material</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g. Aluminum, Cotton" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

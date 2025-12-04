@@ -27,6 +27,59 @@ import { InfoBar } from '@/components/home/info-bar';
 import { useCart } from '@/contexts/cart-context';
 import type { Product } from '@/lib/types';
 import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
+
+function SaleCountdownTimer({ endDate }: { endDate: Date }) {
+  const calculateTimeLeft = () => {
+    const difference = +new Date(endDate) - +new Date();
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  });
+
+  const timerComponents: any[] = [];
+
+  Object.keys(timeLeft).forEach((interval) => {
+    if (!timeLeft[interval as keyof typeof timeLeft]) {
+      return;
+    }
+    timerComponents.push(
+      <div key={interval} className="flex flex-col items-center">
+        <span className="text-xl font-bold">{timeLeft[interval as keyof typeof timeLeft]}</span>
+        <span className="text-xs uppercase">{interval}</span>
+      </div>
+    );
+  });
+  
+  if (!timerComponents.length) return null;
+
+  return (
+    <div className="bg-destructive/10 text-destructive border-2 border-dashed border-destructive/20 rounded-lg p-4 my-4">
+        <p className="text-center font-semibold text-sm mb-2">🔥 Flash Sale Ends In:</p>
+        <div className="flex justify-center gap-4">
+            {timerComponents}
+        </div>
+    </div>
+  )
+}
 
 
 function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { product: Product, onAddToCart: () => void, onBuyNow: () => void, onSale: boolean }) {
@@ -81,7 +134,12 @@ export function ProductPageClient({ product }: { product: Product }) {
   }
 
   const category = categories.find((c) => c.id === product.categoryId);
-  const onSale = product.salePrice != null && product.salePrice < product.price;
+
+  const now = new Date();
+  const isSaleActive = product.salePrice && product.salePrice < product.price && 
+                       (!product.salePriceStartDate || new Date(product.salePriceStartDate) <= now) &&
+                       (!product.salePriceEndDate || new Date(product.salePriceEndDate) >= now);
+
   const productReviews = allReviews.filter(r => r.productId === product.id && r.status === 'Approved');
   const relatedProducts = products
     .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
@@ -109,7 +167,7 @@ export function ProductPageClient({ product }: { product: Product }) {
             </CarouselContent>
             <CarouselPrevious className="left-2" />
             <CarouselNext className="right-2" />
-             {onSale && (
+             {isSaleActive && (
               <Badge className="absolute top-4 right-4" variant="destructive">Sale</Badge>
             )}
           </Carousel>
@@ -123,8 +181,8 @@ export function ProductPageClient({ product }: { product: Product }) {
           )}
           <h1 className="text-3xl md:text-4xl font-extrabold font-headline mb-2">{product.name}</h1>
 
-          <div className="flex items-baseline gap-2 mb-6">
-            {onSale ? (
+          <div className="flex items-baseline gap-2 mb-2">
+            {isSaleActive ? (
                 <>
                     <p className="text-3xl font-bold text-maroon">{formatPrice(product.salePrice!)}</p>
                     <p className="text-xl text-muted-foreground line-through">{formatPrice(product.price)}</p>
@@ -133,8 +191,12 @@ export function ProductPageClient({ product }: { product: Product }) {
                 <p className="text-3xl font-bold text-primary">{formatPrice(product.price)}</p>
             )}
            </div>
+
+            {isSaleActive && product.salePriceEndDate && (
+                <SaleCountdownTimer endDate={new Date(product.salePriceEndDate)} />
+            )}
           
-          <p className="text-muted-foreground mb-6">{product.description}</p>
+          <p className="text-muted-foreground mb-6">{product.shortDescription || product.description}</p>
           
           <div className="pt-6 space-y-6 hidden md:block">
             <div className="flex items-center gap-4">
@@ -172,6 +234,7 @@ export function ProductPageClient({ product }: { product: Product }) {
                 <ul className="space-y-2 text-muted-foreground">
                     {product.weight && <li className="flex justify-between"><span>Weight</span><span>{product.weight}g</span></li>}
                     {product.dimensions && <li className="flex justify-between"><span>Dimensions</span><span>{product.dimensions}</span></li>}
+                    {product.material && <li className="flex justify-between"><span>Material</span><span>{product.material}</span></li>}
                      {product.tags && product.tags.length > 0 && (
                        <li className="flex justify-between items-start">
                          <span>Tags</span>
@@ -234,7 +297,7 @@ export function ProductPageClient({ product }: { product: Product }) {
          </>
        )}
       
-      <StickyAddToCartBar product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onSale={onSale} />
+      <StickyAddToCartBar product={product} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} onSale={isSaleActive} />
     </>
   );
 }

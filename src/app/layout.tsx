@@ -1,6 +1,8 @@
 
+'use client';
+
 import type { Metadata } from 'next';
-import { Poppins } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/header';
@@ -11,18 +13,13 @@ import { WishlistProvider } from '@/contexts/wishlist-context';
 import Link from 'next/link';
 import { CartProvider } from '@/contexts/cart-context';
 import { AuthProvider } from '@/contexts/auth-context';
+import { usePathname } from 'next/navigation';
 
-const poppins = Poppins({
+const manrope = Manrope({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-poppins',
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-manrope',
 });
-
-export const metadata: Metadata = {
-  title: 'Samar Store',
-  description: 'The future of e-commerce.',
-};
 
 function AnnouncementBar() {
   return (
@@ -40,13 +37,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const isSamarRoute = pathname.startsWith('/samar');
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)}>
+      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
         <AuthProvider>
           <WishlistProvider>
             <CartProvider>
-              <AnnouncementBar />
+              {!isSamarRoute && <AnnouncementBar />}
               <AppHeader />
               <main className="flex-grow pb-20 md:pb-0">{children}</main>
               <Footer />

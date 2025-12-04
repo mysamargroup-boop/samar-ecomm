@@ -3,14 +3,13 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, ShoppingBag, Twitter, Facebook, Instagram, Linkedin, Youtube, Plus, Minus } from 'lucide-react';
+import { ArrowRight, ShoppingBag, Twitter, Facebook, Instagram, Linkedin, Youtube, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '../ui/button';
 import { categories } from '@/lib/placeholder-data';
 import { usePathname } from 'next/navigation';
 import { Input } from '../ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { PaymentMethods } from './payment-methods';
 
 export function Footer() {
   const pathname = usePathname();
@@ -70,6 +69,16 @@ export function Footer() {
             </Button>
             </a>
         ))}
+      </div>
+      <div className="space-y-1 text-sm text-muted-foreground">
+        <a href="mailto:support@samarstore.com" className="flex items-center gap-2 hover:text-primary">
+            <Mail className="h-4 w-4"/>
+            support@samarstore.com
+        </a>
+        <a href="tel:+919876543210" className="flex items-center gap-2 hover:text-primary">
+            <Phone className="h-4 w-4"/>
+            +91 98765 43210
+        </a>
       </div>
     </div>
   );
