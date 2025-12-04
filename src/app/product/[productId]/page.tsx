@@ -2,7 +2,6 @@
 'use client';
 
 import { products as placeholderProducts, categories, reviews as allReviews } from '@/lib/placeholder-data';
-import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { ProductPageClient } from '@/components/products/product-page-client';
@@ -11,9 +10,10 @@ import { doc, getFirestore } from 'firebase/firestore';
 import { Product } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
-function ProductPageContent({ productId }: { productId: string }) {
+
+export default function ProductPage({ params }: { params: { productId: string } }) {
   const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
-  const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', productId) : null, [firestore, productId]);
+  const productRef = useMemoFirebase(() => firestore ? doc(firestore, 'products', params.productId) : null, [firestore, params.productId]);
   const { data: product, isLoading } = useDoc<Product>(productRef);
   
   if (isLoading) {
@@ -55,9 +55,4 @@ function ProductPageContent({ productId }: { productId: string }) {
       <ProductPageClient product={product} />
     </div>
   );
-}
-
-
-export default function ProductPage({ params }: { params: { productId: string } }) {
-  return <ProductPageContent productId={params.productId} />;
 }
