@@ -1,5 +1,6 @@
+
 import type { Metadata } from 'next';
-import { Manrope } from 'next/font/google';
+import { Poppins } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { AppHeader } from '@/components/layout/header';
@@ -10,10 +11,11 @@ import { WishlistProvider } from '@/contexts/wishlist-context';
 import Link from 'next/link';
 import { CartProvider } from '@/contexts/cart-context';
 
-const manrope = Manrope({
+const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-manrope',
+  variable: '--font-poppins',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
@@ -39,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
-      <body className={cn('font-body antialiased flex flex-col min-h-screen', manrope.variable)}>
+      <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)}>
         <WishlistProvider>
           <CartProvider>
             <AnnouncementBar />
