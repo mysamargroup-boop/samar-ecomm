@@ -22,6 +22,7 @@ import {
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
 import { useState } from 'react';
+import { useAuth } from '@/contexts/auth-context';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
 

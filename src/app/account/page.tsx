@@ -27,6 +27,7 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 function AccountNav() {
     const navItems = [
@@ -96,14 +97,22 @@ function MoreNav() {
 
 
 export default function AccountPage() {
-  const { logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push('/');
+    }
+  }, [isLoggedIn, router]);
 
   const handleLogout = () => {
     logout();
-    router.push('/');
   };
+
+  if (!isLoggedIn) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
