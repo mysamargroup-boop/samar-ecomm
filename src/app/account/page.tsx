@@ -1,90 +1,87 @@
-
 'use client';
 
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import {
-  ChevronRight,
-  HelpCircle,
-  Mail,
-  FileText,
-  LogOut,
-  Bell,
-  Headset,
+  MapPin,
+  Package,
+  User as UserIcon,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+
+function AccountNav() {
+    const navItems = [
+        {
+            href: '/account/profile',
+            label: 'Manage Address',
+            icon: MapPin,
+        },
+        {
+            href: '/account/orders',
+            label: 'My Orders',
+            icon: Package,
+        },
+    ];
+
+    return (
+        <div className="grid grid-cols-2 gap-4">
+            {navItems.map((item) => (
+                <Link href={item.href} key={item.label}>
+                    <Card className="hover:bg-muted hover:border-primary/50 transition-colors">
+                        <CardContent className="flex flex-col items-center justify-center p-6 space-y-2">
+                            <item.icon className="h-8 w-8 text-primary" />
+                            <span className="font-medium text-center">{item.label}</span>
+                        </CardContent>
+                    </Card>
+                </Link>
+            ))}
+        </div>
+    )
+}
+
 
 export default function AccountPage() {
   const { logout } = useAuth();
 
-  const navItems = [
-    {
-      href: '/notifications',
-      label: 'Notification Center',
-      icon: Bell,
-    },
-    {
-      href: '/contact',
-      label: 'Help and Support',
-      icon: Headset,
-    },
-    { href: '/faq', label: 'FAQs', icon: HelpCircle },
-    {
-      href: '/terms',
-      label: 'Terms & conditions',
-      icon: FileText,
-    },
-    { href: '/contact', label: 'Get in touch', icon: Mail },
-  ];
 
   const handleLogout = () => {
     logout();
   };
 
   return (
-    <div className="max-w-md mx-auto space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">More</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <ul className="divide-y">
-            {navItems.map((item) => (
-              <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="flex items-center justify-between p-4 hover:bg-muted transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    <item.icon className="h-5 w-5 text-muted-foreground" />
-                    <span className="font-medium">{item.label}</span>
-                  </div>
-                  <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardContent className="p-0">
-           <button
-            onClick={handleLogout}
-            className="flex items-center justify-between p-4 hover:bg-muted transition-colors w-full text-left"
-          >
-            <div className="flex items-center gap-4">
-               <LogOut className="h-5 w-5 text-destructive" />
-              <span className="font-medium text-destructive">Logout</span>
-            </div>
-          </button>
-        </CardContent>
-      </Card>
+    <div className="max-w-2xl mx-auto space-y-6">
+        <Card>
+            <CardContent className="p-6">
+                <div className="flex items-center gap-4">
+                    <Avatar className="h-16 w-16 text-xl">
+                        <AvatarFallback>SN</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <h2 className="text-xl font-bold">Shubham Nema</h2>
+                        <p className="text-muted-foreground">msnema7@gmail.com</p>
+                         <p className="text-muted-foreground">+91 8518024107</p>
+                    </div>
+                </div>
+                <Separator className="my-4"/>
+                <div className="flex items-center gap-4">
+                    <Badge>Home</Badge>
+                    <p className="text-sm text-muted-foreground">Subhash Nagar Shastri Ward, Sagar, 470002, Madhya Pradesh</p>
+                </div>
+            </CardContent>
+        </Card>
+        
+        <AccountNav />
+        
+        <div className="text-center">
+            <Button variant="link" onClick={handleLogout} className="text-destructive hover:text-destructive/80">Logout</Button>
+        </div>
     </div>
   );
 }
