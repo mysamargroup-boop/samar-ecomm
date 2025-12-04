@@ -225,11 +225,13 @@ export function AppHeader() {
                       <span className="sr-only">Search</span>
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="top" className="p-4 pt-6">
+                  <SheetContent side="top">
                     <SheetHeader className="sr-only">
                         <SheetTitle>Search Products</SheetTitle>
                     </SheetHeader>
-                    <HeaderSearch />
+                    <div>
+                        <HeaderSearch />
+                    </div>
                   </SheetContent>
                 </Sheet>
                 <Link href="/wishlist" aria-label="Wishlist" className="relative">
