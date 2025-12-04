@@ -1,11 +1,12 @@
 
+
 'use client';
 
 export function PaymentMethods() {
     // SVGs are simplified for brevity and may not be pixel perfect.
     // In a real application, you would use optimized SVG assets.
     return (
-        <div className="flex justify-center items-center gap-x-4 md:gap-x-6 flex-wrap">
+        <div className="flex items-center gap-x-4 md:gap-x-6 flex-wrap">
             <svg role="img" aria-label="PhonePe" height="24" viewBox="0 0 100 24">
                 <text x="0" y="18" fontFamily="Arial, sans-serif" fontSize="20" fontWeight="bold" fill="#6739B7">PhonePe</text>
             </svg>
