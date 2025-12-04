@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, ReactNode, useEffect } from 'react';
 
 type WishlistContextType = {
   wishlistItems: string[];
@@ -18,20 +18,52 @@ type WishlistProviderProps = {
   children: ReactNode;
 };
 
+const WISHLIST_STORAGE_KEY = 'samar-store-wishlist';
+
 export const WishlistProvider = ({ children }: WishlistProviderProps) => {
-  // Mock initial state. In a real app, this would come from user data.
-  const [wishlistItems, setWishlistItems] = useState<string[]>(['prod_2', 'prod_4']);
+  const [wishlistItems, setWishlistItems] = useState<string[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    try {
+      const storedItems = localStorage.getItem(WISHLIST_STORAGE_KEY);
+      if (storedItems) {
+        setWishlistItems(JSON.parse(storedItems));
+      }
+    } catch (error) {
+      console.error("Failed to parse wishlist from localStorage", error);
+    }
+    setIsInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (isInitialized) {
+        try {
+            localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlistItems));
+        } catch (error) {
+            console.error("Failed to save wishlist to localStorage", error);
+        }
+    }
+  }, [wishlistItems, isInitialized]);
+
 
   const addToWishlist = (id: string) => {
-    setWishlistItems((prevItems) => [...prevItems, id]);
+    setWishlistItems((prevItems) => {
+        if (prevItems.includes(id)) {
+            return prevItems;
+        }
+        return [...prevItems, id]
+    });
   };
 
   const removeFromWishlist = (id: string) => {
     setWishlistItems((prevItems) => prevItems.filter((itemId) => itemId !== id));
   };
 
+  const value = { wishlistItems, addToWishlist, removeFromWishlist };
+
   return (
-    <WishlistContext.Provider value={{ wishlistItems, addToWishlist, removeFromWishlist }}>
+    <WishlistContext.Provider value={value}>
       {children}
     </WishlistContext.Provider>
   );
