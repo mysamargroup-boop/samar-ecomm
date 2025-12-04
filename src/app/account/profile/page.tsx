@@ -33,6 +33,7 @@ const ProfileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email(),
+  phoneNumber: z.string().optional(),
 });
 
 type ProfileFormValues = z.infer<typeof ProfileSchema>;
@@ -54,6 +55,7 @@ function ProfilePageContent() {
       firstName: '',
       lastName: '',
       email: '',
+      phoneNumber: '',
     },
   });
 
@@ -63,10 +65,12 @@ function ProfilePageContent() {
         firstName: customer.firstName || '',
         lastName: customer.lastName || '',
         email: customer.email || '',
+        phoneNumber: customer.phoneNumber || '',
       });
     } else if (user) {
         form.reset({
             email: user.email || '',
+            phoneNumber: user.phoneNumber || '',
         });
     }
   }, [customer, user, form]);
@@ -95,6 +99,7 @@ function ProfilePageContent() {
                         <CardDescription>Update your personal details here.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
+                        <Skeleton className="h-10 w-full" />
                         <Skeleton className="h-10 w-full" />
                         <Skeleton className="h-10 w-full" />
                         <Skeleton className="h-10 w-full" />
@@ -161,6 +166,19 @@ function ProfilePageContent() {
                       <FormLabel>Email Address</FormLabel>
                       <FormControl>
                         <Input type="email" {...field} disabled />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input type="tel" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
