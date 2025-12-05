@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Terminal, Send, CheckCircle, XCircle, ArrowRight, Settings, Zap } from 'lucide-react';
+import { Terminal, Send, CheckCircle, XCircle, Zap } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -25,7 +25,6 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 
 const isDemoMode = !process.env.NEXT_PUBLIC_WHATSAPP_ACCESS_TOKEN || !process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID;
 
@@ -44,7 +43,7 @@ function AutomationRule({ title, description, trigger, templateId, isEnabled, on
                 <h4 className="font-semibold">{title}</h4>
                 <p className="text-sm text-muted-foreground">{description}</p>
                 <div className="flex items-center gap-4 pt-2">
-                    <Select defaultValue={templateId} onValueChange={onTemplateChange}>
+                    <Select defaultValue={templateId} onValueChange={onTemplateChange} disabled={!isEnabled}>
                         <SelectTrigger className="w-full md:w-[250px]">
                             <SelectValue placeholder="Select a template" />
                         </SelectTrigger>
@@ -87,6 +86,15 @@ export default function WhatsappPage() {
     }));
   }
 
+  const handleSaveAutomations = () => {
+    // In a real app, you would save these settings to a database.
+    console.log('Saving automation settings:', automations);
+    toast({
+      title: 'Settings Saved',
+      description: 'Your WhatsApp automation rules have been updated.',
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -114,7 +122,7 @@ export default function WhatsappPage() {
                       {isDemoMode ? <XCircle className="h-6 w-6 text-destructive"/> : <CheckCircle className="h-6 w-6 text-green-500"/>}
                       <div>
                           <p className="font-semibold">WhatsApp Number</p>
-                          <p className="text-sm text-muted-foreground">{isDemoMode ? 'Not Connected' : '+91 12345 67890'}</p>
+                          <p className="text-sm text-muted-foreground">{isDemoMode ? 'Not Connected' : `+${process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID}`}</p>
                       </div>
                   </div>
                   <Badge variant={isDemoMode ? "destructive" : "secondary"} className={!isDemoMode ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800' : ''}>
@@ -169,7 +177,7 @@ export default function WhatsappPage() {
                 onToggle={() => handleAutomationToggle('abandonedCart')}
                 onTemplateChange={(value: string) => setAutomations(p => ({...p, abandonedCart: {...p.abandonedCart, templateId: value}}))}
                 trigger={
-                    <Select defaultValue={automations.abandonedCart.trigger} onValueChange={(value) => setAutomations(p => ({...p, abandonedCart: {...p.abandonedCart, trigger: value}}))}>
+                    <Select defaultValue={automations.abandonedCart.trigger} onValueChange={(value) => setAutomations(p => ({...p, abandonedCart: {...p.abandonedCart, trigger: value}}))} disabled={!automations.abandonedCart.isEnabled}>
                         <SelectTrigger className="w-[150px]">
                             <SelectValue />
                         </SelectTrigger>
@@ -186,12 +194,14 @@ export default function WhatsappPage() {
                     <h4 className="font-semibold">Low Stock Alert (For Admin)</h4>
                     <p className="text-sm text-muted-foreground">Receive a notification when product stock falls below a threshold.</p>
                     <div className="flex items-center gap-4 pt-2">
-                        <Label>Alert when stock is less than:</Label>
+                        <Label htmlFor="low-stock-threshold">Alert when stock is less than:</Label>
                         <Input 
+                            id="low-stock-threshold"
                             type="number" 
                             className="w-24" 
                             value={automations.lowStockAlert.threshold}
                             onChange={(e) => setAutomations(p => ({...p, lowStockAlert: {...p.lowStockAlert, threshold: parseInt(e.target.value, 10) || 0}}))}
+                            disabled={!automations.lowStockAlert.isEnabled}
                         />
                     </div>
                 </div>
@@ -199,7 +209,7 @@ export default function WhatsappPage() {
             </div>
           </CardContent>
           <CardFooter className="flex justify-end">
-              <Button>
+              <Button onClick={handleSaveAutomations}>
                   <Zap className="mr-2 h-4 w-4"/>
                   Save Automation Rules
               </Button>
