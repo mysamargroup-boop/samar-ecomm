@@ -38,7 +38,8 @@ export const categories: Category[] = [
   { id: 'cat_women', name: 'Women', slug: 'women', parentId: '2'},
 ];
 
-export const products: Product[] = [
+// This data is now for reference and seeding, not for direct use in components.
+export const placeholderProducts: Product[] = [
   {
     id: 'prod_1',
     name: 'Wireless Noise-Cancelling Headphones',
@@ -54,6 +55,7 @@ export const products: Product[] = [
     tags: ['audio', 'tech', 'headphones'],
     weight: 254, // in grams
     dimensions: { length: 18, width: 7.5, height: 25 },
+    createdAt: new Date(),
   },
   {
     id: 'prod_2',
@@ -70,6 +72,7 @@ export const products: Product[] = [
     tags: ['smartwatch', 'fitness', 'tech'],
     weight: 45,
     dimensions: { length: 4.5, width: 3.8, height: 1.07 },
+    createdAt: new Date(),
   },
   {
     id: 'prod_3',
@@ -84,6 +87,7 @@ export const products: Product[] = [
     sku: 'SAM-003',
     tags: ['apparel', 't-shirt', 'basics'],
     weight: 180,
+    createdAt: new Date(),
   },
   {
     id: 'prod_4',
@@ -100,6 +104,7 @@ export const products: Product[] = [
     tags: ['bags', 'leather', 'fashion'],
     weight: 1200,
     dimensions: { length: 42, width: 30, height: 12 },
+    createdAt: new Date(),
   },
   {
     id: 'prod_5',
@@ -115,6 +120,7 @@ export const products: Product[] = [
     tags: ['kitchen', 'coffee', 'home'],
     weight: 8500,
     dimensions: { length: 35, width: 25, height: 42 },
+    createdAt: new Date(),
   },
   {
     id: 'prod_6',
@@ -130,6 +136,7 @@ export const products: Product[] = [
     sku: 'SAM-006',
     tags: ['home decor', 'textiles', 'cozy'],
     dimensions: { length: 127, width: 152 },
+    createdAt: new Date(),
   },
   {
     id: 'prod_7',
@@ -144,6 +151,7 @@ export const products: Product[] = [
     sku: 'SAM-007',
     tags: ['books', 'education', 'programming'],
     weight: 850,
+    createdAt: new Date(),
   },
   {
     id: 'prod_8',
@@ -158,8 +166,13 @@ export const products: Product[] = [
     inventory: 450,
     sku: 'SAM-008',
     tags: ['books', 'sci-fi', 'fiction'],
+    createdAt: new Date(),
   },
 ];
+
+// For components that still rely on this array, we'll provide an empty one to avoid errors.
+export const products: Product[] = [];
+
 
 export const orders: Order[] = [
   {

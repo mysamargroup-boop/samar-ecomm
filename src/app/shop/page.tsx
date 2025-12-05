@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { products as allProducts, categories } from '@/lib/placeholder-data';
+import { placeholderProducts as allProducts, categories } from '@/lib/placeholder-data';
 import { ProductCard } from '@/components/products/product-card';
 import {
   Select,

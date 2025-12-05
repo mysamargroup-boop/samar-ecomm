@@ -3,14 +3,14 @@
 
 import { useContext } from 'react';
 import { ProductCard } from '@/components/products/product-card';
-import { products } from '@/lib/placeholder-data';
+import { placeholderProducts } from '@/lib/placeholder-data';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { WishlistContext } from '@/contexts/wishlist-context';
 
 export default function WishlistPage() {
   const { wishlistItems } = useContext(WishlistContext);
-  const wishlistProducts = products.filter(p => wishlistItems.includes(p.id));
+  const wishlistProducts = placeholderProducts.filter(p => wishlistItems.includes(p.id));
 
   return (
     <div className="container mx-auto px-4 py-12">

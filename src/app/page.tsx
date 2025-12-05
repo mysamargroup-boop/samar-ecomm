@@ -2,7 +2,7 @@
 'use client';
 
 import { HeroSlider } from '@/components/home/hero-slider';
-import { products, blogPosts } from '@/lib/placeholder-data';
+import { placeholderProducts, blogPosts } from '@/lib/placeholder-data';
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 import { InfoBar } from '@/components/home/info-bar';
 import { CategorySlider } from '@/components/home/category-slider';
@@ -17,9 +17,9 @@ import { DiscoverProducts } from '@/components/home/discover-products';
 import { Marquee } from '@/components/home/marquee';
 
 function HomePageContent() {
-  const featuredProducts = products.slice(0, 8);
+  const featuredProducts = placeholderProducts.slice(0, 8);
   const recentPosts = blogPosts.slice(0, 3);
-  const recentlyViewedProducts = products.slice(4, 9);
+  const recentlyViewedProducts = placeholderProducts.slice(4, 9);
 
 
   return (

@@ -1,33 +1,29 @@
 
+'use client';
+
 import { ProductCard } from '@/components/products/product-card';
-import { categories, products } from '@/lib/placeholder-data';
-import type { Category } from '@/lib/types';
-import type { Metadata } from 'next';
+import { categories, placeholderProducts } from '@/lib/placeholder-data';
+import type { Category, Product } from '@/lib/types';
 import { notFound } from 'next/navigation';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection, query, where } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
-type Props = {
-  params: { categorySlug: string };
-};
+function CategoryPageContent({ category }: { category: Category }) {
+  const firestore = useFirestore();
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const category = categories.find((c) => c.slug === params.categorySlug);
-  if (!category) {
-    notFound();
-  }
-  return {
-    title: `${category.name} | Samar Store`,
-    description: `Shop the best ${category.name.toLowerCase()} at Samar Store.`,
-  };
-}
+  const productsQuery = useMemoFirebase(
+    () =>
+      firestore
+        ? query(
+            collection(firestore, 'products'),
+            where('categoryId', '==', category.id)
+          )
+        : null,
+    [firestore, category.id]
+  );
 
-export default function CategoryPage({ params }: Props) {
-  const category = categories.find((c) => c.slug === params.categorySlug);
-
-  if (!category) {
-    notFound();
-  }
-
-  const categoryProducts = products.filter((p) => p.categoryId === category.id);
+  const { data: categoryProducts, isLoading } = useCollection<Product>(productsQuery);
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -40,7 +36,17 @@ export default function CategoryPage({ params }: Props) {
         </p>
       </div>
 
-      {categoryProducts.length > 0 ? (
+      {isLoading ? (
+         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+            {[...Array(8)].map((_, i) => (
+                <div key={i} className="space-y-2">
+                    <Skeleton className="aspect-square w-full" />
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-6 w-1/2" />
+                </div>
+            ))}
+        </div>
+      ) : categoryProducts && categoryProducts.length > 0 ? (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {categoryProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -58,8 +64,12 @@ export default function CategoryPage({ params }: Props) {
   );
 }
 
-export async function generateStaticParams() {
-    return categories.map((category: Category) => ({
-        categorySlug: category.slug,
-    }));
+export default function CategoryPage({ params }: { params: { categorySlug: string } }) {
+  const category = categories.find((c) => c.slug === params.categorySlug);
+
+  if (!category) {
+    notFound();
+  }
+
+  return <CategoryPageContent category={category} />;
 }
