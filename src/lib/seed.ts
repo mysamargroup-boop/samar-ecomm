@@ -1,21 +1,24 @@
 
 'use server';
 
-import { collection, writeBatch, getDocs, Firestore } from 'firebase/firestore';
+import { collection, writeBatch, getDocs, Firestore, DocumentReference, DocumentData } from 'firebase/firestore';
 import { placeholderProducts, categories as placeholderCategories } from './placeholder-data';
+import type { firestore as adminFirestore } from 'firebase-admin';
 
-export async function seedDatabase(db: Firestore) {
-  const productsCollection = collection(db, 'products');
-  const categoriesCollection = collection(db, 'categories');
+// This function can now accept either the client or admin Firestore instance
+export async function seedDatabase(db: Firestore | adminFirestore.Firestore) {
+  const productsCollectionRef = db.collection('products');
+  const categoriesCollectionRef = db.collection('categories');
 
   // Check if products are already seeded
-  const productsSnapshot = await getDocs(productsCollection);
+  const productsSnapshot = await productsCollectionRef.get();
   if (productsSnapshot.empty) {
-    const productBatch = writeBatch(db);
+    const productBatch = db.batch();
     console.log('Seeding products...');
     placeholderProducts.forEach((product) => {
+      // The admin SDK uses `doc(id)` on a collection, client uses `doc(db, path, id)`
+      const docRef = productsCollectionRef.doc(product.id);
       const { id, ...productData } = product;
-      const docRef = collection(db, 'products').doc(id);
       productBatch.set(docRef, productData);
     });
     await productBatch.commit();
@@ -25,13 +28,13 @@ export async function seedDatabase(db: Firestore) {
   }
 
   // Check if categories are already seeded
-  const categoriesSnapshot = await getDocs(categoriesCollection);
+  const categoriesSnapshot = await categoriesCollectionRef.get();
   if (categoriesSnapshot.empty) {
-    const categoryBatch = writeBatch(db);
+    const categoryBatch = db.batch();
     console.log('Seeding categories...');
     placeholderCategories.forEach((category) => {
+      const docRef = categoriesCollectionRef.doc(category.id);
       const { id, ...categoryData } = category;
-      const docRef = collection(db, 'categories').doc(id);
       categoryBatch.set(docRef, categoryData);
     });
     await categoryBatch.commit();

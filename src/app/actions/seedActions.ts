@@ -2,15 +2,15 @@
 'use server';
 
 import { seedDatabase } from '@/lib/seed';
-import { initializeFirebase } from '@/firebase';
+import { getAdminFirestore } from '@/lib/firebase-admin';
 
 export async function seedDatabaseAction() {
     try {
-        const { firestore } = initializeFirebase();
-        await seedDatabase(firestore);
+        const adminDb = getAdminFirestore();
+        await seedDatabase(adminDb);
         return { success: true, message: 'Database seeded successfully.' };
-    } catch (error) {
+    } catch (error: any) {
         console.error('Database seeding failed:', error);
-        return { success: false, message: 'Failed to seed database.' };
+        return { success: false, message: error.message || 'Failed to seed database.' };
     }
 }
