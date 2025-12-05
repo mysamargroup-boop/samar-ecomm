@@ -1,6 +1,4 @@
 import * as admin from 'firebase-admin';
-import * as fs from 'fs';
-import * as path from 'path';
 
 // This is a server-only file. It should not be imported into client-side code.
 
@@ -9,27 +7,25 @@ const getAdminApp = () => {
     return admin.app();
   }
 
+  // Construct the service account object from environment variables.
+  const serviceAccount = {
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    // The private key must have newlines replaced correctly.
+    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+  };
+
+  // Ensure all required environment variables are present.
+  if (!serviceAccount.projectId || !serviceAccount.clientEmail || !serviceAccount.privateKey) {
+    throw new Error('Firebase Admin SDK environment variables are not set. Please check your .env file.');
+  }
+
   try {
-    // Construct the absolute path to the service account key file
-    // process.cwd() gives the root directory of the Next.js project
-    const serviceAccountPath = path.join(process.cwd(), 'serviceAccountKey.json');
-    
-    // Read the file synchronously
-    const serviceAccountFile = fs.readFileSync(serviceAccountPath, 'utf8');
-    
-    // Parse the file content as JSON
-    const serviceAccount = JSON.parse(serviceAccountFile);
-
-    // The type assertion is necessary because the imported JSON doesn't perfectly match the SDK's type
-    const typedServiceAccount = serviceAccount as admin.ServiceAccount;
-
     return admin.initializeApp({
-      credential: admin.credential.cert(typedServiceAccount),
+      // The type assertion is necessary because the constructed object doesn't perfectly match the SDK's type.
+      credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
     });
   } catch (e: any) {
-    if (e.code === 'ENOENT') {
-        throw new Error('serviceAccountKey.json not found in the project root. Please ensure the file exists.');
-    }
     throw new Error(`Failed to initialize Firebase Admin SDK. Error: ${e.message}`);
   }
 };
