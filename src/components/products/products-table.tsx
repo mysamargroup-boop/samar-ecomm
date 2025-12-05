@@ -25,16 +25,12 @@ import {
 import { deleteProduct } from '@/app/actions/productActions';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { categories } from '@/lib/placeholder-data';
+import { useEffect, useState } from 'react';
 
 export function ProductsTable({ products }: { products: Product[] }) {
   const { toast } = useToast();
-  const firestore = useFirestore();
   
-  const categoriesQuery = useMemoFirebase(() => firestore ? collection(firestore, 'categories') : null, [firestore]);
-  const { data: categories } = useCollection<Category>(categoriesQuery);
-
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
       const result = await deleteProduct(id);

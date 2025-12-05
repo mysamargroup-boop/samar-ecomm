@@ -1,21 +1,18 @@
 
 'use client';
 
-import { useUser, useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { useAuth } from '@/contexts/auth-context';
 import { CustomerOrderCard } from '@/components/orders/customer-order-card';
-import { collection } from 'firebase/firestore';
-import type { Order } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { orders } from '@/lib/placeholder-data';
+import type { Order } from '@/lib/types';
+
 
 function AccountOrdersContent() {
-  const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
+  const { user, isLoading: isUserLoading } = useAuth();
 
-  const ordersQuery = useMemoFirebase(
-    () => (user ? collection(firestore, 'customers', user.uid, 'orders') : null),
-    [firestore, user]
-  );
-  const { data: customerOrders, isLoading: areOrdersLoading } = useCollection<Order>(ordersQuery);
+  const customerOrders: Order[] = []; // Placeholder, will be fetched from Supabase
+  const areOrdersLoading = true; // Placeholder
   
   const isLoading = isUserLoading || areOrdersLoading;
 
@@ -34,8 +31,9 @@ function AccountOrdersContent() {
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold font-headline text-center">My Orders</h1>
+      <p className="text-center text-muted-foreground">Order history feature coming soon!</p>
 
-      {customerOrders && customerOrders.length > 0 ? (
+      {/* {customerOrders && customerOrders.length > 0 ? (
         <div className="space-y-6">
           {customerOrders.map(order => (
             <CustomerOrderCard key={order.id} order={order} />
@@ -48,7 +46,7 @@ function AccountOrdersContent() {
             You haven't placed any orders with us yet.
           </p>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
@@ -56,5 +54,3 @@ function AccountOrdersContent() {
 export default function AccountOrdersPage() {
     return <AccountOrdersContent />;
 }
-
-    

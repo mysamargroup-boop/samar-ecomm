@@ -2,65 +2,87 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-
-const AUTH_STORAGE_KEY = 'customer-auth';
+import { supabase } from '@/lib/supabase-client';
+import type { Session, User } from '@supabase/supabase-js';
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  login: () => void;
-  logout: () => void;
+  user: User | null;
+  loginWithOtp: (email: string) => Promise<{ error: any }>;
+  verifyOtp: (email: string, token: string) => Promise<{ error: any }>;
+  logout: () => Promise<void>;
   isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
-  login: () => {},
-  logout: () => {},
+  user: null,
+  loginWithOtp: async () => ({ error: null }),
+  verifyOtp: async () => ({ error: null }),
+  logout: async () => {},
   isLoading: true,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
-    // This effect runs only on the client.
-    try {
-      const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
-      if (storedAuth === 'true') {
-        setIsLoggedIn(true);
-      }
-    } catch (error) {
-      console.error("Could not access sessionStorage:", error);
-    }
-    setIsLoading(false);
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    };
+
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const login = useCallback(() => {
-    try {
-      sessionStorage.setItem(AUTH_STORAGE_KEY, 'true');
-      setIsLoggedIn(true);
-    } catch (error) {
-      console.error("Could not access sessionStorage:", error);
-    }
+  const loginWithOtp = useCallback(async (email: string) => {
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: true,
+      },
+    });
+    return { error };
   }, []);
 
-  const logout = useCallback(() => {
-    try {
-      sessionStorage.removeItem(AUTH_STORAGE_KEY);
-      setIsLoggedIn(false);
-      // Use window.location.href for a full refresh to clear all state
-      window.location.href = '/'; 
-    } catch (error) {
-      console.error("Could not access sessionStorage:", error);
-    }
+  const verifyOtp = useCallback(async (email: string, token: string) => {
+    const { data: { session }, error } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: 'email',
+    });
+    // setUser is handled by onAuthStateChange
+    return { error };
   }, []);
+
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
+    // setUser is handled by onAuthStateChange
+    window.location.href = '/'; 
+  }, []);
+  
+  const isLoggedIn = !!user;
+
+  const value = {
+    user,
+    loginWithOtp,
+    verifyOtp,
+    logout,
+    isLoading,
+    isLoggedIn, // For components that just need a boolean check
+  };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout, isLoading }}>
-      {children}
+    <AuthContext.Provider value={value as any}>
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 };

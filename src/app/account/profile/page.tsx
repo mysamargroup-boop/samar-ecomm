@@ -10,8 +10,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { useUser, useDoc, useFirestore, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useAuth } from '@/contexts/auth-context';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -26,7 +25,6 @@ import {
 } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
-import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
 import { AddressCard } from '@/components/account/address-card';
 
 const ProfileSchema = z.object({
@@ -39,15 +37,11 @@ const ProfileSchema = z.object({
 type ProfileFormValues = z.infer<typeof ProfileSchema>;
 
 function ProfilePageContent() {
-  const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
+  const { user, isLoading: isUserLoading } = useAuth();
   const { toast } = useToast();
 
-  const userDocRef = useMemoFirebase(
-    () => (user ? doc(firestore, 'customers', user.uid) : null),
-    [firestore, user]
-  );
-  const { data: customer, isLoading: isCustomerLoading } = useDoc<any>(userDocRef);
+  const customer: any = null; // Placeholder
+  const isCustomerLoading = true; // Placeholder
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileSchema),
@@ -70,7 +64,7 @@ function ProfilePageContent() {
     } else if (user) {
         form.reset({
             email: user.email || '',
-            phoneNumber: user.phoneNumber || '',
+            phoneNumber: user.phone || '',
         });
     }
   }, [customer, user, form]);
@@ -78,10 +72,11 @@ function ProfilePageContent() {
   const onSubmit = (data: ProfileFormValues) => {
     if (!user) return;
     const customerData = {
-      id: user.uid,
+      id: user.id,
       ...data,
     };
-    setDocumentNonBlocking(doc(firestore, 'customers', user.uid), customerData, { merge: true });
+    // Supabase update logic will go here
+    console.log("Updating profile:", customerData);
     toast({
       title: 'Profile Updated',
       description: 'Your information has been saved.',
@@ -220,5 +215,3 @@ function ProfilePageContent() {
 export default function ProfilePage() {
     return <ProfilePageContent />;
 }
-
-    

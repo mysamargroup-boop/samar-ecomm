@@ -1,7 +1,7 @@
 
 'use client';
 
-import { reviews as allReviews } from '@/lib/placeholder-data';
+import { reviews as allReviews, placeholderProducts } from '@/lib/placeholder-data';
 import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
@@ -30,10 +30,9 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 import { createPaymentOrder, verifyPaymentSignature } from '@/lib/payment';
 import { useToast } from '@/hooks/use-toast';
+import { categories } from '@/lib/placeholder-data';
 
 
 function SaleCountdownTimer({ endDate }: { endDate: Date }) {
@@ -125,38 +124,29 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
 export function ProductPageClient({ productSlug }: { productSlug: string }) {
   const { addToCart, clearCart } = useCart();
   const router = useRouter();
-  const firestore = useFirestore();
   const { toast } = useToast();
-
-  const productQuery = useMemoFirebase(
-    () => (firestore && productSlug ? query(collection(firestore, 'products'), where('slug', '==', productSlug)) : null),
-    [firestore, productSlug]
-  );
-  
-  const { data: productData, isLoading } = useCollection<Product>(productQuery);
-  const product = productData?.[0];
-
-  const relatedProductsQuery = useMemoFirebase(
-    () => (firestore && product ? query(collection(firestore, 'products'), where('categoryId', '==', product.categoryId)) : null),
-    [firestore, product]
-  );
-  const { data: relatedProductsData } = useCollection<Product>(relatedProductsQuery);
-
+  const [product, setProduct] = useState<Product | null>(null);
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (firestore && product?.categoryId) {
-      const fetchCategory = async () => {
-        const q = query(collection(firestore, 'categories'), where('id', '==', product.categoryId));
-        const categorySnapshot = await getDocs(q);
-        if (!categorySnapshot.empty) {
-          setCategory(categorySnapshot.docs[0].data() as Category);
-        }
-      };
-      fetchCategory();
+    // This is a placeholder for fetching data from Supabase
+    setIsLoading(true);
+    const foundProduct = placeholderProducts.find(p => p.slug === productSlug);
+    if (foundProduct) {
+      setProduct(foundProduct);
+      const foundCategory = categories.find(c => c.id === foundProduct.categoryId);
+      if (foundCategory) {
+        setCategory(foundCategory);
+      }
+      const related = placeholderProducts.filter(p => p.categoryId === foundProduct.categoryId && p.id !== foundProduct.id).slice(0, 8);
+      setRelatedProducts(related);
+    } else {
+      notFound();
     }
-  }, [firestore, product?.categoryId]);
-
+    setIsLoading(false);
+  }, [productSlug]);
 
   if (isLoading) {
     return (
@@ -231,10 +221,6 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
 
   const productReviews = allReviews.filter(r => r.productId === product.id && r.status === 'Approved');
   
-  const relatedProducts = (relatedProductsData || [])
-    .filter(p => p.id !== product.id)
-    .slice(0, 8);
-
   const dimensionsString = product.dimensions && product.dimensions.length && product.dimensions.width && product.dimensions.height 
     ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} cm`
     : null;

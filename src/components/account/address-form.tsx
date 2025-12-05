@@ -14,9 +14,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useUser, useFirestore } from '@/firebase';
-import { doc } from 'firebase/firestore';
-import { setDocumentNonBlocking } from '@/firebase/non-blocking-updates';
+import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { Address, AddressSchema } from '@/lib/types';
@@ -312,8 +310,7 @@ const citiesByState: { [key: string]: { label: string; value: string }[] } = {
 
 
 export function AddressForm({ address, onSave }: AddressFormProps) {
-  const { user } = useUser();
-  const firestore = useFirestore();
+  const { user } = useAuth();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof AddressSchema>>({
@@ -341,11 +338,8 @@ export function AddressForm({ address, onSave }: AddressFormProps) {
       return;
     }
 
-    setDocumentNonBlocking(
-      doc(firestore, 'customers', user.uid),
-      { shippingAddress: values },
-      { merge: true }
-    );
+    // Supabase update logic goes here
+    console.log("Saving address:", values);
     
     toast({
       title: 'Address Updated',

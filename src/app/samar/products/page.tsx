@@ -11,15 +11,22 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
-import { collection } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useEffect, useState } from 'react';
+import { placeholderProducts } from '@/lib/placeholder-data';
+
 
 function ProductsPageContent() {
-  const firestore = useFirestore();
-  const productsQuery = useMemoFirebase(() => firestore ? collection(firestore, 'products') : null, [firestore]);
-  const { data: products, isLoading } = useCollection<Product>(productsQuery);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // This is a placeholder for fetching products from Supabase
+    setIsLoading(true);
+    setProducts(placeholderProducts);
+    setIsLoading(false);
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -59,5 +66,3 @@ function ProductsPageContent() {
 export default function ProductsPage() {
   return <ProductsPageContent />;
 }
-
-    

@@ -4,26 +4,22 @@
 import { ProductCard } from '@/components/products/product-card';
 import type { Category, Product } from '@/lib/types';
 import { notFound } from 'next/navigation';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
+import { categories, placeholderProducts } from '@/lib/placeholder-data';
 
 function CategoryPageContent({ category }: { category: Category }) {
-  const firestore = useFirestore();
+  const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const productsQuery = useMemoFirebase(
-    () =>
-      firestore
-        ? query(
-            collection(firestore, 'products'),
-            where('categoryId', '==', category.id)
-          )
-        : null,
-    [firestore, category.id]
-  );
+  useEffect(() => {
+    // This is a placeholder for fetching products from Supabase
+    setIsLoading(true);
+    const products = placeholderProducts.filter(p => p.categoryId === category.id);
+    setCategoryProducts(products);
+    setIsLoading(false);
+  }, [category.id]);
 
-  const { data: categoryProducts, isLoading } = useCollection<Product>(productsQuery);
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -67,28 +63,18 @@ function CategoryPageContent({ category }: { category: Category }) {
 export default function CategoryPage({ params }: { params: { categorySlug: string } }) {
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
-  const firestore = useFirestore();
 
   useEffect(() => {
-    if (!firestore) return;
-    const fetchCategory = async () => {
-      try {
-        const q = query(collection(firestore, 'categories'), where('slug', '==', params.categorySlug));
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          notFound();
-        } else {
-          setCategory(querySnapshot.docs[0].data() as Category);
-        }
-      } catch (e) {
-        console.error("Error fetching category", e);
-        notFound();
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCategory();
-  }, [firestore, params.categorySlug]);
+    // This is a placeholder for fetching category from Supabase
+    setLoading(true);
+    const foundCategory = categories.find(c => c.slug === params.categorySlug);
+    if (foundCategory) {
+      setCategory(foundCategory);
+    } else {
+      notFound();
+    }
+    setLoading(false);
+  }, [params.categorySlug]);
 
   if (loading) {
     return <div className="container mx-auto px-4 py-12"><Skeleton className="h-96 w-full" /></div>;

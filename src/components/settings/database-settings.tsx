@@ -36,12 +36,12 @@ export function DatabaseSettings() {
         <Database className="h-4 w-4" />
         <AlertTitle>Initial Data Seeding</AlertTitle>
         <AlertDescription>
-          Click the button below to populate your database with initial placeholder products and categories. This should only be done once.
+          Click the button below to populate your Supabase database with initial data based on your `schema.sql`. This requires placeholder data to be inserted via a server action.
         </AlertDescription>
       </Alert>
       <div className="flex justify-end">
         <Button onClick={handleSeed} disabled={isPending}>
-          {isPending ? 'Seeding...' : 'Seed Database'}
+          {isPending ? 'Seeding...' : 'Seed Supabase Database'}
         </Button>
       </div>
     </div>

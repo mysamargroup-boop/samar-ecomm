@@ -25,7 +25,8 @@ export function AppHeader() {
   const [isSearchSheetOpen, setIsSearchSheetOpen] = useState(false);
   const { wishlistItems } = useContext(WishlistContext);
   const { cartCount } = useCart();
-  const { isLoggedIn, logout } = useAuth();
+  const { user, logout } = useAuth();
+  const isLoggedIn = !!user;
   const wishlistCount = wishlistItems.length;
 
   // Hide header on admin routes

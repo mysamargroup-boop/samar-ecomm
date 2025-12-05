@@ -1,27 +1,22 @@
 
 import { ProductPageClient } from '@/components/products/product-page-client';
 import type { Metadata } from 'next';
+import { placeholderProducts } from '@/lib/placeholder-data';
 import { notFound } from 'next/navigation';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { initializeFirebase } from '@/firebase';
-import type { Product } from '@/lib/types';
-
 
 type Props = {
   params: { productSlug: string };
 };
 
+// This function needs to be updated to fetch data from Supabase
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { firestore } = initializeFirebase();
-  const q = query(collection(firestore, 'products'), where('slug', '==', params.productSlug));
-  const snapshot = await getDocs(q);
+  const product = placeholderProducts.find(p => p.slug === params.productSlug);
   
-  if (snapshot.empty) {
+  if (!product) {
      return {
       title: 'Product Not Found',
     };
   }
-  const product = snapshot.docs[0].data() as Product;
 
   return {
     title: product.name,
@@ -33,14 +28,9 @@ export default function ProductPage({ params }: { params: { productSlug: string 
   return <ProductPageClient productSlug={params.productSlug} />;
 }
 
+// This function needs to be updated to fetch data from Supabase
 export async function generateStaticParams() {
-  const { firestore } = initializeFirebase();
-  const productsCollection = collection(firestore, 'products');
-  const snapshot = await getDocs(productsCollection);
-  
-  return snapshot.docs.map(doc => ({
-    productSlug: doc.data().slug,
+  return placeholderProducts.map(doc => ({
+    productSlug: doc.slug,
   }));
 }
-
-    

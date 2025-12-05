@@ -25,7 +25,6 @@ import { useAuth } from '@/contexts/auth-context';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -97,22 +96,24 @@ function MoreNav() {
 
 
 export default function AccountPage() {
-  const { isLoggedIn, logout } = useAuth();
+  const { user, logout, isLoading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push('/');
+    if (!isLoading && !user) {
+      router.push('/login');
     }
-  }, [isLoggedIn, router]);
+  }, [isLoading, user, router]);
 
-  const handleLogout = () => {
-    logout();
-  };
-
-  if (!isLoggedIn) {
-    return null; // or a loading spinner
+  if (isLoading || !user) {
+    return (
+        <div className="flex items-center justify-center min-h-[60vh]">
+            <p>Loading...</p>
+        </div>
+    );
   }
+
+  const userInitial = user.email ? user.email.charAt(0).toUpperCase() : '?';
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -120,18 +121,12 @@ export default function AccountPage() {
             <CardContent className="p-6">
                 <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16 text-xl">
-                        <AvatarFallback>SN</AvatarFallback>
+                        <AvatarFallback>{userInitial}</AvatarFallback>
                     </Avatar>
                     <div>
-                        <h2 className="text-xl font-bold">Shubham Nema</h2>
-                        <p className="text-muted-foreground">msnema7@gmail.com</p>
-                         <p className="text-muted-foreground">+91 8518024107</p>
+                        <h2 className="text-xl font-bold">Welcome!</h2>
+                        <p className="text-muted-foreground">{user.email}</p>
                     </div>
-                </div>
-                <Separator className="my-4"/>
-                <div className="flex items-center gap-4">
-                    <Badge>Home</Badge>
-                    <p className="text-sm text-muted-foreground">Subhash Nagar Shastri Ward, Sagar, 470002, Madhya Pradesh</p>
                 </div>
             </CardContent>
         </Card>
@@ -141,7 +136,7 @@ export default function AccountPage() {
         <MoreNav />
         
         <Card className="overflow-hidden">
-            <Button variant="ghost" onClick={handleLogout} className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none justify-start px-4 py-6 text-base">
+            <Button variant="ghost" onClick={logout} className="w-full text-destructive hover:text-destructive hover:bg-destructive/10 rounded-none justify-start px-4 py-6 text-base">
                 <LogOut className="mr-4 h-5 w-5" />
                 Logout
             </Button>

@@ -5,7 +5,6 @@ import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { ShoppingBag } from 'lucide-react';
 import {
   InputOTP,
@@ -20,32 +19,36 @@ import { useAuth } from '@/contexts/auth-context';
 function VerifyOTPComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const phone = searchParams.get('phone');
+  const email = searchParams.get('email');
   const { toast } = useToast();
   const [otp, setOtp] = useState('');
-  const { login } = useAuth();
+  const { verifyOtp } = useAuth();
+  const [loading, setLoading] = useState(false);
 
-  const handleComplete = (value: string) => {
-    // In a real app, you would verify the OTP here against a backend service.
-    // For this demo, we'll accept a specific OTP.
-    console.log('Verifying OTP:', value);
-    if (value === '123456') {
-        login();
-        toast({
-            title: 'Login Successful',
-            description: 'Welcome back!',
-        });
-        // On successful customer login, redirect to the account dashboard.
-        // Use window.location.href to ensure a full page reload for the auth context.
-        window.location.href = '/account';
-    } else {
+  const handleComplete = async (value: string) => {
+    if (!email) {
+        toast({ title: "Email not found.", variant: "destructive" });
+        router.push('/login');
+        return;
+    }
+    setLoading(true);
+    const { error } = await verifyOtp(email, value);
+
+    if (error) {
         toast({
             title: 'Invalid OTP',
             description: 'The code you entered is incorrect. Please try again.',
             variant: 'destructive',
         });
-        setOtp(''); // Reset the OTP input
+        setOtp('');
+    } else {
+        toast({
+            title: 'Login Successful',
+            description: 'Welcome back!',
+        });
+        window.location.href = '/account';
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -65,12 +68,17 @@ function VerifyOTPComponent() {
           </div>
           <CardTitle className="text-2xl font-headline">Verify Your Identity</CardTitle>
           <CardDescription>
-            An OTP has been sent to {phone}. Please enter it below. (Hint: use 123456)
+            An OTP has been sent to {email}. Please enter it below.
           </CardDescription>
         </CardHeader>
         <CardContent>
             <div className="flex flex-col items-center space-y-6">
-                <InputOTP maxLength={6} value={otp} onChange={(value) => setOtp(value)} onComplete={handleComplete}>
+                <InputOTP 
+                    maxLength={6} 
+                    value={otp} 
+                    onChange={(value) => setOtp(value)}
+                    disabled={loading}
+                >
                     <InputOTPGroup>
                         <InputOTPSlot index={0} />
                         <InputOTPSlot index={1} />
@@ -85,7 +93,7 @@ function VerifyOTPComponent() {
                 </InputOTP>
                 
                 <Button variant="link" size="sm" className="w-full" onClick={() => router.back()}>
-                    Use a different number
+                    Use a different email
                 </Button>
             </div>
         </CardContent>
