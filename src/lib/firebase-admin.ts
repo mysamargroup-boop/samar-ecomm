@@ -1,4 +1,3 @@
-
 import * as admin from 'firebase-admin';
 import { config } from 'dotenv';
 
@@ -27,13 +26,14 @@ const getAdminApp = () => {
     }
 
     try {
-        const parsedServiceAccount = JSON.parse(Buffer.from(serviceAccount, 'base64').toString('utf8'));
+        // Directly parse the JSON string from the environment variable
+        const parsedServiceAccount = JSON.parse(serviceAccount);
         
         return admin.initializeApp({
             credential: admin.credential.cert(parsedServiceAccount)
         });
     } catch (e: any) {
-        throw new Error(`Failed to parse Firebase service account key. Please ensure it is a valid base64 encoded JSON. Error: ${e.message}`);
+        throw new Error(`Failed to parse Firebase service account key. Please ensure it is a valid JSON string. Error: ${e.message}`);
     }
 };
 
