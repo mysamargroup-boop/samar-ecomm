@@ -130,17 +130,17 @@ export function AppHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center px-4 sm:px-6 lg:px-8">
+      <div className="container px-4 sm:px-6 lg:px-8">
         
         {/* Desktop Header */}
-        <div className="hidden md:flex w-full items-center gap-8">
-            <div className="flex items-center">
+        <div className="hidden md:grid h-16 w-full grid-cols-3 items-center">
+            <div className="flex items-center justify-start">
                  <Link href="/" className="flex items-center space-x-2">
                     <ShoppingBag className="h-6 w-6 text-primary" />
                     <span className="font-bold sm:inline-block font-headline">Samar Store</span>
                 </Link>
             </div>
-            <div className="flex-1 flex justify-center">
+            <div className="flex items-center justify-center">
               <HeaderSearch />
             </div>
             <div className="flex items-center justify-end gap-2">
@@ -194,7 +194,7 @@ export function AppHeader() {
         </div>
 
         {/* Mobile Header */}
-        <div className="md:hidden grid grid-cols-3 w-full items-center">
+        <div className="md:hidden grid grid-cols-3 w-full items-center h-16">
             <div className="flex items-center justify-start">
                 <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                     <SheetTrigger asChild>
