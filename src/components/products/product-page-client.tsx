@@ -30,6 +30,8 @@ import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection, query, where } from 'firebase/firestore';
 
 function SaleCountdownTimer({ endDate }: { endDate: Date }) {
   const calculateTimeLeft = () => {
@@ -120,17 +122,15 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
 export function ProductPageClient({ productSlug }: { productSlug: string }) {
   const { addToCart } = useCart();
   const router = useRouter();
+  const firestore = useFirestore();
 
-  const [product, setProduct] = useState<Product | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const foundProduct = products.find(p => p.slug === productSlug);
-    if (foundProduct) {
-      setProduct(foundProduct);
-    }
-    setIsLoading(false);
-  }, [productSlug]);
+  const productQuery = useMemoFirebase(
+    () => (firestore && productSlug ? query(collection(firestore, 'products'), where('slug', '==', productSlug)) : null),
+    [firestore, productSlug]
+  );
+  
+  const { data: productData, isLoading } = useCollection<Product>(productQuery);
+  const product = productData?.[0];
 
   if (isLoading) {
     return (
@@ -176,7 +176,7 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     .slice(0, 8);
 
   const dimensionsString = product.dimensions && product.dimensions.length && product.dimensions.width && product.dimensions.height 
-    ? `${'${product.dimensions.length}'} x ${'${product.dimensions.width}'} x ${'${product.dimensions.height}'} cm`
+    ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} cm`
     : null;
     
   const breadcrumbItems = [
@@ -199,7 +199,7 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
                   <div className="aspect-square relative rounded-lg overflow-hidden border">
                     <Image
                       src={img}
-                      alt={`${'${product.name}'} image ${'${index}'} + 1`}
+                      alt={`${product.name} image ${index + 1}`}
                       fill
                       className="object-cover"
                       data-ai-hint="product image"
@@ -256,7 +256,7 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
             </div>
              <p className="text-sm text-muted-foreground">
               {product.inventory > 0
-                ? `${'${product.inventory}'} items in stock.`
+                ? `${product.inventory} items in stock.`
                 : 'Out of stock.'}
               {product.sku && <span className="ml-4">SKU: {product.sku}</span>}
             </p>
@@ -344,3 +344,5 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     </div>
   );
 }
+
+    

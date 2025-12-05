@@ -44,7 +44,7 @@ export const products: Product[] = [
     categoryId: '1',
     images: [findImage('headphone1'), findImage('headphone2')],
     inventory: 150,
-    sku: 'SAM-HDP-BLK-01',
+    sku: 'SAM-001',
     tags: ['audio', 'tech', 'headphones'],
     weight: 254, // in grams
     dimensions: { length: 18, width: 7.5, height: 25 },
@@ -60,7 +60,7 @@ export const products: Product[] = [
     categoryId: '1',
     images: [findImage('smartwatch1'), findImage('smartwatch2')],
     inventory: 200,
-    sku: 'SAM-SWT-S8-GRY-01',
+    sku: 'SAM-002',
     tags: ['smartwatch', 'fitness', 'tech'],
     weight: 45,
     dimensions: { length: 4.5, width: 3.8, height: 1.07 },
@@ -75,7 +75,7 @@ export const products: Product[] = [
     categoryId: 'cat_men',
     images: [findImage('tshirt1'), findImage('tshirt2')],
     inventory: 500,
-    sku: 'SAM-TSH-MEN-WHT-M',
+    sku: 'SAM-003',
     tags: ['apparel', 't-shirt', 'basics'],
     weight: 180,
   },
@@ -90,7 +90,7 @@ export const products: Product[] = [
     categoryId: '2',
     images: [findImage('backpack1'), findImage('backpack2')],
     inventory: 80,
-    sku: 'SAM-BAG-LTHR-BRN-01',
+    sku: 'SAM-004',
     tags: ['bags', 'leather', 'fashion'],
     weight: 1200,
     dimensions: { length: 42, width: 30, height: 12 },
@@ -105,7 +105,7 @@ export const products: Product[] = [
     categoryId: '3',
     images: [findImage('espresso1'), findImage('espresso2')],
     inventory: 50,
-    sku: 'SAM-KITCH-ESP-01',
+    sku: 'SAM-005',
     tags: ['kitchen', 'coffee', 'home'],
     weight: 8500,
     dimensions: { length: 35, width: 25, height: 42 },
@@ -121,7 +121,7 @@ export const products: Product[] = [
     categoryId: '3',
     images: [findImage('blanket1'), findImage('blanket2')],
     inventory: 120,
-    sku: 'SAM-HOME-BLK-GRY-01',
+    sku: 'SAM-006',
     tags: ['home decor', 'textiles', 'cozy'],
     dimensions: { length: 127, width: 152 },
   },
@@ -135,7 +135,7 @@ export const products: Product[] = [
     categoryId: '4',
     images: [findImage('book1'), findImage('book2')],
     inventory: 300,
-    sku: 'SAM-BOOK-PROG-HC-01',
+    sku: 'SAM-007',
     tags: ['books', 'education', 'programming'],
     weight: 850,
   },
@@ -150,7 +150,7 @@ export const products: Product[] = [
     categoryId: '4',
     images: [findImage('book3'), findImage('book4')],
     inventory: 450,
-    sku: 'SAM-BOOK-SCIFI-PB-01',
+    sku: 'SAM-008',
     tags: ['books', 'sci-fi', 'fiction'],
   },
 ];
@@ -313,3 +313,5 @@ export const customers = [
         lastOrder: new Date('2025-10-29T11:00:00Z'),
     }
 ]
+
+    
