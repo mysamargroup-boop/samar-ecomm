@@ -6,6 +6,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@/components/ui/theme-provider';
 import { FirebaseClientProvider } from '@/firebase';
+import { Toaster } from '@/components/ui/toaster';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
 
@@ -59,7 +60,7 @@ export default function SamarLayout({
   if (isLoginPage || isVerifyPage) {
     return (
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-        <FirebaseClientProvider>{children}</FirebaseClientProvider>
+        <FirebaseClientProvider>{children}<Toaster /></FirebaseClientProvider>
       </ThemeProvider>
     );
   }
@@ -78,6 +79,7 @@ export default function SamarLayout({
               </main>
             </div>
           </div>
+          <Toaster />
         </FirebaseClientProvider>
       </ThemeProvider>
     );
