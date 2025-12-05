@@ -13,17 +13,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Terminal, Send, Search } from 'lucide-react';
+import { Terminal, Send, CheckCircle, XCircle, ArrowRight, Settings, Zap } from 'lucide-react';
 import { Input } from '@/components/ui/input';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   Select,
   SelectContent,
@@ -31,64 +22,75 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { customers as allCustomers } from '@/lib/placeholder-data';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
+import { Separator } from '@/components/ui/separator';
 
 const isDemoMode = !process.env.NEXT_PUBLIC_WHATSAPP_ACCESS_TOKEN || !process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID;
 
 const messageTemplates = [
-  { id: 'promo_1', name: '20% Off Weekend Sale', content: 'Hi {customer_name}, our weekend sale is live! Get 20% off on all items. Shop now: {store_url}' },
-  { id: 'new_arrival', name: 'New Arrivals Alert', content: 'Hello {customer_name}! Fresh styles have just landed. Check out our new arrivals: {store_url}/new' },
-  { id: 'abandoned_cart', name: 'Cart Reminder', content: 'Hey {customer_name}, you left some items in your cart. Complete your purchase before they\'re gone! {cart_url}' },
-  { id: 'shipping_update', name: 'Order Shipped', content: 'Good news, {customer_name}! Your order #{order_id} has been shipped. Track it here: {tracking_url}' },
+  { id: 'order_confirmation', name: 'Order Confirmation' },
+  { id: 'shipping_update', name: 'Shipping Update' },
+  { id: 'cod_verification', name: 'COD Verification' },
+  { id: 'abandoned_cart_1hr', name: 'Abandoned Cart (1hr)' },
+  { id: 'abandoned_cart_24hr', name: 'Abandoned Cart (24hr)' },
 ];
+
+function AutomationRule({ title, description, trigger, templateId, isEnabled, onToggle, onTemplateChange }: any) {
+    return (
+        <div className="flex items-start justify-between rounded-lg border p-4">
+            <div className="space-y-1">
+                <h4 className="font-semibold">{title}</h4>
+                <p className="text-sm text-muted-foreground">{description}</p>
+                <div className="flex items-center gap-4 pt-2">
+                    <Select defaultValue={templateId} onValueChange={onTemplateChange}>
+                        <SelectTrigger className="w-full md:w-[250px]">
+                            <SelectValue placeholder="Select a template" />
+                        </SelectTrigger>
+                        <SelectContent>
+                        {messageTemplates.map(template => (
+                            <SelectItem key={template.id} value={template.id}>{template.name}</SelectItem>
+                        ))}
+                        </SelectContent>
+                    </Select>
+                    {trigger}
+                </div>
+            </div>
+            <Switch checked={isEnabled} onCheckedChange={onToggle} />
+        </div>
+    )
+}
 
 export default function WhatsappPage() {
   const { toast } = useToast();
-  const [selectedCustomers, setSelectedCustomers] = useState<Set<string>>(new Set());
-  const [selectedTemplate, setSelectedTemplate] = useState<string>('');
+
+  const handleTestMessage = (direction: 'incoming' | 'outgoing') => {
+      toast({
+          title: `Test Message (${direction})`,
+          description: `Simulating a test ${direction} message.`,
+      })
+  }
   
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedCustomers(new Set(allCustomers.map(c => c.id)));
-    } else {
-      setSelectedCustomers(new Set());
-    }
-  };
+  const [automations, setAutomations] = useState({
+      orderConfirmation: { isEnabled: true, templateId: 'order_confirmation' },
+      shippingUpdate: { isEnabled: true, templateId: 'shipping_update' },
+      codVerification: { isEnabled: false, templateId: 'cod_verification' },
+      abandonedCart: { isEnabled: true, templateId: 'abandoned_cart_1hr', trigger: '1hr' },
+      lowStockAlert: { isEnabled: true, threshold: 10 }
+  });
 
-  const handleSelectCustomer = (customerId: string, checked: boolean) => {
-    setSelectedCustomers(prev => {
-      const newSet = new Set(prev);
-      if (checked) {
-        newSet.add(customerId);
-      } else {
-        newSet.delete(customerId);
-      }
-      return newSet;
-    });
-  };
-
-  const handleSend = () => {
-    if (selectedCustomers.size === 0) {
-      toast({ title: 'No customers selected', description: 'Please select at least one customer.', variant: 'destructive' });
-      return;
-    }
-    if (!selectedTemplate) {
-      toast({ title: 'No template selected', description: 'Please choose a message template.', variant: 'destructive' });
-      return;
-    }
-    
-    toast({
-      title: 'Message Sent (Simulated)',
-      description: `Sent "${messageTemplates.find(t => t.id === selectedTemplate)?.name}" to ${selectedCustomers.size} customer(s).`,
-    });
-    setSelectedCustomers(new Set());
-  };
+  const handleAutomationToggle = (key: keyof typeof automations) => {
+    setAutomations(prev => ({
+        ...prev,
+        [key]: { ...prev[key as keyof typeof automations], isEnabled: !prev[key as keyof typeof automations].isEnabled }
+    }));
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold font-headline">WhatsApp Marketing</h1>
+        <h1 className="text-3xl font-bold font-headline">WhatsApp</h1>
       </div>
       
       {isDemoMode && (
@@ -101,83 +103,109 @@ export default function WhatsappPage() {
         </Alert>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-        <Card className="lg:col-span-1">
+      <Card>
           <CardHeader>
-            <CardTitle>Select Customers</CardTitle>
-            <CardDescription>Choose which customers will receive the message.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[400px]">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead padding="checkbox">
-                      <Checkbox
-                        checked={selectedCustomers.size > 0 && selectedCustomers.size === allCustomers.length}
-                        indeterminate={selectedCustomers.size > 0 && selectedCustomers.size < allCustomers.length}
-                        onCheckedChange={(checked) => handleSelectAll(!!checked)}
-                      />
-                    </TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Phone</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {allCustomers.map((customer) => (
-                    <TableRow key={customer.id}>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedCustomers.has(customer.id)}
-                          onCheckedChange={(checked) => handleSelectCustomer(customer.id, !!checked)}
-                        />
-                      </TableCell>
-                      <TableCell>{customer.name}</TableCell>
-                      <TableCell>{customer.phone}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </ScrollArea>
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>Compose Message</CardTitle>
-            <CardDescription>Select a template and send it to the selected customers.</CardDescription>
+              <CardTitle>Status & Validation</CardTitle>
+              <CardDescription>Check your WhatsApp Business API connection status and send test messages.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div>
-              <label htmlFor="template-select" className="text-sm font-medium">Message Template</label>
-              <Select onValueChange={setSelectedTemplate} value={selectedTemplate}>
-                <SelectTrigger id="template-select">
-                  <SelectValue placeholder="Choose a Meta approved template..." />
-                </SelectTrigger>
-                <SelectContent>
-                  {messageTemplates.map(template => (
-                    <SelectItem key={template.id} value={template.id}>{template.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            {selectedTemplate && (
-              <div className="p-4 bg-muted rounded-md space-y-2">
-                <h4 className="font-semibold text-sm">Template Preview:</h4>
-                <p className="text-sm text-muted-foreground italic">
-                  {messageTemplates.find(t => t.id === selectedTemplate)?.content}
-                </p>
+              <div className="flex items-center justify-between rounded-lg border p-4">
+                  <div className="flex items-center gap-3">
+                      {isDemoMode ? <XCircle className="h-6 w-6 text-destructive"/> : <CheckCircle className="h-6 w-6 text-green-500"/>}
+                      <div>
+                          <p className="font-semibold">WhatsApp Number</p>
+                          <p className="text-sm text-muted-foreground">{isDemoMode ? 'Not Connected' : '+91 12345 67890'}</p>
+                      </div>
+                  </div>
+                  <Badge variant={isDemoMode ? "destructive" : "secondary"} className={!isDemoMode ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800' : ''}>
+                      {isDemoMode ? 'Not Connected' : 'Connected'}
+                  </Badge>
               </div>
-            )}
+              <div className="text-sm text-muted-foreground">
+                  Last Sync: {new Date().toLocaleString()}
+              </div>
+          </CardContent>
+          <CardFooter className="gap-4">
+              <Button variant="outline" onClick={() => handleTestMessage('incoming')}>Incoming Message Test</Button>
+              <Button variant="outline" onClick={() => handleTestMessage('outgoing')}>Outgoing Message Test</Button>
+          </CardFooter>
+      </Card>
+      
+      <Card>
+          <CardHeader>
+              <CardTitle>Automation Rules</CardTitle>
+              <CardDescription>Enable automations to send messages to customers based on their actions.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <AutomationRule 
+                title="Order Confirmation"
+                description="Send a message when a customer places a new order."
+                isEnabled={automations.orderConfirmation.isEnabled}
+                templateId={automations.orderConfirmation.templateId}
+                onToggle={() => handleAutomationToggle('orderConfirmation')}
+                onTemplateChange={(value: string) => setAutomations(p => ({...p, orderConfirmation: {...p.orderConfirmation, templateId: value}}))}
+            />
+             <AutomationRule 
+                title="Shipping Update"
+                description="Notify customers when their order status changes to 'Shipped'."
+                isEnabled={automations.shippingUpdate.isEnabled}
+                templateId={automations.shippingUpdate.templateId}
+                onToggle={() => handleAutomationToggle('shippingUpdate')}
+                onTemplateChange={(value: string) => setAutomations(p => ({...p, shippingUpdate: {...p.shippingUpdate, templateId: value}}))}
+            />
+             <AutomationRule 
+                title="Cash on Delivery Verification"
+                description="Send a verification message for COD orders."
+                isEnabled={automations.codVerification.isEnabled}
+                templateId={automations.codVerification.templateId}
+                onToggle={() => handleAutomationToggle('codVerification')}
+                onTemplateChange={(value: string) => setAutomations(p => ({...p, codVerification: {...p.codVerification, templateId: value}}))}
+            />
+             <AutomationRule 
+                title="Abandoned Cart Reminder"
+                description="Remind customers about items left in their cart."
+                isEnabled={automations.abandonedCart.isEnabled}
+                templateId={automations.abandonedCart.templateId}
+                onToggle={() => handleAutomationToggle('abandonedCart')}
+                onTemplateChange={(value: string) => setAutomations(p => ({...p, abandonedCart: {...p.abandonedCart, templateId: value}}))}
+                trigger={
+                    <Select defaultValue={automations.abandonedCart.trigger} onValueChange={(value) => setAutomations(p => ({...p, abandonedCart: {...p.abandonedCart, trigger: value}}))}>
+                        <SelectTrigger className="w-[150px]">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="1hr">After 1 hour</SelectItem>
+                            <SelectItem value="3hr">After 3 hours</SelectItem>
+                            <SelectItem value="24hr">After 24 hours</SelectItem>
+                        </SelectContent>
+                    </Select>
+                }
+            />
+             <div className="flex items-start justify-between rounded-lg border p-4">
+                <div className="space-y-1">
+                    <h4 className="font-semibold">Low Stock Alert (For Admin)</h4>
+                    <p className="text-sm text-muted-foreground">Receive a notification when product stock falls below a threshold.</p>
+                    <div className="flex items-center gap-4 pt-2">
+                        <Label>Alert when stock is less than:</Label>
+                        <Input 
+                            type="number" 
+                            className="w-24" 
+                            value={automations.lowStockAlert.threshold}
+                            onChange={(e) => setAutomations(p => ({...p, lowStockAlert: {...p.lowStockAlert, threshold: parseInt(e.target.value, 10) || 0}}))}
+                        />
+                    </div>
+                </div>
+                <Switch checked={automations.lowStockAlert.isEnabled} onCheckedChange={() => handleAutomationToggle('lowStockAlert')} />
+            </div>
           </CardContent>
           <CardFooter className="flex justify-end">
-             <Button onClick={handleSend} disabled={selectedCustomers.size === 0 || !selectedTemplate}>
-              <Send className="mr-2 h-4 w-4" />
-              Send to {selectedCustomers.size} Customer(s)
-            </Button>
+              <Button>
+                  <Zap className="mr-2 h-4 w-4"/>
+                  Save Automation Rules
+              </Button>
           </CardFooter>
-        </Card>
-      </div>
+      </Card>
+
     </div>
   );
 }
