@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/accordion';
 import { ShieldCheck, Receipt, Truck, Replace } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const initialInfoItems = [
     {
@@ -46,6 +47,15 @@ type IconName = keyof typeof iconMap;
 
 export function InfoBarCustomizer() {
   const [items, setItems] = useState(initialInfoItems);
+  const { toast } = useToast();
+
+  const handleSave = () => {
+    console.log('Saving info bar items:', items);
+    toast({
+        title: 'Settings Saved',
+        description: 'Your info bar has been updated.',
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -84,7 +94,7 @@ export function InfoBarCustomizer() {
         })}
       </Accordion>
       <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

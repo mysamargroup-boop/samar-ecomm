@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Trash2, PlusCircle, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Card, CardContent } from "../ui/card";
+import { useToast } from "@/hooks/use-toast";
 
 export function RedirectsForm() {
     const [redirects, setRedirects] = useState([
@@ -13,6 +14,7 @@ export function RedirectsForm() {
         { from: '/promo', to: '/sales/summer-sale' },
     ]);
     const [newRedirect, setNewRedirect] = useState({ from: '', to: '' });
+    const { toast } = useToast();
 
     const addRedirect = () => {
         if (newRedirect.from && newRedirect.to) {
@@ -24,6 +26,14 @@ export function RedirectsForm() {
     const removeRedirect = (index: number) => {
         setRedirects(redirects.filter((_, i) => i !== index));
     }
+
+    const handleSave = () => {
+        console.log('Saving redirects:', redirects);
+        toast({
+            title: 'Settings Saved',
+            description: 'Your URL redirects have been updated.',
+        });
+    };
 
   return (
     <div className="space-y-6">
@@ -62,7 +72,7 @@ export function RedirectsForm() {
         </div>
 
         <div className="flex justify-end">
-            <Button>Save Changes</Button>
+            <Button onClick={handleSave}>Save Changes</Button>
         </div>
     </div>
   );

@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
 import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
 
 type FeaturedProductsCustomizerProps = {
   allProducts: Product[];
@@ -27,6 +28,7 @@ export function FeaturedProductsCustomizer({
   const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(
     new Set(featuredProductIds)
   );
+  const { toast } = useToast();
 
   const handleCheckboxChange = (productId: string, checked: boolean) => {
     setSelectedProductIds(prev => {
@@ -37,6 +39,14 @@ export function FeaturedProductsCustomizer({
         newSet.delete(productId);
       }
       return newSet;
+    });
+  };
+
+  const handleSave = () => {
+    console.log('Saving featured products:', Array.from(selectedProductIds));
+    toast({
+      title: 'Settings Saved',
+      description: 'Your featured products have been updated.',
     });
   };
 
@@ -78,7 +88,7 @@ export function FeaturedProductsCustomizer({
         </Table>
       </div>
       <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

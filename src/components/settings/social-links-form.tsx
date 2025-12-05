@@ -1,8 +1,10 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 type SocialLinksFormProps = {
@@ -15,8 +17,19 @@ type SocialLinksFormProps = {
 };
 
 export function SocialLinksForm({ links }: SocialLinksFormProps) {
+  const { toast } = useToast();
+  
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Saving social links...');
+    toast({
+        title: 'Settings Saved',
+        description: 'Your social media links have been updated.',
+    });
+  };
+  
   return (
-    <form className="space-y-6">
+    <form onSubmit={handleSave} className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="twitter">Twitter</Label>
           <div className="flex items-center gap-2">

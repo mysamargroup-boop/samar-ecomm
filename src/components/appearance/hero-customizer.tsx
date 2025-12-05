@@ -77,6 +77,14 @@ export function HeroCustomizer() {
     }
   };
 
+  const handleSave = () => {
+    console.log('Saving hero slides:', slides);
+    toast({
+        title: 'Settings Saved',
+        description: 'Your hero banner has been updated.',
+    });
+  };
+
   return (
     <div className="space-y-6">
       <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
@@ -156,7 +164,7 @@ export function HeroCustomizer() {
         ))}
       </Accordion>
       <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

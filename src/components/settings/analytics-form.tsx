@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 type AnalyticsFormProps = {
   config: {
@@ -16,8 +17,19 @@ type AnalyticsFormProps = {
 };
 
 export function AnalyticsForm({ config }: AnalyticsFormProps) {
+  const { toast } = useToast();
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Saving analytics settings...');
+    toast({
+        title: 'Settings Saved',
+        description: 'Your analytics settings have been updated.',
+    });
+  };
+
   return (
-    <form className="space-y-8">
+    <form onSubmit={handleSave} className="space-y-8">
       <div className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="ga-id">Google Analytics ID</Label>

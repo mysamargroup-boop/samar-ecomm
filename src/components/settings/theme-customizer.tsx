@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -12,51 +11,63 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ColorPicker } from "../ui/color-picker";
+import { useToast } from "@/hooks/use-toast";
 
 export function ThemeCustomizer() {
+    const { toast } = useToast();
 
     const fonts = [
         { name: 'Poppins', value: 'var(--font-poppins)' },
         { name: 'Inter', value: 'var(--font-inter)' },
         { name: 'Roboto', value: 'var(--font-roboto)' },
         { name: 'Manrope', value: 'var(--font-manrope)' },
-    ]
+    ];
+
+    const handleSave = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('Saving theme settings...');
+        toast({
+            title: 'Settings Saved',
+            description: 'Your theme settings have been updated.',
+        });
+    }
+
   return (
-    <form className="space-y-8">
+    <form onSubmit={handleSave} className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="space-y-6">
             <h3 className="text-lg font-medium">Colors</h3>
             <div className="space-y-4">
                 <div className="space-y-2">
                     <Label>Primary Color</Label>
-                    <ColorPicker initialColor="231 48% 48%" />
+                    <ColorPicker initialColor="231 48% 48%" onColorChange={() => {}} />
                 </div>
                  <div className="space-y-2">
                     <Label>Background Color</Label>
-                    <ColorPicker initialColor="220 13% 96%" />
+                    <ColorPicker initialColor="220 13% 96%" onColorChange={() => {}} />
                 </div>
                  <div className="space-y-2">
                     <Label>Accent Color</Label>
-                    <ColorPicker initialColor="0 59% 45%" />
+                    <ColorPicker initialColor="0 59% 45%" onColorChange={() => {}} />
                 </div>
             </div>
             <h3 className="text-lg font-medium pt-4">Buttons</h3>
             <div className="space-y-4">
                  <div className="space-y-2">
                     <Label>Add to Cart (Background)</Label>
-                    <ColorPicker initialColor="220 13% 91%" />
+                    <ColorPicker initialColor="220 13% 91%" onColorChange={() => {}} />
                 </div>
                 <div className="space-y-2">
                     <Label>Add to Cart (Text)</Label>
-                    <ColorPicker initialColor="220 12% 10%" />
+                    <ColorPicker initialColor="220 12% 10%" onColorChange={() => {}} />
                 </div>
                 <div className="space-y-2">
                     <Label>Buy Now (Start)</Label>
-                    <ColorPicker initialColor="142 76% 36%" />
+                    <ColorPicker initialColor="142 76% 36%" onColorChange={() => {}} />
                 </div>
                  <div className="space-y-2">
                     <Label>Buy Now (End)</Label>
-                    <ColorPicker initialColor="142 76% 26%" />
+                    <ColorPicker initialColor="142 76% 26%" onColorChange={() => {}} />
                 </div>
             </div>
         </div>

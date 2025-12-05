@@ -69,6 +69,14 @@ export function PromoBannersCustomizer() {
     }
   };
 
+  const handleSave = () => {
+    console.log('Saving promo banners:', banners);
+    toast({
+        title: 'Settings Saved',
+        description: 'Your promotional banners have been updated.',
+    });
+  };
+
   return (
     <div className="space-y-6">
       <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
@@ -144,7 +152,7 @@ export function PromoBannersCustomizer() {
         ))}
       </Accordion>
       <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

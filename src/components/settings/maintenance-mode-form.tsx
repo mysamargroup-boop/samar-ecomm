@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -5,8 +6,18 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export function MaintenanceModeForm() {
+  const { toast } = useToast();
+
+  const handleSave = () => {
+    console.log('Saving maintenance mode settings...');
+    toast({
+        title: 'Settings Saved',
+        description: 'Your maintenance mode settings have been updated.',
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -32,7 +43,7 @@ export function MaintenanceModeForm() {
         />
       </div>
        <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

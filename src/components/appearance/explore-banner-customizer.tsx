@@ -50,6 +50,14 @@ export function ExploreBannerCustomizer() {
     }
   };
 
+  const handleSave = () => {
+    console.log('Saving explore banner:', banner);
+    toast({
+        title: 'Settings Saved',
+        description: 'Your explore banner has been updated.',
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -99,7 +107,7 @@ export function ExploreBannerCustomizer() {
         </div>
       </div>
       <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

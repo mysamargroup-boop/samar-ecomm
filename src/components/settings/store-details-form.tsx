@@ -1,11 +1,11 @@
 
-
 'use client';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 type StoreDetailsFormProps = {
   details: {
@@ -18,8 +18,19 @@ type StoreDetailsFormProps = {
 };
 
 export function StoreDetailsForm({ details }: StoreDetailsFormProps) {
+  const { toast } = useToast();
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Saving store details...');
+    toast({
+        title: 'Settings Saved',
+        description: 'Your store details have been updated.',
+    });
+  };
+
   return (
-    <form className="space-y-6">
+    <form onSubmit={handleSave} className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="store-name">Store Name</Label>
           <Input id="store-name" defaultValue={details.name} />

@@ -12,8 +12,20 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/hooks/use-toast';
 
 export function PromotionalBannersForm() {
+    const { toast } = useToast();
+
+    const handleSave = (e: React.FormEvent) => {
+        e.preventDefault();
+        console.log('Saving promotional banner settings...');
+        toast({
+            title: 'Settings Saved',
+            description: 'Your promotional banner settings have been updated.',
+        });
+    }
+
   return (
     <div className="space-y-6">
       <Card>
@@ -24,7 +36,7 @@ export function PromotionalBannersForm() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-6">
+          <form onSubmit={handleSave} className="space-y-6">
             <div className="flex items-center space-x-2">
               <Switch id="banner-enabled" defaultChecked />
               <Label htmlFor="banner-enabled">Show banner</Label>
