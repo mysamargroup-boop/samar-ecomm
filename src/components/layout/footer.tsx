@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -199,7 +200,7 @@ export function Footer() {
 
          {/* Mobile Footer (up to md) */}
         <div className="md:hidden">
-           <div className="flex flex-col items-center text-center space-y-4 col-span-2 mb-8">
+           <div className="flex flex-col items-center text-center space-y-4 col-span-2 mb-8 max-w-sm mx-auto">
             <StoreInfo />
           </div>
 
