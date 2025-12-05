@@ -37,4 +37,13 @@ export function DatabaseSettings() {
         <AlertTitle>Initial Data Seeding</AlertTitle>
         <AlertDescription>
           Click the button below to populate your database with initial placeholder products and categories. This should only be done once.
-        </Aler
+        </AlertDescription>
+      </Alert>
+      <div className="flex justify-end">
+        <Button onClick={handleSeed} disabled={isPending}>
+          {isPending ? 'Seeding...' : 'Seed Database'}
+        </Button>
+      </div>
+    </div>
+  );
+}
