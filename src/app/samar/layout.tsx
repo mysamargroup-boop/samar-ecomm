@@ -5,33 +5,10 @@ import { SamarSidebar, SamarMobileHeader } from '@/components/layout/samar-sideb
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '@/components/ui/theme-provider';
-import { FirebaseClientProvider, useFirestore } from '@/firebase';
+import { FirebaseClientProvider } from '@/firebase';
 import { Toaster } from '@/components/ui/toaster';
-import { seedDatabase } from '@/lib/seed';
 
 const SAMAR_AUTH_KEY = 'samar-auth';
-
-function DatabaseSeeder() {
-  const firestore = useFirestore();
-
-  useEffect(() => {
-    if (firestore) {
-      const runSeed = async () => {
-        const seeded = localStorage.getItem('db_seeded');
-        if (!seeded) {
-          console.log('Database not seeded. Seeding now...');
-          await seedDatabase(firestore);
-          localStorage.setItem('db_seeded', 'true');
-          console.log('Database seeding complete.');
-        }
-      };
-      runSeed();
-    }
-  }, [firestore]);
-
-  return null;
-}
-
 
 export default function SamarLayout({
   children,
@@ -93,7 +70,6 @@ export default function SamarLayout({
     return (
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <FirebaseClientProvider>
-          <DatabaseSeeder />
           <div className="flex min-h-screen bg-background">
             <SamarSidebar />
             <div className="flex flex-col flex-1">

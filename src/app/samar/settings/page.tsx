@@ -14,6 +14,7 @@ import { MaintenanceModeForm } from '@/components/settings/maintenance-mode-form
 import { AnalyticsForm } from '@/components/settings/analytics-form';
 import { RedirectsForm } from '@/components/settings/redirects-form';
 import { storeDetails, socialLinks } from '@/lib/placeholder-data';
+import { DatabaseSettings } from '@/components/settings/database-settings';
 
 export default function SettingsPage() {
 
@@ -104,6 +105,19 @@ export default function SettingsPage() {
               <RedirectsForm />
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Database</CardTitle>
+              <CardDescription>
+                Manage your store's database settings.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DatabaseSettings />
+            </CardContent>
+          </Card>
+
         </div>
       </div>
     </div>
