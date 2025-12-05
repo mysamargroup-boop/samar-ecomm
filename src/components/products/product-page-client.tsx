@@ -1,7 +1,7 @@
 
 'use client';
 
-import { categories, reviews as allReviews } from '@/lib/placeholder-data';
+import { reviews as allReviews } from '@/lib/placeholder-data';
 import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
@@ -25,13 +25,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { FeaturedProductsSlider } from '@/components/home/featured-products-slider';
 import { InfoBar } from '@/components/home/info-bar';
 import { useCart } from '@/contexts/cart-context';
-import type { Product } from '@/lib/types';
+import type { Product, Category } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { createPaymentOrder, verifyPaymentSignature } from '@/lib/payment';
 import { useToast } from '@/hooks/use-toast';
 
@@ -142,6 +142,21 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
   );
   const { data: relatedProductsData } = useCollection<Product>(relatedProductsQuery);
 
+  const [category, setCategory] = useState<Category | null>(null);
+
+  useEffect(() => {
+    if (firestore && product?.categoryId) {
+      const fetchCategory = async () => {
+        const q = query(collection(firestore, 'categories'), where('id', '==', product.categoryId));
+        const categorySnapshot = await getDocs(q);
+        if (!categorySnapshot.empty) {
+          setCategory(categorySnapshot.docs[0].data() as Category);
+        }
+      };
+      fetchCategory();
+    }
+  }, [firestore, product?.categoryId]);
+
 
   if (isLoading) {
     return (
@@ -208,8 +223,6 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
       });
     }
   }
-
-  const category = categories.find((c) => c.id === product.categoryId);
 
   const now = new Date();
   const isSaleActive = product.salePrice && product.salePrice < product.price && 
@@ -391,5 +404,3 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     </div>
   );
 }
-
-    

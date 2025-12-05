@@ -2,12 +2,13 @@
 'use client';
 
 import { ProductCard } from '@/components/products/product-card';
-import { categories, placeholderProducts } from '@/lib/placeholder-data';
 import type { Category, Product } from '@/lib/types';
 import { notFound } from 'next/navigation';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useEffect, useState } from 'react';
+
 
 function CategoryPageContent({ category }: { category: Category }) {
   const firestore = useFirestore();
@@ -65,7 +66,34 @@ function CategoryPageContent({ category }: { category: Category }) {
 }
 
 export default function CategoryPage({ params }: { params: { categorySlug: string } }) {
-  const category = categories.find((c) => c.slug === params.categorySlug);
+  const [category, setCategory] = useState<Category | null>(null);
+  const [loading, setLoading] = useState(true);
+  const firestore = useFirestore();
+
+  useEffect(() => {
+    if (!firestore) return;
+    const fetchCategory = async () => {
+      try {
+        const q = query(collection(firestore, 'categories'), where('slug', '==', params.categorySlug));
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          notFound();
+        } else {
+          setCategory(querySnapshot.docs[0].data() as Category);
+        }
+      } catch (e) {
+        console.error("Error fetching category", e);
+        notFound();
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategory();
+  }, [firestore, params.categorySlug]);
+
+  if (loading) {
+    return <div className="container mx-auto px-4 py-12"><Skeleton className="h-96 w-full" /></div>;
+  }
 
   if (!category) {
     notFound();

@@ -11,8 +11,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import type { Product } from '@/lib/types';
-import { categories } from '@/lib/placeholder-data';
+import type { Product, Category } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
 import { MoreHorizontal, Pen, Trash } from 'lucide-react';
 import Image from 'next/image';
@@ -26,9 +25,15 @@ import {
 import { deleteProduct } from '@/app/actions/productActions';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 
 export function ProductsTable({ products }: { products: Product[] }) {
   const { toast } = useToast();
+  const firestore = useFirestore();
+  
+  const categoriesQuery = useMemoFirebase(() => firestore ? collection(firestore, 'categories') : null, [firestore]);
+  const { data: categories } = useCollection<Category>(categoriesQuery);
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
@@ -41,7 +46,7 @@ export function ProductsTable({ products }: { products: Product[] }) {
   };
 
   const getCategoryName = (categoryId: string) => {
-    return categories.find((c) => c.id === categoryId)?.name || 'Uncategorized';
+    return categories?.find((c) => c.id === categoryId)?.name || 'Uncategorized';
   };
 
   return (
