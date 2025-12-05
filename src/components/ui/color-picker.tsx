@@ -9,37 +9,64 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { Label } from "./label";
 
-function hslStringToRgba(hsl: string): RgbaColor {
-    const [h, s, l] = hsl.split(' ').map(s => parseFloat(s.replace('%', '')));
+function cssVarToRgba(cssVar: string): RgbaColor {
+    // This is a simplified parser. It assumes the format is `var(--name)`
+    // and that the root element has the variable defined as HSL values.
+    // In a real app, you might need a more robust solution if your CSS setup is complex.
+    if (typeof window === 'undefined') {
+        // Default to a fallback color during server-side rendering
+        return { r: 0, g: 0, b: 0, a: 1 };
+    }
+    const computedStyle = getComputedStyle(document.documentElement);
+    const hslString = computedStyle.getPropertyValue(cssVar.match(/--[a-zA-Z-]+/)?.[0] || '').trim();
+    if (!hslString) {
+        return { r: 0, g: 0, b: 0, a: 1 }; // Fallback
+    }
+    const [h, s, l] = hslString.split(' ').map(s => parseFloat(s.replace('%', '')));
     return colord({ h, s, l }).toRgb();
 }
+
 
 function rgbaToRgbaString(rgba: RgbaColor): string {
     return `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
 }
 
-export function ColorPicker({ initialColor }: { initialColor: string }) {
-    const [rgbaColor, setRgbaColor] = useState(() => hslStringToRgba(initialColor));
+export function ColorPicker({ initialColor, onColorChange }: { initialColor: string, onColorChange: (color: string) => void }) {
+    const [rgbaColor, setRgbaColor] = useState(() => {
+        if(initialColor.startsWith('var(--')) {
+            return cssVarToRgba(initialColor);
+        }
+        // Assuming HSL string otherwise
+        const [h, s, l] = initialColor.split(' ').map(s => parseFloat(s.replace('%', '')));
+        return colord({ h, s, l }).toRgb();
+    });
+
+    const handleColorUpdate = (newColor: RgbaColor) => {
+        setRgbaColor(newColor);
+        const newHsl = colord(newColor).toHsl();
+        onColorChange(`${newHsl.h} ${newHsl.s}% ${newHsl.l}%`);
+    };
 
     const handleRgbaStringChange = (newRgbaColorString: string) => {
-        setRgbaColor(colord(newRgbaColorString).toRgb());
+        handleColorUpdate(colord(newRgbaColorString).toRgb());
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>, component: 'r' | 'g' | 'b' | 'a') => {
         const value = e.target.value;
+        let newRgba = { ...rgbaColor };
+        
         if (component === 'a') {
             const parsedValue = parseFloat(value);
             if (!isNaN(parsedValue)) {
-                const clampedValue = Math.max(0, Math.min(1, parsedValue));
-                setRgbaColor(prev => ({ ...prev, a: clampedValue }));
+                newRgba.a = Math.max(0, Math.min(1, parsedValue));
             }
         } else {
             const parsedValue = parseInt(value, 10);
             if (!isNaN(parsedValue)) {
-                const clampedValue = Math.max(0, Math.min(255, parsedValue));
-                setRgbaColor(prev => ({ ...prev, [component]: clampedValue }));
+                newRgba[component] = Math.max(0, Math.min(255, parsedValue));
             }
         }
+        handleColorUpdate(newRgba);
     }
     
     const rgbaString = useMemo(() => rgbaToRgbaString(rgbaColor), [rgbaColor]);

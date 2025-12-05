@@ -6,11 +6,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ColorPicker } from '../ui/color-picker';
-
-const initialText = "Build Your Winter Shield, Naturally! Claim 15% OFF with WIN15 | 18% OFF only for Members";
+import { marqueeData } from '@/lib/placeholder-data';
+import { useToast } from '@/hooks/use-toast';
 
 export function MarqueeCustomizer() {
-  const [text, setText] = useState(initialText);
+  const [text, setText] = useState(marqueeData.text);
+  const [bgColor, setBgColor] = useState(marqueeData.backgroundColor);
+  const [textColor, setTextColor] = useState(marqueeData.textColor);
+  const { toast } = useToast();
+
+  const handleSave = () => {
+    // In a real app, this would save to a database or a file.
+    // For this prototype, we'll just log it and show a toast.
+    console.log('Saving marquee data:', { text, bgColor, textColor });
+    toast({
+      title: 'Settings Saved',
+      description: 'Your marquee banner has been updated.',
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -28,15 +41,15 @@ export function MarqueeCustomizer() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Background Color</Label>
-          <ColorPicker initialColor="var(--primary)" />
+          <ColorPicker initialColor={bgColor} onColorChange={setBgColor} />
         </div>
         <div className="space-y-2">
           <Label>Text Color</Label>
-          <ColorPicker initialColor="var(--primary-foreground)" />
+          <ColorPicker initialColor={textColor} onColorChange={setTextColor} />
         </div>
       </div>
       <div className="flex justify-end">
-        <Button>Save Changes</Button>
+        <Button onClick={handleSave}>Save Changes</Button>
       </div>
     </div>
   );

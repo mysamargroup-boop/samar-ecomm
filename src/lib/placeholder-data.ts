@@ -12,6 +12,12 @@ export const storeDetails = {
     phone: '+91 98765 43210',
 };
 
+export const marqueeData = {
+  text: "Build Your Winter Shield, Naturally! | Claim 15% OFF with WIN15 | 18% OFF only for Members",
+  backgroundColor: "var(--primary)",
+  textColor: "var(--primary-foreground)",
+};
+
 export const socialLinks = {
     twitter: 'https://twitter.com/samarstore',
     facebook: 'https://facebook.com/samarstore',
