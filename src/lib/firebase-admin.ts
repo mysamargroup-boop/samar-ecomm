@@ -1,3 +1,4 @@
+
 import * as admin from 'firebase-admin';
 import { config } from 'dotenv';
 
@@ -6,9 +7,9 @@ config();
 
 // This is a server-only file. It should not be imported into client-side code.
 
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
-if (!serviceAccount) {
+if (!serviceAccountString) {
     if (process.env.NODE_ENV === 'production') {
         console.error('FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not set. This is required for server-side Firebase Admin operations.');
     } else {
@@ -21,19 +22,18 @@ const getAdminApp = () => {
         return admin.app();
     }
     
-    if (!serviceAccount) {
-        throw new Error('Firebase Admin SDK initialization failed: Service account key is missing.');
+    if (!serviceAccountString) {
+        throw new Error('Firebase Admin SDK initialization failed: Service account key is missing from .env file.');
     }
 
     try {
-        // Directly parse the JSON string from the environment variable
-        const parsedServiceAccount = JSON.parse(serviceAccount);
+        const serviceAccount = JSON.parse(serviceAccountString);
         
         return admin.initializeApp({
-            credential: admin.credential.cert(parsedServiceAccount)
+            credential: admin.credential.cert(serviceAccount)
         });
     } catch (e: any) {
-        throw new Error(`Failed to parse Firebase service account key. Please ensure it is a valid JSON string. Error: ${e.message}`);
+        throw new Error(`Failed to parse Firebase service account key. Please ensure it's a valid JSON string in the .env file. Error: ${e.message}`);
     }
 };
 
