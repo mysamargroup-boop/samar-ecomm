@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { ColorPicker } from '../ui/color-picker';
 
 const initialText = "Build Your Winter Shield, Naturally! Claim 15% OFF with WIN15 | 18% OFF only for Members";
 
@@ -23,6 +24,16 @@ export function MarqueeCustomizer() {
         <p className="text-sm text-muted-foreground">
           Use a pipe "|" to separate different messages in the scroll.
         </p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label>Background Color</Label>
+          <ColorPicker initialColor="var(--primary)" />
+        </div>
+        <div className="space-y-2">
+          <Label>Text Color</Label>
+          <ColorPicker initialColor="var(--primary-foreground)" />
+        </div>
       </div>
       <div className="flex justify-end">
         <Button>Save Changes</Button>

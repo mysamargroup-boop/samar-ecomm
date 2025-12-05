@@ -55,7 +55,7 @@ function SidebarNavLinks({ onLinkClick }: { onLinkClick?: () => void }) {
         href={item.href}
         onClick={onLinkClick}
         className={cn(
-          'group flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent',
+          'group flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent',
           isActive ? 'text-sidebar-foreground bg-sidebar-accent font-medium' : ''
         )}
       >
@@ -96,7 +96,7 @@ export function SamarSidebar() {
          <button
             onClick={handleLogout}
             className={cn(
-              'flex-1 flex items-center gap-3 rounded-md px-3 py-2 text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
+              'flex-1 flex items-center gap-3 rounded-md px-3 py-2 text-sm text-sidebar-foreground/80 transition-all hover:text-sidebar-foreground hover:bg-sidebar-accent'
             )}
           >
             <LogOut className="h-4 w-4" />
