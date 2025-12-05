@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useUser, useCollection, useFirestore, useMemoFirebase } from '@/firebase';
@@ -55,3 +56,5 @@ function AccountOrdersContent() {
 export default function AccountOrdersPage() {
     return <AccountOrdersContent />;
 }
+
+    

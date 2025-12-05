@@ -1,9 +1,8 @@
 
 import { ProductPageClient } from '@/components/products/product-page-client';
-import { products } from '@/lib/placeholder-data';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 import type { Product } from '@/lib/types';
 

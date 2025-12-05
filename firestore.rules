@@ -1,3 +1,4 @@
+
 /**
  * Core Philosophy: This ruleset implements a dual security model tailored for an e-commerce application.
  * It provides public, read-only access to catalog data (products, categories) while enforcing
@@ -131,3 +132,5 @@ service cloud.firestore {
     }
   }
 }
+
+    

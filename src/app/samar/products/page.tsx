@@ -11,13 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { useCollection, useMemoFirebase } from '@/firebase';
-import { collection, getFirestore } from 'firebase/firestore';
+import { useCollection, useMemoFirebase, useFirestore } from '@/firebase';
+import { collection } from 'firebase/firestore';
 import type { Product } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function ProductsPageContent() {
-  const { firestore } = useMemoFirebase(() => ({ firestore: getFirestore() }), []);
+  const firestore = useFirestore();
   const productsQuery = useMemoFirebase(() => firestore ? collection(firestore, 'products') : null, [firestore]);
   const { data: products, isLoading } = useCollection<Product>(productsQuery);
 
@@ -59,3 +59,5 @@ function ProductsPageContent() {
 export default function ProductsPage() {
   return <ProductsPageContent />;
 }
+
+    

@@ -31,7 +31,7 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import { collection, query, where } from 'firebase/firestore';
 import { createPaymentOrder, verifyPaymentSignature } from '@/lib/payment';
 import { useToast } from '@/hooks/use-toast';
 
@@ -391,3 +391,5 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     </div>
   );
 }
+
+    

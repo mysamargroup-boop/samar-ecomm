@@ -4,7 +4,7 @@
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { ProductSchema } from '@/lib/types';
-import { collection, addDoc, updateDoc, doc, deleteDoc, getFirestore, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, doc, deleteDoc, serverTimestamp } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 
 const { firestore } = initializeFirebase();
@@ -113,3 +113,5 @@ export async function deleteProduct(id: string) {
     return { message: 'Failed to delete product.' };
   }
 }
+
+    
