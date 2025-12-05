@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo, ChangeEvent } from "react";
+import { useState, useMemo, ChangeEvent, useEffect } from "react";
 import { RgbaStringColorPicker } from "react-colorful";
 import { colord, RgbaColor } from "colord";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
@@ -10,17 +10,13 @@ import { Input } from "./input";
 import { Label } from "./label";
 
 function cssVarToRgba(cssVar: string): RgbaColor {
-    // This is a simplified parser. It assumes the format is `var(--name)`
-    // and that the root element has the variable defined as HSL values.
-    // In a real app, you might need a more robust solution if your CSS setup is complex.
     if (typeof window === 'undefined') {
-        // Default to a fallback color during server-side rendering
         return { r: 0, g: 0, b: 0, a: 1 };
     }
     const computedStyle = getComputedStyle(document.documentElement);
     const hslString = computedStyle.getPropertyValue(cssVar.match(/--[a-zA-Z-]+/)?.[0] || '').trim();
     if (!hslString) {
-        return { r: 0, g: 0, b: 0, a: 1 }; // Fallback
+        return { r: 0, g: 0, b: 0, a: 1 };
     }
     const [h, s, l] = hslString.split(' ').map(s => parseFloat(s.replace('%', '')));
     return colord({ h, s, l }).toRgb();
@@ -31,12 +27,13 @@ function rgbaToRgbaString(rgba: RgbaColor): string {
     return `rgba(${rgba.r}, ${rgba.g}, ${rgba.b}, ${rgba.a})`;
 }
 
-export function ColorPicker({ initialColor, onColorChange }: { initialColor: string, onColorChange: (color: string) => void }) {
+export function ColorPicker({ initialColor, name }: { initialColor: string, name: string }) {
+    const [hiddenInputColor, setHiddenInputColor] = useState(initialColor);
+
     const [rgbaColor, setRgbaColor] = useState(() => {
         if(initialColor.startsWith('var(--')) {
             return cssVarToRgba(initialColor);
         }
-        // Assuming HSL string otherwise
         const [h, s, l] = initialColor.split(' ').map(s => parseFloat(s.replace('%', '')));
         return colord({ h, s, l }).toRgb();
     });
@@ -44,7 +41,7 @@ export function ColorPicker({ initialColor, onColorChange }: { initialColor: str
     const handleColorUpdate = (newColor: RgbaColor) => {
         setRgbaColor(newColor);
         const newHsl = colord(newColor).toHsl();
-        onColorChange(`${newHsl.h} ${newHsl.s}% ${newHsl.l}%`);
+        setHiddenInputColor(`${newHsl.h} ${newHsl.s}% ${newHsl.l}%`);
     };
 
     const handleRgbaStringChange = (newRgbaColorString: string) => {
@@ -73,6 +70,7 @@ export function ColorPicker({ initialColor, onColorChange }: { initialColor: str
 
     return (
          <div className="flex items-end gap-2">
+            <input type="hidden" name={name} value={hiddenInputColor} />
             <Popover>
                 <PopoverTrigger asChild>
                     <Button variant="outline" className="w-10 h-10 rounded-md border p-0 flex-shrink-0">

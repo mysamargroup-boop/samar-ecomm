@@ -12,10 +12,10 @@ export const storeDetails = {
     phone: '+91 98765 43210',
 };
 
-export const marqueeData = {
+export let marqueeData = {
   text: "Build Your Winter Shield, Naturally! | Claim 15% OFF with WIN15 | 18% OFF only for Members",
-  backgroundColor: "var(--primary)",
-  textColor: "var(--primary-foreground)",
+  backgroundColor: "231 48% 48%",
+  textColor: "0 0% 100%",
 };
 
 export const socialLinks = {

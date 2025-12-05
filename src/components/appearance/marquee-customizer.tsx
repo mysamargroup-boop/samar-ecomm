@@ -1,38 +1,51 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useFormState, useFormStatus } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ColorPicker } from '../ui/color-picker';
 import { marqueeData as initialMarqueeData } from '@/lib/placeholder-data';
 import { useToast } from '@/hooks/use-toast';
+import { updateMarqueeData } from '@/app/actions/appearanceActions';
+import { useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" disabled={pending}>
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      Save Changes
+    </Button>
+  );
+}
 
 export function MarqueeCustomizer() {
-  const [text, setText] = useState(initialMarqueeData.text);
-  const [bgColor, setBgColor] = useState(initialMarqueeData.backgroundColor);
-  const [textColor, setTextColor] = useState(initialMarqueeData.textColor);
   const { toast } = useToast();
 
-  const handleSave = () => {
-    // In a real app, this would save to a database or a file.
-    // For this prototype, we'll just log it and show a toast.
-    console.log('Saving marquee data:', { text, backgroundColor: bgColor, textColor });
-    toast({
-      title: 'Settings Saved',
-      description: 'Your marquee banner has been updated.',
-    });
-  };
+  const [state, formAction] = useFormState(updateMarqueeData, {
+    message: '',
+  });
+
+  useEffect(() => {
+    if (state.message) {
+      toast({
+        title: 'Settings Saved',
+        description: state.message,
+      });
+    }
+  }, [state, toast]);
 
   return (
-    <div className="space-y-6">
+    <form action={formAction} className="space-y-6">
       <div className="space-y-2">
         <Label htmlFor="marquee-text">Marquee Text</Label>
         <Input 
           id="marquee-text" 
-          value={text} 
-          onChange={(e) => setText(e.target.value)} 
+          name="text"
+          defaultValue={initialMarqueeData.text}
         />
         <p className="text-sm text-muted-foreground">
           Use a pipe "|" to separate different messages in the scroll.
@@ -41,16 +54,18 @@ export function MarqueeCustomizer() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Background Color</Label>
-          <ColorPicker initialColor={bgColor} onColorChange={setBgColor} />
+          <Input name="backgroundColor" defaultValue={initialMarqueeData.backgroundColor} className="hidden" />
+          <ColorPicker initialColor={initialMarqueeData.backgroundColor} name="backgroundColor" />
         </div>
         <div className="space-y-2">
           <Label>Text Color</Label>
-          <ColorPicker initialColor={textColor} onColorChange={setTextColor} />
+           <Input name="textColor" defaultValue={initialMarqueeData.textColor} className="hidden" />
+          <ColorPicker initialColor={initialMarqueeData.textColor} name="textColor" />
         </div>
       </div>
       <div className="flex justify-end">
-        <Button onClick={handleSave}>Save Changes</Button>
+        <SubmitButton />
       </div>
-    </div>
+    </form>
   );
 }
