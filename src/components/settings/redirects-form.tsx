@@ -66,7 +66,7 @@ export function RedirectsForm() {
                 onChange={(e) => setNewRedirect({ ...newRedirect, to: e.target.value })}
                 className="font-mono"
             />
-            <Button variant="outline" size="icon" onClick={addRedirect}>
+            <Button variant="ghost" size="icon" onClick={addRedirect}>
                 <PlusCircle className="h-4 w-4" />
             </Button>
         </div>
