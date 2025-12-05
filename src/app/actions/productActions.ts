@@ -3,12 +3,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { ProductSchema } from '@/lib/types';
-import { supabase } from '@/lib/supabase-client';
 
 export async function createProduct(formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
   
-  // This needs to be updated to handle Supabase data types (e.g. JSONB)
+  // This needs to be updated to handle data types (e.g. JSONB)
   const parsedTags = rawFormData.tags ? JSON.parse(rawFormData.tags as string) : [];
   const parsedDimensions = rawFormData.dimensions ? JSON.parse(rawFormData.dimensions as string) : {};
   const parsedImages = rawFormData.images ? JSON.parse(rawFormData.images as string) : [];
@@ -38,8 +37,8 @@ export async function createProduct(formData: FormData) {
     };
   }
 
-  // Supabase insert logic goes here
-  console.log("Creating product (Supabase):", validatedFields.data);
+  // DB insert logic goes here
+  console.log("Creating product:", validatedFields.data);
 
   revalidatePath('/samar/products');
   revalidatePath('/');
@@ -48,7 +47,7 @@ export async function createProduct(formData: FormData) {
 
 export async function updateProduct(id: string, formData: FormData) {
   const rawFormData = Object.fromEntries(formData.entries());
-  // This needs to be updated to handle Supabase data types (e.g. JSONB)
+  // This needs to be updated to handle data types (e.g. JSONB)
   const parsedTags = rawFormData.tags ? JSON.parse(rawFormData.tags as string) : [];
   const parsedDimensions = rawFormData.dimensions ? JSON.parse(rawFormData.dimensions as string) : {};
   const parsedImages = rawFormData.images ? JSON.parse(rawFormData.images as string) : [];
@@ -76,8 +75,8 @@ export async function updateProduct(id: string, formData: FormData) {
     };
   }
 
-  // Supabase update logic goes here
-  console.log(`Updating product ${id} (Supabase):`, validatedFields.data);
+  // DB update logic goes here
+  console.log(`Updating product ${id}:`, validatedFields.data);
 
   revalidatePath('/samar/products');
   revalidatePath(`/product/${id}`);
@@ -87,8 +86,8 @@ export async function updateProduct(id: string, formData: FormData) {
 
 export async function deleteProduct(id: string) {
   
-  // Supabase delete logic goes here
-  console.log(`Deleting product ${id} (Supabase)`);
+  // DB delete logic goes here
+  console.log(`Deleting product ${id}`);
 
   revalidatePath('/samar/products');
   revalidatePath('/');

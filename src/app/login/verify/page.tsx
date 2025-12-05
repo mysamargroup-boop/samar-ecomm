@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Suspense, useState, useEffect } from 'react';
@@ -19,34 +18,39 @@ import { useAuth } from '@/contexts/auth-context';
 function VerifyOTPComponent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const email = searchParams.get('email');
+  const phone = searchParams.get('phone');
   const { toast } = useToast();
   const [otp, setOtp] = useState('');
-  const { verifyOtp } = useAuth();
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const handleComplete = async (value: string) => {
-    if (!email) {
-        toast({ title: "Email not found.", variant: "destructive" });
+    if (!phone) {
+        toast({ title: "Phone number not found.", variant: "destructive" });
         router.push('/login');
         return;
     }
     setLoading(true);
-    const { error } = await verifyOtp(email, value);
 
-    if (error) {
+    // In a real app, you would verify the OTP with your backend.
+    // For this demo, we'll accept a specific OTP.
+    console.log('Verifying OTP:', value);
+    if (value === '123456') {
+        login(); // Set login state in context
+        toast({
+            title: 'Login Successful',
+            description: 'Welcome back!',
+        });
+        // Use window.location.href to force a full page reload
+        // This ensures the layout component correctly reads the new session storage value
+        window.location.href = '/account';
+    } else {
         toast({
             title: 'Invalid OTP',
             description: 'The code you entered is incorrect. Please try again.',
             variant: 'destructive',
         });
         setOtp('');
-    } else {
-        toast({
-            title: 'Login Successful',
-            description: 'Welcome back!',
-        });
-        window.location.href = '/account';
     }
     setLoading(false);
   };
@@ -68,7 +72,7 @@ function VerifyOTPComponent() {
           </div>
           <CardTitle className="text-2xl font-headline">Verify Your Identity</CardTitle>
           <CardDescription>
-            An OTP has been sent to {email}. Please enter it below.
+            An OTP has been sent to {phone}. Please enter it below. (Hint: use 123456)
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -93,7 +97,7 @@ function VerifyOTPComponent() {
                 </InputOTP>
                 
                 <Button variant="link" size="sm" className="w-full" onClick={() => router.back()}>
-                    Use a different email
+                    Use a different number
                 </Button>
             </div>
         </CardContent>

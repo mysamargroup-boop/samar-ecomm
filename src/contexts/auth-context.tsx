@@ -1,87 +1,89 @@
-
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { supabase } from '@/lib/supabase-client';
 import type { Session, User } from '@supabase/supabase-js';
 
+const AUTH_KEY = 'samar-customer-auth';
+
 interface AuthContextType {
-  user: User | null;
-  loginWithOtp: (email: string) => Promise<{ error: any }>;
-  verifyOtp: (email: string, token: string) => Promise<{ error: any }>;
-  logout: () => Promise<void>;
+  user: User | null; // Keeping this for potential future use with real Supabase user objects
+  login: () => void;
+  logout: () => void;
   isLoading: boolean;
+  isLoggedIn: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loginWithOtp: async () => ({ error: null }),
-  verifyOtp: async () => ({ error: null }),
-  logout: async () => {},
+  login: () => {},
+  logout: () => {},
   isLoading: true,
+  isLoggedIn: false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setUser(session?.user ?? null);
-      setIsLoading(false);
-    };
-
-    getSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
+    // Check sessionStorage for login state on initial load
+    try {
+      const storedAuth = sessionStorage.getItem(AUTH_KEY);
+      if (storedAuth === 'true') {
+        setIsLoggedIn(true);
+      }
+    } catch (error) {
+      console.error("Could not access session storage:", error);
+    }
+    setIsLoading(false);
   }, []);
 
-  const loginWithOtp = useCallback(async (email: string) => {
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: true,
-      },
-    });
-    return { error };
+  const login = useCallback(() => {
+    try {
+      sessionStorage.setItem(AUTH_KEY, 'true');
+      setIsLoggedIn(true);
+    } catch (error) {
+       console.error("Could not access session storage:", error);
+    }
   }, []);
 
-  const verifyOtp = useCallback(async (email: string, token: string) => {
-    const { data: { session }, error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'email',
-    });
-    // setUser is handled by onAuthStateChange
-    return { error };
+  const logout = useCallback(() => {
+    try {
+        sessionStorage.removeItem(AUTH_KEY);
+        setIsLoggedIn(false);
+        // Redirect to home to clear state
+        window.location.href = '/'; 
+    } catch (error) {
+        console.error("Could not access session storage:", error);
+    }
   }, []);
 
-  const logout = useCallback(async () => {
-    await supabase.auth.signOut();
-    // setUser is handled by onAuthStateChange
-    window.location.href = '/'; 
-  }, []);
+  // The following functions are placeholders and not used in the phone OTP demo flow
+  // but are kept to prevent breaking other parts of the app that might still reference them.
+  const loginWithOtp = async (email: string) => {
+    console.log("loginWithOtp called with:", email);
+    return { error: { message: "Email/OTP login is not configured." } };
+  };
+
+  const verifyOtp = async (email: string, token: string) => {
+    console.log("verifyOtp called with:", email, token);
+    return { error: { message: "Email/OTP login is not configured." } };
+  };
   
-  const isLoggedIn = !!user;
-
   const value = {
-    user,
-    loginWithOtp,
-    verifyOtp,
+    user: null, // This is now a mock, isLoggedIn is the source of truth
+    login,
     logout,
     isLoading,
-    isLoggedIn, // For components that just need a boolean check
+    isLoggedIn,
+    // Keep these to prevent breaking `useAuth` destructuring elsewhere
+    loginWithOtp: loginWithOtp,
+    verifyOtp: verifyOtp,
   };
 
   return (
-    <AuthContext.Provider value={value as any}>
+    <AuthContext.Provider value={value}>
       {!isLoading && children}
     </AuthContext.Provider>
   );

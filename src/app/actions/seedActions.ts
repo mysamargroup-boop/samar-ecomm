@@ -1,17 +1,16 @@
 
 'use server';
 
-// This file needs to be completely rewritten for Supabase.
-// The logic will involve using the Supabase client to insert data from placeholder-data.ts
+// This file needs to be implemented with your database client (e.g., Supabase, Prisma)
+// The logic will involve inserting data from placeholder-data.ts
 
 export async function seedDatabaseAction() {
     try {
-        console.log("Seeding database with Supabase...");
-        // Placeholder for Supabase seeding logic
+        console.log("Seeding database...");
         // Example:
-        // const { error: catError } = await supabase.from('categories').insert(placeholderCategories);
+        // const { error: catError } = await db.from('categories').insert(placeholderCategories);
         // if (catError) throw catError;
-        // const { error: prodError } = await supabase.from('products').insert(placeholderProducts);
+        // const { error: prodError } = await db.from('products').insert(placeholderProducts);
         // if (prodError) throw prodError;
         
         console.log("Database seeded successfully (simulated).");

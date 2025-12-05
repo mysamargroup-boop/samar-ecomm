@@ -10,42 +10,43 @@ import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 
+// This flag will be true if the WhatsApp environment variables are NOT set.
+const isDemoMode = !process.env.NEXT_PUBLIC_WHATSAPP_ACCESS_TOKEN || !process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER_ID;
+
 export default function LoginPage() {
   const router = useRouter();
-  const { loginWithOtp } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget);
-    const email = formData.get('email') as string;
+    const phone = formData.get('phone') as string;
 
-    if (!email) {
+     if (!phone) {
       toast({
-        title: "Email is required",
+        title: "Phone number is required",
         variant: "destructive",
       });
       setLoading(false);
       return;
     }
-
-    const { error } = await loginWithOtp(email);
-
-    if (error) {
-      toast({
-        title: "Error sending OTP",
-        description: error.message,
-        variant: "destructive",
-      });
+    
+    // In a real app, you would call the server to send an OTP via WhatsApp.
+    // For this demo, we'll just navigate to the verification page.
+    if (isDemoMode) {
+      console.log("Running in Demo Mode. Redirecting to verification page.");
     } else {
-      toast({
-        title: "OTP Sent",
-        description: `An OTP has been sent to ${email}.`,
-      });
-      router.push(`/login/verify?email=${email}`);
+      console.log("Running in Live Mode. (API call to be implemented)");
     }
+
+    toast({
+      title: "OTP Sent",
+      description: `An OTP has been sent to ${phone}.`,
+    });
+    router.push(`/login/verify?phone=${phone}`);
+
     setLoading(false);
   };
 
@@ -58,23 +59,26 @@ export default function LoginPage() {
           </div>
           <CardTitle className="text-2xl font-headline">Login or Sign Up</CardTitle>
           <CardDescription>
-            Enter your email to receive a one-time password.
+            {isDemoMode
+              ? "Enter your phone number to continue. (Demo Mode)"
+              : "Enter your phone number to receive a one-time password via WhatsApp."
+            }
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address</Label>
+              <Label htmlFor="phone">Phone Number</Label>
               <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@example.com"
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="+91 12345 67890"
                 required
               />
             </div>
             <Button type="submit" className="w-full" isLoading={loading}>
-              Send OTP
+              Send Code
             </Button>
           </form>
         </CardContent>
