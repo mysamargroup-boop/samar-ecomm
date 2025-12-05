@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -96,16 +95,16 @@ function MoreNav() {
 
 
 export default function AccountPage() {
-  const { user, logout, isLoading } = useAuth();
+  const { user, logout, isLoading, isLoggedIn } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    if (!isLoading && !isLoggedIn) {
       router.push('/login');
     }
-  }, [isLoading, user, router]);
+  }, [isLoading, isLoggedIn, router]);
 
-  if (isLoading || !user) {
+  if (isLoading || !isLoggedIn) {
     return (
         <div className="flex items-center justify-center min-h-[60vh]">
             <p>Loading...</p>
@@ -113,7 +112,11 @@ export default function AccountPage() {
     );
   }
 
-  const userInitial = user.email ? user.email.charAt(0).toUpperCase() : '?';
+  // Since we don't have a real user object, we can't get email or initials.
+  // We'll use a generic approach for now.
+  const userInitial = user?.email ? user.email.charAt(0).toUpperCase() : 'A';
+  const userEmail = user?.email || 'user@example.com';
+
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -125,7 +128,7 @@ export default function AccountPage() {
                     </Avatar>
                     <div>
                         <h2 className="text-xl font-bold">Welcome!</h2>
-                        <p className="text-muted-foreground">{user.email}</p>
+                        <p className="text-muted-foreground">{userEmail}</p>
                     </div>
                 </div>
             </CardContent>
