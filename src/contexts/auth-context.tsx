@@ -1,43 +1,65 @@
+
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/lib/supabase-client';
-import { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
+import { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
+
+const AUTH_STORAGE_KEY = 'customer-auth';
 
 interface AuthContextType {
-  user: User | null;
-  loading: boolean;
+  isLoggedIn: boolean;
+  login: () => void;
+  logout: () => void;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
+  isLoading: true,
+});
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
-    };
-
-    getUser();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, session: Session | null) => {
-        setUser(session?.user ?? null);
-        setLoading(false);
+    // This effect runs only on the client.
+    try {
+      const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
+      if (storedAuth === 'true') {
+        setIsLoggedIn(true);
       }
-    );
+    } catch (error) {
+      console.error("Could not access sessionStorage:", error);
+    }
+    setIsLoading(false);
+  }, []);
 
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
+  const login = useCallback(() => {
+    try {
+      sessionStorage.setItem(AUTH_STORAGE_KEY, 'true');
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.error("Could not access sessionStorage:", error);
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    try {
+      sessionStorage.removeItem(AUTH_STORAGE_KEY);
+      setIsLoggedIn(false);
+      // Use window.location.href for a full refresh to clear all state
+      window.location.href = '/'; 
+    } catch (error) {
+      console.error("Could not access sessionStorage:", error);
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ isLoggedIn, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

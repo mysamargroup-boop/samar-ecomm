@@ -36,7 +36,8 @@ function VerifyOTPComponent() {
             description: 'Welcome back!',
         });
         // On successful customer login, redirect to the account dashboard.
-        router.push('/account');
+        // Use window.location.href to ensure a full page reload for the auth context.
+        window.location.href = '/account';
     } else {
         toast({
             title: 'Invalid OTP',
@@ -51,6 +52,7 @@ function VerifyOTPComponent() {
     if (otp.length === 6) {
         handleComplete(otp);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otp]);
 
 
