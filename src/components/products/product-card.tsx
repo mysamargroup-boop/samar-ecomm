@@ -13,8 +13,9 @@ import { ShoppingCart, Zap } from 'lucide-react';
 import { useCart } from '@/contexts/cart-context';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Separator } from '../ui/separator';
 import { categories } from '@/lib/placeholder-data';
+import { createPaymentOrder, verifyPaymentSignature } from '@/lib/payment';
+import { useToast } from '@/hooks/use-toast';
 
 type ProductCardProps = {
   product: Product;
@@ -26,12 +27,52 @@ export function ProductCard({ product }: ProductCardProps) {
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
     : 0;
 
-  const { addToCart } = useCart();
+  const { addToCart, clearCart } = useCart();
   const router = useRouter();
+  const { toast } = useToast();
 
-  const handleBuyNow = () => {
-    addToCart(product);
-    router.push('/checkout');
+  const handleBuyNow = async () => {
+    const amount = product.salePrice ?? product.price;
+    const response = await createPaymentOrder(amount * 100);
+
+    if (!response.success) {
+      toast({
+        title: 'Error',
+        description: 'Could not create payment order.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const { order } = response;
+    
+    console.log("Simulating payment for order:", order.id);
+    // In a real scenario, you would redirect to the payment gateway here.
+    // The gateway would then redirect back to a confirmation page.
+
+    const paymentData = {
+      orderId: order.id,
+      paymentId: `mock_payment_${Date.now()}`,
+      signature: 'mock_signature'
+    };
+
+    const isValid = await verifyPaymentSignature(paymentData);
+    if (isValid) {
+      toast({
+        title: 'Payment Successful!',
+        description: 'Your order has been placed.',
+      });
+      // Clear the cart in case "buy now" was used
+      // For more complex logic, you might handle this differently
+      clearCart();
+      router.push('/order-confirmation');
+    } else {
+      toast({
+        title: 'Payment Failed',
+        description: 'Signature verification failed. Please contact support.',
+        variant: 'destructive',
+      });
+    }
   }
 
   const category = categories.find(c => c.id === product.categoryId);

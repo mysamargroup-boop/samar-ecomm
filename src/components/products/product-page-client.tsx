@@ -32,6 +32,9 @@ import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
+import { createPaymentOrder, verifyPaymentSignature } from '@/lib/payment';
+import { useToast } from '@/hooks/use-toast';
+
 
 function SaleCountdownTimer({ endDate }: { endDate: Date }) {
   const calculateTimeLeft = () => {
@@ -86,7 +89,7 @@ function SaleCountdownTimer({ endDate }: { endDate: Date }) {
 }
 
 
-function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { product: Product, onAddToCart: () => void, onBuyNow: () => void, onSale: boolean }) {
+function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { product: Product, onAddToCart: () => void, onBuyNow: () => Promise<void>, onSale: boolean }) {
     const discountPercentage = onSale
     ? Math.round(((product.price - product.salePrice!) / product.price) * 100)
     : 0;
@@ -120,9 +123,10 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
 }
 
 export function ProductPageClient({ productSlug }: { productSlug: string }) {
-  const { addToCart } = useCart();
+  const { addToCart, clearCart } = useCart();
   const router = useRouter();
   const firestore = useFirestore();
+  const { toast } = useToast();
 
   const productQuery = useMemoFirebase(
     () => (firestore && productSlug ? query(collection(firestore, 'products'), where('slug', '==', productSlug)) : null),
@@ -165,9 +169,44 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     addToCart(product);
   }
 
-  const handleBuyNow = () => {
-    addToCart(product);
-    router.push('/checkout');
+  const handleBuyNow = async () => {
+    const amount = product.salePrice ?? product.price;
+    const response = await createPaymentOrder(amount * 100);
+
+    if (!response.success) {
+      toast({
+        title: 'Error',
+        description: 'Could not create payment order.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const { order } = response;
+    
+    console.log("Simulating payment for order:", order.id);
+
+    const paymentData = {
+      orderId: order.id,
+      paymentId: `mock_payment_${Date.now()}`,
+      signature: 'mock_signature'
+    };
+
+    const isValid = await verifyPaymentSignature(paymentData);
+    if (isValid) {
+      toast({
+        title: 'Payment Successful!',
+        description: 'Your order has been placed.',
+      });
+      clearCart();
+      router.push('/order-confirmation');
+    } else {
+      toast({
+        title: 'Payment Failed',
+        description: 'Signature verification failed. Please contact support.',
+        variant: 'destructive',
+      });
+    }
   }
 
   const category = categories.find((c) => c.id === product.categoryId);
