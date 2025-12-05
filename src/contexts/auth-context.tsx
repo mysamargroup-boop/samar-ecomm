@@ -1,76 +1,46 @@
-
 'use client';
 
-import React, { createContext, useState, ReactNode, useEffect, useContext } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/lib/supabase-client';
+import { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
 
-type AuthContextType = {
-  isLoggedIn: boolean;
-  login: () => void;
-  logout: () => void;
-};
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+}
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
 
-export const useAuth = () => {
-    const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
-    return context;
-};
-
-type AuthProviderProps = {
-  children: ReactNode;
-};
-
-const AUTH_STORAGE_KEY = 'samar-store-auth';
-
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const router = useRouter();
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      const storedAuth = sessionStorage.getItem(AUTH_STORAGE_KEY);
-      if (storedAuth) {
-        setIsLoggedIn(JSON.parse(storedAuth));
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      setLoading(false);
+    };
+
+    getUser();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event: AuthChangeEvent, session: Session | null) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Failed to parse auth state from sessionStorage", error);
-    }
-    setIsInitialized(true);
+    );
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
-  useEffect(() => {
-    if (isInitialized) {
-        try {
-            sessionStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(isLoggedIn));
-        } catch (error) {
-            console.error("Failed to save auth state to sessionStorage", error);
-        }
-    }
-  }, [isLoggedIn, isInitialized]);
-
-  const login = () => {
-    setIsLoggedIn(true);
-  };
-
-  const logout = () => {
-    setIsLoggedIn(false);
-    try {
-      sessionStorage.removeItem(AUTH_STORAGE_KEY);
-    } catch (error) {
-      console.error("Failed to remove auth state from sessionStorage", error);
-    }
-  };
-
-  const value = { isLoggedIn, login, logout };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

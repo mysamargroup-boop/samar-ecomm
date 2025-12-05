@@ -13,7 +13,6 @@ import Link from 'next/link';
 import { CartProvider } from '@/contexts/cart-context';
 import { AuthProvider } from '@/contexts/auth-context';
 import { usePathname } from 'next/navigation';
-import { FirebaseClientProvider } from '@/firebase';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -70,17 +69,15 @@ export default function RootLayout({
         <meta name="theme-color" content="#E53E3E" />
       </head>
       <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)} suppressHydrationWarning>
-        <FirebaseClientProvider>
-          <AuthProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <AppStructure>
-                  {children}
-                </AppStructure>
-              </CartProvider>
-            </WishlistProvider>
-          </AuthProvider>
-        </FirebaseClientProvider>
+        <AuthProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <AppStructure>
+                {children}
+              </AppStructure>
+            </CartProvider>
+          </WishlistProvider>
+        </AuthProvider>
       </body>
     </html>
   );
