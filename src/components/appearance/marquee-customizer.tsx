@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -6,13 +5,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ColorPicker } from '../ui/color-picker';
-import { marqueeData } from '@/lib/placeholder-data';
+import { marqueeData as initialMarqueeData } from '@/lib/placeholder-data';
 import { useToast } from '@/hooks/use-toast';
 
 export function MarqueeCustomizer() {
-  const [text, setText] = useState(marqueeData.text);
-  const [bgColor, setBgColor] = useState(marqueeData.backgroundColor);
-  const [textColor, setTextColor] = useState(marqueeData.textColor);
+  const [text, setText] = useState(initialMarqueeData.text);
+  const [bgColor, setBgColor] = useState(initialMarqueeData.backgroundColor);
+  const [textColor, setTextColor] = useState(initialMarqueeData.textColor);
   const { toast } = useToast();
 
   const handleSave = () => {
