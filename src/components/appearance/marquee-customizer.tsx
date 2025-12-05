@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -17,7 +18,7 @@ export function MarqueeCustomizer() {
   const handleSave = () => {
     // In a real app, this would save to a database or a file.
     // For this prototype, we'll just log it and show a toast.
-    console.log('Saving marquee data:', { text, bgColor, textColor });
+    console.log('Saving marquee data:', { text, backgroundColor: bgColor, textColor });
     toast({
       title: 'Settings Saved',
       description: 'Your marquee banner has been updated.',
