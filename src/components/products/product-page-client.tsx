@@ -117,7 +117,7 @@ function StickyAddToCartBar({ product, onAddToCart, onBuyNow, onSale }: { produc
   )
 }
 
-export function ProductPageClient({ productId }: { productId: string }) {
+export function ProductPageClient({ productSlug }: { productSlug: string }) {
   const { addToCart } = useCart();
   const router = useRouter();
 
@@ -125,14 +125,12 @@ export function ProductPageClient({ productId }: { productId: string }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // In a real app, you would fetch this from an API.
-    // For this demo, we find it in the placeholder data.
-    const foundProduct = products.find(p => p.id === productId);
+    const foundProduct = products.find(p => p.slug === productSlug);
     if (foundProduct) {
       setProduct(foundProduct);
     }
     setIsLoading(false);
-  }, [productId]);
+  }, [productSlug]);
 
   if (isLoading) {
     return (
