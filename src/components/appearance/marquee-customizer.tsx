@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useFormState, useFormStatus } from 'react-hook-form';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -54,12 +54,10 @@ export function MarqueeCustomizer() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Background Color</Label>
-          <Input name="backgroundColor" defaultValue={initialMarqueeData.backgroundColor} className="hidden" />
           <ColorPicker initialColor={initialMarqueeData.backgroundColor} name="backgroundColor" />
         </div>
         <div className="space-y-2">
           <Label>Text Color</Label>
-           <Input name="textColor" defaultValue={initialMarqueeData.textColor} className="hidden" />
           <ColorPicker initialColor={initialMarqueeData.textColor} name="textColor" />
         </div>
       </div>
