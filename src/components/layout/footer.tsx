@@ -52,10 +52,26 @@ export function Footer() {
   ]
   
   const linkSections = [
-    { title: 'Shop', links: shopLinks },
+    { title: 'Shop', links: shopLinks.slice(0, 6) }, // Limit for better mobile view
     { title: 'Support', links: supportLinks },
     { title: 'Legal', links: legalLinks },
   ];
+
+  const StoreInfo = () => (
+     <div className="flex flex-col space-y-4">
+        <Link href="/" className="flex items-center space-x-2">
+            <ShoppingBag className="h-8 w-8 text-primary" />
+            <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
+        </Link>
+        <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
+        <div className="relative max-w-sm">
+            <Input placeholder="Enter your email address" className="pr-10 h-11"/>
+            <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
+                <ArrowRight className="h-5 w-5"/>
+            </Button>
+        </div>
+    </div>
+  );
 
   const SocialLinks = () => (
     <div className="space-y-4">
@@ -86,20 +102,10 @@ export function Footer() {
   return (
     <footer className="bg-card border-t">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Desktop Footer */}
-        <div className="hidden md:grid md:grid-cols-5 gap-8">
-          <div className="flex flex-col space-y-4 col-span-2">
-            <Link href="/" className="flex items-center space-x-2">
-              <ShoppingBag className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
-            </Link>
-             <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
-            <div className="relative max-w-sm">
-                <Input placeholder="Enter your email address" className="pr-10 h-11"/>
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
-                    <ArrowRight className="h-5 w-5"/>
-                </Button>
-            </div>
+        {/* Desktop Footer (lg and up) */}
+        <div className="hidden lg:grid lg:grid-cols-5 gap-8">
+          <div className="col-span-2">
+            <StoreInfo />
           </div>
           
           <div>
@@ -131,23 +137,46 @@ export function Footer() {
           <div className="flex flex-col space-y-6">
             <SocialLinks />
           </div>
-
+        </div>
+        
+        {/* Tablet Footer (md to lg) */}
+        <div className="hidden md:grid lg:hidden md:grid-cols-3 gap-8">
+            <div className="col-span-1">
+                <StoreInfo />
+            </div>
+            <div className="col-span-2 grid grid-cols-2 gap-8">
+                 <div>
+                    <h3 className="font-semibold mb-4 font-headline">Shop</h3>
+                    <ul className="space-y-2">
+                    {shopLinks.slice(0, 5).map((link) => (
+                        <li key={link.name}>
+                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                            {link.name}
+                        </Link>
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+                 <div>
+                    <h3 className="font-semibold mb-4 font-headline">Support</h3>
+                    <ul className="space-y-2">
+                    {supportLinks.map((link) => (
+                        <li key={link.name}>
+                        <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                            {link.name}
+                        </Link>
+                        </li>
+                    ))}
+                    </ul>
+                </div>
+            </div>
         </div>
 
-         {/* Mobile Footer */}
+
+         {/* Mobile Footer (up to md) */}
         <div className="md:hidden">
            <div className="flex flex-col items-center text-center space-y-4 col-span-2 mb-8">
-            <Link href="/" className="flex items-center space-x-2">
-              <ShoppingBag className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
-            </Link>
-             <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
-            <div className="relative max-w-sm w-full">
-                <Input placeholder="Enter your email address" className="pr-10 h-11"/>
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
-                    <ArrowRight className="h-5 w-5"/>
-                </Button>
-            </div>
+            <StoreInfo />
           </div>
 
            <Accordion type="multiple" className="w-full">
