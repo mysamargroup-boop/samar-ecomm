@@ -58,14 +58,14 @@ export function Footer() {
   ];
 
   const StoreInfo = () => (
-     <div className="flex flex-col space-y-4">
+     <div className="flex flex-col items-center text-center space-y-4">
         <Link href="/" className="flex items-center space-x-2">
             <ShoppingBag className="h-8 w-8 text-primary" />
             <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
         </Link>
         <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
-        <div className="relative max-w-sm">
-            <Input placeholder="Enter your email address" className="pr-10 h-11"/>
+        <div className="relative w-full max-w-sm">
+            <Input placeholder="Enter your email address" className="pr-10 h-11 text-center sm:text-left"/>
             <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
                 <ArrowRight className="h-5 w-5"/>
             </Button>
@@ -105,7 +105,19 @@ export function Footer() {
         {/* Desktop Footer (lg and up) */}
         <div className="hidden lg:grid lg:grid-cols-5 gap-8">
           <div className="col-span-2">
-            <StoreInfo />
+            <div className="flex flex-col space-y-4">
+              <Link href="/" className="flex items-center space-x-2">
+                  <ShoppingBag className="h-8 w-8 text-primary" />
+                  <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
+              </Link>
+              <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
+              <div className="relative max-w-sm">
+                  <Input placeholder="Enter your email address" className="pr-10 h-11"/>
+                  <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
+                      <ArrowRight className="h-5 w-5"/>
+                  </Button>
+              </div>
+            </div>
           </div>
           
           <div>
@@ -142,7 +154,19 @@ export function Footer() {
         {/* Tablet Footer (md to lg) */}
         <div className="hidden md:grid lg:hidden md:grid-cols-3 gap-8">
             <div className="col-span-1">
-                <StoreInfo />
+                <div className="flex flex-col space-y-4">
+                  <Link href="/" className="flex items-center space-x-2">
+                      <ShoppingBag className="h-8 w-8 text-primary" />
+                      <span className="text-xl font-bold font-headline">{storeDetails.name}</span>
+                  </Link>
+                  <h3 className="font-semibold pt-4 font-headline">Subscribe to our email alerts!</h3>
+                  <div className="relative max-w-sm">
+                      <Input placeholder="Enter your email address" className="pr-10 h-11"/>
+                      <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-9 w-9">
+                          <ArrowRight className="h-5 w-5"/>
+                      </Button>
+                  </div>
+                </div>
             </div>
             <div className="col-span-2 grid grid-cols-2 gap-8">
                  <div>
@@ -204,7 +228,28 @@ export function Footer() {
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="space-y-6">
-                    <SocialLinks />
+                    <div className="flex flex-col items-center space-y-4">
+                      <h3 className="font-semibold font-headline">Let's get social</h3>
+                      <div className="flex justify-center -ml-2">
+                        {socialLinks.map((social) => (
+                            <a key={social.name} href={social.href} aria-label={social.name} target="_blank" rel="noopener noreferrer">
+                            <Button variant="ghost" size="icon">
+                                <social.icon className="h-5 w-5" />
+                            </Button>
+                            </a>
+                        ))}
+                      </div>
+                      <div className="space-y-1 text-sm text-muted-foreground text-center">
+                        <a href={`mailto:${storeDetails.email}`} className="flex items-center justify-center gap-2 hover:text-primary">
+                            <Mail className="h-4 w-4"/>
+                            {storeDetails.email}
+                        </a>
+                        <a href={`tel:${storeDetails.phone}`} className="flex items-center justify-center gap-2 hover:text-primary">
+                            <Phone className="h-4 w-4"/>
+                            {storeDetails.phone}
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </AccordionContent>
               </AccordionItem>
