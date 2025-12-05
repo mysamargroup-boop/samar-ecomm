@@ -1,32 +1,24 @@
+
 import * as admin from 'firebase-admin';
 
 // This is a server-only file. It should not be imported into client-side code.
 
 const getAdminApp = () => {
+  // If the app is already initialized, return it.
   if (admin.apps.length > 0) {
     return admin.app();
   }
 
-  // Construct the service account object from environment variables.
-  const serviceAccount = {
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    // The private key must have newlines replaced correctly.
-    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  };
-
-  // Ensure all required environment variables are present.
-  if (!serviceAccount.projectId || !serviceAccount.clientEmail || !serviceAccount.privateKey) {
-    throw new Error('Firebase Admin SDK environment variables are not set. Please check your .env file.');
-  }
-
+  // Otherwise, initialize the app.
+  // When deployed to a Google Cloud environment (like Firebase Hosting with a server-side component),
+  // the SDK can automatically discover the service account credentials.
+  // No need to manually pass in the credential object.
   try {
-    return admin.initializeApp({
-      // The type assertion is necessary because the constructed object doesn't perfectly match the SDK's type.
-      credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-    });
+    return admin.initializeApp();
   } catch (e: any) {
-    throw new Error(`Failed to initialize Firebase Admin SDK. Error: ${e.message}`);
+    // This will catch errors if the initialization fails.
+    console.error('Failed to initialize Firebase Admin SDK automatically.', e);
+    throw new Error(`Failed to initialize Firebase Admin SDK. Ensure the server is running in a Google Cloud environment or service account credentials are set up correctly. Error: ${e.message}`);
   }
 };
 
