@@ -39,12 +39,23 @@ export function ThemeCustomizer() {
                     <Label>Accent Color</Label>
                     <ColorPicker initialColor="0 59% 45%" />
                 </div>
+            </div>
+            <h3 className="text-lg font-medium pt-4">Buttons</h3>
+            <div className="space-y-4">
                  <div className="space-y-2">
-                    <Label>Buy Now Button (Start)</Label>
+                    <Label>Add to Cart (Background)</Label>
+                    <ColorPicker initialColor="220 13% 91%" />
+                </div>
+                <div className="space-y-2">
+                    <Label>Add to Cart (Text)</Label>
+                    <ColorPicker initialColor="220 12% 10%" />
+                </div>
+                <div className="space-y-2">
+                    <Label>Buy Now (Start)</Label>
                     <ColorPicker initialColor="142 76% 36%" />
                 </div>
                  <div className="space-y-2">
-                    <Label>Buy Now Button (End)</Label>
+                    <Label>Buy Now (End)</Label>
                     <ColorPicker initialColor="142 76% 26%" />
                 </div>
             </div>

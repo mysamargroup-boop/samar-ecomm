@@ -34,6 +34,9 @@
 
     --buy-now-start: 142 76% 36%;
     --buy-now-end: 142 76% 26%;
+    --add-to-cart-bg: 220 13% 91%;
+    --add-to-cart-fg: 220 12% 10%;
+
 
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 220 12% 10%;
@@ -77,6 +80,8 @@
 
     --buy-now-start: 142 76% 46%;
     --buy-now-end: 142 76% 36%;
+    --add-to-cart-bg: 220 12% 15%;
+    --add-to-cart-fg: 0 0% 98%;
 
     --sidebar-background: 0 0% 7%;
     --sidebar-foreground: 0 0% 98%;

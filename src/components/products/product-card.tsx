@@ -82,7 +82,12 @@ export function ProductCard({ product }: ProductCardProps) {
       
         <CardFooter className="p-2 pt-0">
             <div className="flex w-full flex-col gap-2">
-                <Button variant="outline" size="sm" onClick={() => addToCart(product)}>
+                <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => addToCart(product)}
+                    className="bg-[hsl(var(--add-to-cart-bg))] text-[hsl(var(--add-to-cart-fg))] hover:bg-[hsl(var(--add-to-cart-bg))]/90"
+                >
                     <ShoppingCart className="mr-2 h-4 w-4" />
                     Add to Cart
                 </Button>
