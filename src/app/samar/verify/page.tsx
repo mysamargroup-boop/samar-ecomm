@@ -35,7 +35,9 @@ function VerifyOTPComponent() {
             title: 'Samar Login Successful',
             description: 'Redirecting to dashboard...',
         });
-        router.push('/samar/dashboard');
+        // Use window.location.href to force a full page reload
+        // This ensures the layout component correctly reads the new session storage value
+        window.location.href = '/samar/dashboard';
     } else {
         toast({
             title: 'Invalid OTP',
@@ -52,7 +54,7 @@ function VerifyOTPComponent() {
         handleComplete(otp);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [otp, router, toast]);
+  }, [otp]);
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
