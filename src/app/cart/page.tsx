@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from "next/link";
@@ -9,6 +10,60 @@ import Image from "next/image";
 import { useCart } from "@/contexts/cart-context";
 import { Input } from "@/components/ui/input";
 import { Trash2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { createPaymentOrder, verifyPaymentSignature } from "@/lib/payment";
+import { useRouter } from "next/navigation";
+
+function CartPaymentButton({ amount, disabled }: { amount: number, disabled: boolean }) {
+  const { toast } = useToast();
+  const router = useRouter();
+  const { clearCart } = useCart();
+
+  async function handlePayment() {
+    const response = await createPaymentOrder(amount * 100);
+
+    if (!response.success) {
+      toast({
+        title: 'Error',
+        description: 'Could not create payment order.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const { order } = response;
+    
+    console.log("Simulating payment for order:", order.id);
+
+    const paymentData = {
+      orderId: order.id,
+      paymentId: `mock_payment_${Date.now()}`,
+      signature: 'mock_signature'
+    };
+
+    const isValid = await verifyPaymentSignature(paymentData);
+    if (isValid) {
+      toast({
+        title: 'Payment Successful!',
+        description: 'Your order has been placed.',
+      });
+      clearCart();
+      router.push('/order-confirmation');
+    } else {
+      toast({
+        title: 'Payment Failed',
+        description: 'Signature verification failed. Please contact support.',
+        variant: 'destructive',
+      });
+    }
+  }
+  return (
+    <Button className="w-full" size="lg" onClick={handlePayment} disabled={disabled}>
+      Proceed to Checkout
+    </Button>
+  )
+}
+
 
 export default function CartPage() {
     const { cartItems, cartTotal, removeFromCart, updateQuantity } = useCart();
@@ -75,11 +130,7 @@ export default function CartPage() {
                             </div>
                         </CardContent>
                         <CardFooter>
-                            <Link href="/checkout" className="w-full">
-                                <Button className="w-full" size="lg" disabled={cartItems.length === 0}>
-                                    Proceed to Checkout
-                                </Button>
-                            </Link>
+                           <CartPaymentButton amount={total} disabled={cartItems.length === 0} />
                         </CardFooter>
                     </Card>
                 </div>
