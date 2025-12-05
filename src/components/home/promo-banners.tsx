@@ -10,7 +10,7 @@ export function PromoBanners() {
       description: 'Up to 40% off on the latest gadgets. Don\'t miss out!',
       imageUrl: 'https://picsum.photos/seed/promo1/800/400',
       imageHint: 'electronics sale',
-      href: '/electronics',
+      href: '/collections/electronics',
       buttonText: 'Shop Now',
     },
     {
@@ -18,7 +18,7 @@ export function PromoBanners() {
       description: 'Upgrade your style with our trending collection.',
       imageUrl: 'https://picsum.photos/seed/promo2/800/400',
       imageHint: 'fashion collection',
-      href: '/apparel',
+      href: '/collections/apparel',
       buttonText: 'Explore Looks',
     },
   ];

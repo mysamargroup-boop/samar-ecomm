@@ -65,6 +65,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#E53E3E" />
+      </head>
       <body className={cn('font-body antialiased flex flex-col min-h-screen', poppins.variable)} suppressHydrationWarning>
         <FirebaseClientProvider>
           <AuthProvider>

@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -34,7 +33,7 @@ export function Footer() {
 
   const shopLinks = categories.map((category) => ({
     name: category.name,
-    href: `/${category.slug}`,
+    href: `/collections/${category.slug}`,
   }));
 
   const socialLinks = [

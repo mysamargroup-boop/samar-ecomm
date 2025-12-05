@@ -14,6 +14,7 @@ import { InfoBarCustomizer } from '@/components/appearance/info-bar-customizer';
 import { PromoBannersCustomizer } from '@/components/appearance/promo-banners-customizer';
 import { ThemeCustomizer } from '@/components/settings/theme-customizer';
 import { ExploreBannerCustomizer } from '@/components/appearance/explore-banner-customizer';
+import { MarqueeCustomizer } from '@/components/appearance/marquee-customizer';
 
 
 export default function AppearancePage() {
@@ -35,6 +36,18 @@ export default function AppearancePage() {
               <ThemeCustomizer />
             </CardContent>
           </Card>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Marquee Banner</CardTitle>
+            <CardDescription>
+              Customize the scrolling text banner at the top of your homepage.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <MarqueeCustomizer />
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>

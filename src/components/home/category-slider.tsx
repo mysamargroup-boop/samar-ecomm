@@ -39,7 +39,7 @@ export function CategorySlider() {
                 <CarouselContent>
                 {mainCategories.map((category, index) => (
                     <CarouselItem key={category.id} className="basis-1/3 sm:basis-1/4 md:basis-1/5 lg:basis-1/6 pl-6">
-                        <Link href={`/${category.slug}`}>
+                        <Link href={`/collections/${category.slug}`}>
                             <div className="flex flex-col items-center gap-3 group">
                                 <div className="relative aspect-square w-28 rounded-full overflow-hidden border-2 border-transparent group-hover:border-primary transition-all">
                                     <Image 

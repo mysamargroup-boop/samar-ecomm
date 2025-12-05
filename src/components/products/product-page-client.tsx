@@ -1,7 +1,7 @@
 
 'use client';
 
-import { products, categories, reviews as allReviews } from '@/lib/placeholder-data';
+import { categories, reviews as allReviews } from '@/lib/placeholder-data';
 import { notFound, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { formatPrice } from '@/lib/utils';
@@ -31,7 +31,7 @@ import { useEffect, useState } from 'react';
 import { Skeleton } from '../ui/skeleton';
 import { Breadcrumbs } from '../ui/breadcrumbs';
 import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, query, where } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 function SaleCountdownTimer({ endDate }: { endDate: Date }) {
   const calculateTimeLeft = () => {
@@ -132,6 +132,13 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
   const { data: productData, isLoading } = useCollection<Product>(productQuery);
   const product = productData?.[0];
 
+  const relatedProductsQuery = useMemoFirebase(
+    () => (firestore && product ? query(collection(firestore, 'products'), where('categoryId', '==', product.categoryId)) : null),
+    [firestore, product]
+  );
+  const { data: relatedProductsData } = useCollection<Product>(relatedProductsQuery);
+
+
   if (isLoading) {
     return (
        <div className="container mx-auto px-4 py-8 md:py-12">
@@ -171,8 +178,9 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
                        (!product.salePriceEndDate || new Date(product.salePriceEndDate) >= now);
 
   const productReviews = allReviews.filter(r => r.productId === product.id && r.status === 'Approved');
-  const relatedProducts = products
-    .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
+  
+  const relatedProducts = (relatedProductsData || [])
+    .filter(p => p.id !== product.id)
     .slice(0, 8);
 
   const dimensionsString = product.dimensions && product.dimensions.length && product.dimensions.width && product.dimensions.height 
@@ -183,7 +191,7 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     { label: 'Home', href: '/' },
   ];
   if (category) {
-    breadcrumbItems.push({ label: category.name, href: `/${category.slug}` });
+    breadcrumbItems.push({ label: category.name, href: `/collections/${category.slug}` });
   }
   breadcrumbItems.push({ label: product.name });
 
@@ -218,7 +226,7 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
         
         <div className="flex flex-col">
           {category && (
-            <Link href={`/${category.slug}`}>
+            <Link href={`/collections/${category.slug}`}>
               <Badge variant="secondary" className="mb-2 w-fit">{category.name}</Badge>
             </Link>
           )}
@@ -344,5 +352,3 @@ export function ProductPageClient({ productSlug }: { productSlug: string }) {
     </div>
   );
 }
-
-    

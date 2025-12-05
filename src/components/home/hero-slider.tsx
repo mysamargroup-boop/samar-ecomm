@@ -22,14 +22,14 @@ export function HeroSlider() {
       title: 'Latest Tech Collection',
       description: 'Discover cutting-edge gadgets and accessories.',
       buttonText: 'Shop Electronics',
-      href: '/electronics',
+      href: '/collections/electronics',
     },
     {
       image: PlaceHolderImages.find((img) => img.id === 'slider2'),
       title: 'New Winter Apparel',
       description: 'Stay warm and stylish this season.',
       buttonText: 'Shop Apparel',
-      href: '/apparel',
+      href: '/collections/apparel',
     },
     {
       id: 'slide3',
@@ -37,7 +37,7 @@ export function HeroSlider() {
       title: 'Modern Home Essentials',
       description: 'Elevate your living space with our curated decor.',
       buttonText: 'Shop Home',
-      href: '/home-goods',
+      href: '/collections/home-goods',
     },
   ];
 

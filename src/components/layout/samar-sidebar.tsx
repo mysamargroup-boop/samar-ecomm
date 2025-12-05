@@ -18,6 +18,7 @@ import {
   Palette,
   Newspaper,
   MessageSquare,
+  Send,
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet';
@@ -36,6 +37,7 @@ const navItems = [
   { href: '/samar/blog', label: 'Blog', icon: Newspaper },
   { href: '/samar/appearance', label: 'Appearance', icon: Palette },
   { href: '/samar/tags', label: 'Tags', icon: Tags },
+  { href: '/samar/whatsapp', label: 'WhatsApp', icon: Send },
 ];
 
 const secondaryNavItems = [

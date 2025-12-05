@@ -14,6 +14,7 @@ import { ArrowRight, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { ExploreBanner } from '@/components/home/explore-banner';
 import { DiscoverProducts } from '@/components/home/discover-products';
+import { Marquee } from '@/components/home/marquee';
 
 function HomePageContent() {
   const featuredProducts = products.slice(0, 8);
@@ -23,6 +24,7 @@ function HomePageContent() {
 
   return (
     <>
+      <Marquee />
       <HeroSlider />
       <InfoBar />
       <CategorySlider />

@@ -35,7 +35,7 @@ export function AppHeader() {
 
 
   const navLinks = categories.filter(c => !c.parentId).map((category) => ({
-    href: `/${category.slug}`,
+    href: `/collections/${category.slug}`,
     label: category.name,
   }));
   

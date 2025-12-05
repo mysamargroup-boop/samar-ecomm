@@ -59,7 +59,7 @@ export function ProductCard({ product }: ProductCardProps) {
       </CardHeader>
       <CardContent className="p-4 flex-grow flex flex-col items-center text-center">
         {category && (
-            <Link href={`/${category.slug}`}>
+            <Link href={`/collections/${category.slug}`}>
                 <Badge variant="secondary" className="mb-1 w-fit text-xs">{category.name}</Badge>
             </Link>
         )}
